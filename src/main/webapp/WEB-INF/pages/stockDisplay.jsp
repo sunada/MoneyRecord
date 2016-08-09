@@ -109,8 +109,16 @@
                         <td>${stock.cost}</td>
                         <td>${stock.current}</td>
                         <td>${stock.share}</td>
-                        <td><fmt:formatNumber type="number" value="${stock.current * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
-                        <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
+                        <c:choose>
+                            <c:when test="${stock.code == 122811 or stock.code == 124977 }">
+                                <td><fmt:formatNumber type="number" value="${stock.current * stock.share * 10}" pattern="0.00" maxFractionDigits="2"/></td>
+                                <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) * stock.share * 10}" pattern="0.00" maxFractionDigits="2"/></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><fmt:formatNumber type="number" value="${stock.current * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
+                                <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
+                            </c:otherwise>
+                        </c:choose>
                         <td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td>${stock.risk}</td>
                         <td>

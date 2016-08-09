@@ -46,6 +46,7 @@ public class GetNet {
         Map<String, Object> map = new HashMap<String, Object>();
         if(code.startsWith("124") || code.startsWith("122")){
             map.put("net", getBondPayPrice(code));
+            return map;
         }
         String url = "http://hq.sinajs.cn/?list=";
         if(code.startsWith("6") || code.startsWith("510")){
@@ -76,7 +77,8 @@ public class GetNet {
             Document doc = Jsoup.connect(url).get();
             Elements tds = doc.getElementById("exbondtitle").select("table").select("td");
             String contents = tds.get(4).text();
-            res = new BigDecimal(contents.split(";")[1]);
+            String tmp = contents.substring(3);
+            res = new BigDecimal(contents.substring(3));
 
         }catch (Exception e){
             e.printStackTrace();
