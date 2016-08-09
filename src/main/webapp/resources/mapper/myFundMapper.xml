@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MyFunds">
+    <resultMap id="MyFundResult" type="com.springapp.mvc.Model.MyFund">
+        <id column="code" jdbcType="CHAR" property="code"/>
+        <id column="belong_to" jdbcType="CHAR" property="belongTo"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="share" jdbcType="DECIMAL" property="share"/>
+        <result column="net" jdbcType="DECIMAL" property="net"/>
+        <result column="profit" jdbcType="DECIMAL" property="profit"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="date_net" jdbcType="DATE" property="date"/>
+        <result column="purchase_rate" jdbcType="DECIMAL" property="purchaseRate"/>
+        <result column="redemption_rate" jdbcType="DECIMAL" property="redemptionRate"/>
+        <result column="risk" jdbcType="CHAR" property="risk"/>
+        <result column="charge_mode" jdbcType="CHAR" property="chargeMode"/>
+        <result column="dividend_mode" jdbcType="CHAR" property="dividendMode"/>
+    </resultMap>
+
+    <resultMap id="SumResult" type="java.util.HashMap">
+        <result column="sum(amount)" jdbcType="DECIMAL" property="sum"/>
+    </resultMap>
+
+    <resultMap id="SumByRisk" type="java.util.HashMap">
+        <result column="amount" property="sum" jdbcType="DECIMAL"/>
+        <result column="risk" property="risk" jdbcType="CHAR"/>
+    </resultMap>
+
+    <select id="getMyFundList" resultMap="MyFundResult">
+        select code, name,share, net, date_net,cost, purchase_rate, redemption_rate, risk, belong_to, charge_mode, dividend_mode from myfunds where share > 0 order by code;
+    </select>
+
+    <select id="getMyHistoryFundList" resultMap="MyFundResult">
+        select code, name,share, cost,risk, belong_to from myfunds where share &lt;= 0 order by code;
+    </select>
+
+    <select id="getMyFundByCB" resultMap="MyFundResult">
+        select code, name,share, net, cost, risk, belong_to from myfunds where code=#{code} and belong_to=#{belongTo};
+    </select>
+
+    <insert id="insertMyFund" parameterType="com.springapp.mvc.Model.MyFund">
+        insert into myfunds(code, name, share, net,date_net, cost,purchase_rate, redemption_rate, charge_mode, dividend_mode, belong_to, risk) values (#{code},#{name},#{share},#{net},#{date},#{cost},#{purchaseRate},#{redemptionRate},#{chargeMode},#{dividendMode},#{belongTo},#{risk});
+    </insert>
+
+    <select id="updateMyFund" parameterType="com.springapp.mvc.Model.MyFund">
+      update myfunds set name=#{name}, share=#{share}, cost=#{cost},risk=#{risk},date_net=#{date},net=#{net} where code=#{code} and belong_to=#{belongTo};
+    </select>
+
+    <update id="updateNet" parameterType="java.util.Map">
+        update myfunds set net=#{net}, date_net=#{date} where code=#{code};
+    </update>
+    
+    <update id="updateMoneyFundShare" parameterType="java.util.Map">
+        update myfunds set share=#{share} where code=#{code};
+    </update>
+
+    <select id="getSum" resultMap="SumResult">
+        select sum(net * share) as amount from myfunds;
+    </select>
+
+    <select id="sumByRisk" resultMap="SumByRisk">
+        select risk, sum(net*share) as amount from myfunds group by risk;
+    </select>
+
+</mapper>

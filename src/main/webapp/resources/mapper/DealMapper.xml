@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Deals">
+    <resultMap id="DealResult" type="com.springapp.mvc.Model.Deal">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="code" jdbcType="CHAR" property="code"/>
+        <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="date_deal" jdbcType="DATE" property="date"/>
+        <result column="date_deal_real" jdbcType="DATE" property="dateReal"/>
+        <result column="net" jdbcType="DECIMAL" property="net"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="share" jdbcType="DECIMAL" property="share"/>
+        <result column="deal_type" jdbcType="CHAR" property="dealType"/>
+    </resultMap>
+
+    <resultMap id="nearDealDateResult" type="java.util.HashMap">
+        <result column="date_deal" jdbcType="DATE" property="date"/>
+    </resultMap>
+
+    <resultMap id="sumCost" type="java.util.HashMap">
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+    </resultMap>
+
+    <resultMap id="getAccountStockNewDealDate" type="java.util.HashMap">
+        <result column="belong_to" jdbcType="CHAR" property="key"/>
+        <result column="date_deal" jdbcType="DATE" property="value"/>
+    </resultMap>
+
+    <select id="getFundDeals" resultMap="DealResult">
+        select id, code, belong_to, name, date_deal, date_deal_real, net, cost, amount, share, deal_type from fund_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
+    </select>
+
+    <insert id="updateFundDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
+        insert into fund_deals(code, name, share, net,cost,belong_to,date_deal,date_deal_real,amount,deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{date},#{dateReal},#{amount},#{dealType});
+    </insert>
+
+    <select id="getNearDealDate" resultMap="nearDealDateResult">
+        select date_deal from fund_deals where code=#{code} and deal_type = "FAIP" order by date_deal desc limit 1;
+    </select>
+
+    <select id="getStockDeals" resultMap="DealResult">
+        select id, code, belong_to, name, date_deal, date_deal_real, net, cost, amount, share, deal_type from stock_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
+    </select>
+
+    <insert id="updateStockDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
+        insert into stock_deals(code, name, share, net,cost,amount,belong_to,date_deal,deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{amount},#{belongTo},#{date},#{dealType});
+    </insert>
+
+    <delete id="deleteFundDeal">
+        delete from fund_deals where id=#{id};
+    </delete>
+
+    <delete id="deleteStockDeal">
+        delete from stock_deals where id=#{id};
+    </delete>
+
+    <select id="sumFundCost" resultMap="sumCost">
+        select sum(amount) - sum(cost) from fund_deals where code=#{code} and deal_type="FREDEMP";
+    </select>
+
+    <select id="sumStockCost" resultMap="sumCost">
+        select sum(amount) - sum(cost) from stock_deals where code=#{code} and deal_type="SSELL";
+    </select>
+
+    <select id="getAccountStockNewDealDate" resultMap="getAccountStockNewDealDate">
+        select belong_to belong_to, max(date_deal) date_deal from stock_deals group by belong_to;
+    </select>
+
+</mapper>

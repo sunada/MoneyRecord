@@ -1,0 +1,139 @@
+drop table if exists 'accounts';
+| accounts | CREATE TABLE `accounts` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `owner` char(10) NOT NULL,
+  `account` char(10) NOT NULL,
+  `type` int(4) DEFAULT NULL,
+  `balance` decimal(9,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+| bank  | CREATE TABLE `bank` (
+  `tailNum` char(4) NOT NULL,
+  `lost` int(2) NOT NULL,
+  `current` decimal(9,2) DEFAULT '0.00',
+  `belongTo` int(2) NOT NULL,
+  `belongToStr` varchar(10) NOT NULL,
+  PRIMARY KEY (`tailNum`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+| aips  | CREATE TABLE `aips` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `accountId` int(4) NOT NULL,
+  `accountName` varchar(20),
+  `period` int(4) NOT NULL,
+  `unit` char(10) NOT NULL,
+  `amount` decimal(9, 2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+| funds | CREATE TABLE `funds` (
+  `code` char(6) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `purchase_rate` decimal(9,2) DEFAULT '0.00',
+  `redemption_rate` decimal(9,2) DEFAULT '0.00',
+  `charge_mode` varchar(30) DEFAULT NULL,
+  `dividend_mode` varchar(30) DEFAULT NULL,
+  `belong_to` char(10) DEFAULT NULL COMMENT '所属账户',
+  `risk` char(10) DEFAULT NULL  COMMENT '风险等级 0:低风险 如货币基金；1:中低风险
+                               如纯债债券基金 2:中等风险 如混合债券基金； 3：中高 可转债型债券
+                               基金；混合基金 4：高 股股票基金',
+  `amount` decimal(9,2) DEFAULT '0.00' COMMENT '定投金额',
+  `inter` char(10) DEFAULT NULL COMMENT '定投间隔：每周(1) 每两周(2) 每月(4)',
+  `week_aip` char(10) DEFAULT NULL COMMENT '若inter=ONEWEEK或TWOWEEKS,则week_aip的值有意义，表示周一至周五',
+  `date_aip` int(4) DEFAULT NULL COMMENT '若inter=MONTH,则date_aip的值有意义，表示1-31号',
+  `next_aip_date` date DEFAULT NULL,
+  `valid` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+| myfunds | CREATE TABLE `myfunds` (
+  `code` char(6) NOT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `share` decimal(9,2) DEFAULT '0.00',
+  `net` decimal(9,4) DEFAULT '0.00',
+  `date_net` date DEFAULT NULL,
+  `cost` decimal(9,2) DEFAULT '0.00',
+  `purchase_rate` decimal(9,2) DEFAULT '0.00',
+  `redemption_rate` decimal(9,2) DEFAULT '0.00',
+  `charge_mode` char(6) DEFAULT NULL,
+  `dividend_mode` char(15) DEFAULT NULL,
+  `belong_to` char(10) DEFAULT NULL COMMENT '所属帐户',
+  `risk` char(10) DEFAULT NULL COMMENT '风险等级 0-4 依次增高',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8             |
+
+| loans | CREATE TABLE `loans` (
+  `code` char(20) NOT NULL,
+  `amount` decimal(9,2) DEFAULT '0.00',
+  `belong_to` varchar(30) NOT NULL,
+  `interest_rate` decimal(9,2) DEFAULT '0.00',
+  `inter` char(5) DEFAULT NULL COMMENT '时长单位',
+  `inter_long` decimal(9,2) DEFAULT '0.00',
+  `approach` char(5) DEFAULT NULL COMMENT '收益方式',
+  `start_time` date DEFAULT NULL,
+  `end_time` date DEFAULT NULL,
+  `rinterest_rate` decimal(9,2) DEFAULT '0.00',
+  `risk` char(10) DEFAULT NULL COMMENT '风险等级 0-4 依次增高',
+  `interest` decimal(9,2) DEFAULT '0.00',
+  `hadPI` decimal(9,2) DEFAULT '0.00',
+  `waitPI` decimal(9,2) DEFAULT '0.00',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8                 |
+
+| stocks | CREATE TABLE `stocks` (
+  `code` char(8) NOT NULL,
+  `name` char(10) DEFAULT NULL,
+  `belong_to` char(20) DEFAULT NULL,
+  `cost` decimal(9,3) DEFAULT '0.00',
+  `current` decimal(9,3) DEFAULT '0',
+  `share` int(4) DEFAULT '0',
+  `amount` decimal(9,2) DEFAULT '0.00',
+  `risk` char(10) DEFAULT NULL COMMENT '风险等级 0-4依次增高',
+  `usa` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8         |
+
+| fund_deals | CREATE TABLE `fund_deals` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `code` char(6) NOT NULL,
+  `belong_to` char(10) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `date_deal` date DEFAULT NULL,
+  `net` decimal(9,4) DEFAULT '0.0000',
+  `cost` decimal(9,3) DEFAULT '0.00',
+  `amount` decimal(9,3) DEFAULT '0.00',
+  `share` decimal(9,2) DEFAULT '0.00',
+  `deal_type` char(10) DEFAULT NULL COMMENT 'FBUY, FAIP, FREDEMP, SBUY, SSELL',
+  `date_deal_real` date DEFAULT NULL COMMNET '由于节假日等引发的真实定投日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+| stock_deals | CREATE TABLE `stock_deals` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `code` char(6) NOT NULL,
+  `belong_to` char(10) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `date_deal` date DEFAULT NULL,
+  `net` decimal(9,4) DEFAULT '0.0000',
+  `cost` decimal(9,3) DEFAULT '0.00',
+  `amount` decimal(9,3) DEFAULT '0.00',
+  `share` decimal(9,2) DEFAULT '0.00',
+  `deal_type` char(10) DEFAULT NULL COMMENT 'FBUY, FAIP, FREDEMP, SBUY, SSELL',
+  `date_deal_real` date DEFAULT NULL COMMNET '由于节假日等引发的真实定投日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+历史持有的基金或证券
+| history | CREATE TABLE `history` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `code` char(6) DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `cost` decimal(9,3) DEFAULT '0.000',
+  `profit` decimal(9,3) DEFAULT '0.000',
+  `belong_to` varchar(10) DEFAULT NULL,
+  `risk` char(10) DEFAULT NULL,
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |

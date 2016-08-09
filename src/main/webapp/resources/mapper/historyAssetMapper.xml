@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="HistoryAssets">
+    <resultMap id="HistoryAssetResult" type="com.springapp.mvc.Model.HistoryAsset">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="code" jdbcType="CHAR" property="code"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="profit" jdbcType="DECIMAL" property="profit"/>
+        <result column="start" jdbcType="DATE" property="start"/>
+        <result column="end" jdbcType="DATE" property="end"/>
+        <result column="risk" jdbcType="CHAR" property="risk"/>
+        <result column="type" jdbcType="CHAR" property="assetType"/>
+    </resultMap>
+
+    <insert id="insertHistoryAsset" parameterType="com.springapp.mvc.Model.HistoryAsset" useGeneratedKeys="true" keyProperty="id">
+        insert into history(code, name, belong_to, cost, profit, start, end, risk, type) values (#{code},#{name},#{belongTo}, #{cost}, #{profit}, #{start}, #{end}, #{risk}, #{assetType});
+    </insert>
+
+    <select id="getList" resultMap="HistoryAssetResult">
+        select code, name, belong_to, cost, profit, start, end, risk from history where type=#{type} order by code;
+    </select>
+
+</mapper>

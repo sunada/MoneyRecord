@@ -1,0 +1,23 @@
+td{text-align:center;}
+
+#title{background-color:#FFEFD5;height:30px}
+.content{background-color: #F0FFF0;}
+
+
+ul,li,div {padding:0;margin:0;}
+
+/*ul li {float:left;width:100px;height:30px;line-height:30px;text-align:center;background-color:#fff;border:1px #bbb solid;border-bottom:none;}*/
+ul li.fli {color:#FF1493;background-color:#FFEFD5;height:30px;line-height:30px;}
+
+ul li {float:left;width:20%;text-align:center;}
+
+ul {overflow:hidden;zoom:1;list-style-type:none;}
+
+#tab_con div {display:none;border-top:none;}
+
+#tab_con div.fdiv {display:block;}
+
+a{
+    text-decoration:none;
+}
+

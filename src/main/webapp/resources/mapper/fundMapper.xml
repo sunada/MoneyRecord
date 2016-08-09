@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Funds">
+    <resultMap id="FundResult" type="com.springapp.mvc.Model.Fund">
+        <id column="code" jdbcType="CHAR" property="code"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="purchase_rate" jdbcType="DECIMAL" property="purchaseRate"/>
+        <result column="redemption_rate" jdbcType="DECIMAL" property="redemptionRate"/>
+        <result column="risk" typeHandler="com.springapp.mvc.Controller.EnumStatusHandler" property="risk"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="inter" jdbcType="CHAR" property="interval"/>
+        <result column="start_time" jdbcType="DATE" property="startTime"/>
+        <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
+        <result column="charge_mode" jdbcType="CHAR" property="chargeMode"/>
+        <result column="dividend_mode" jdbcType="CHAR" property="dividendMode"/>
+        <result column="valid" jdbcType="CHAR" property="valid"/>
+        <result column="week_aip" jdbcType="CHAR" property="week"/>
+        <result column="date_aip" jdbcType="INTEGER" property="date"/>
+    </resultMap>
+
+    <select id="getFundListByValid" resultMap="FundResult" parameterType="boolean">
+      select code, name, purchase_rate, redemption_rate, charge_mode, dividend_mode, belong_to, risk, valid, amount, start_time, inter, week_aip, date_aip from funds where valid=#{valid} order by risk, belong_to;
+    </select>
+
+    <select id="getFundList" resultMap="FundResult">
+        select code, name, purchase_rate, redemption_rate, charge_mode, dividend_mode, belong_to, risk, valid, amount, start_time, inter, week_aip, date_aip from funds order by risk;
+    </select>
+
+    <insert id="insertFund" parameterType="com.springapp.mvc.Model.Fund">
+        insert into funds(code, name, purchase_rate, redemption_rate, amount, inter, start_time, charge_mode, dividend_mode, belong_to, risk, valid, week_aip, date_aip) values (#{code},#{name},#{purchaseRate},#{redemptionRate},#{amount},#{interval},#{startTime},#{chargeMode},#{dividendMode},#{belongTo},#{risk, typeHandler=com.springapp.mvc.Controller.EnumStatusHandler},#{valid},#{week},#{date})
+    </insert>
+
+    <insert id="updateAip" parameterType="com.springapp.mvc.Model.Fund">
+        update funds set name=#{name}, purchase_rate=#{purchaseRate}, redemption_rate=#{redemptionRate}, amount=#{amount}, inter=#{interval}, start_time=#{startTime}, valid=#{valid},charge_mode=#{chargeMode},dividend_mode=#{dividendMode}, risk=#{risk, typeHandler=com.springapp.mvc.Controller.EnumStatusHandler} where code=#{code} and belong_to=#{belongTo};
+    </insert>
+
+    <insert id="npdateNextAipDate" parameterType="java.util.Map">
+        update funds set start_time=#{startTime} where code=#{code} and belong_to=#{belongTo};
+    </insert>
+
+</mapper>

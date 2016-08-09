@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Stocks">
+    <resultMap id="StockResult" type="com.springapp.mvc.Model.Stock">
+        <id column="code" jdbcType="CHAR" property="code"/>
+        <id column="belong_to" jdbcType="CHAR" property="belongTo"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <result column="share" jdbcType="DECIMAL" property="share"/>
+        <result column="current" jdbcType="DECIMAL" property="current"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="rate" jdbcType="DECIMAL" property="rate"/>
+        <result column="risk" jdbcType="CHAR" property="risk"/>
+    </resultMap>
+
+    <resultMap id="SumResult" type="java.util.HashMap">
+        <result column="sum(amount)" jdbcType="DECIMAL" property="sum"/>
+    </resultMap>
+
+    <resultMap id="SumByRisk" type="java.util.Map">
+        <result column="risk" property="risk" jdbcType="CHAR"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="getStockList" resultMap="StockResult">
+        select code, name, belong_to, cost, current, share, risk from stocks where share > 0 order by risk;
+    </select>
+
+    <select id="getHistoryStockList" resultMap="StockResult">
+        <![CDATA[
+          select code, name, belong_to, cost, current, share, risk from stocks where share <= 0 order by risk;
+        ]]>
+    </select>
+
+    <select id="getStockByCB" resultMap="StockResult">
+        select code, name, belong_to, cost, current, share, risk from stocks where code=#{code} and belong_to=#{belongTo};
+    </select>
+
+    <insert id="insertStock" parameterType="com.springapp.mvc.Model.Stock">
+        insert into stocks(code, name, belong_to, cost, share, risk) values (#{code}, #{name}, #{belongTo}, #{cost},#{share}, #{risk});
+    </insert>
+
+    <insert id="updateStock" parameterType="com.springapp.mvc.Model.Stock">
+        update stocks set name=#{name}, cost=#{cost}, share=#{share} where code=#{code} and belong_to=#{belongTo};
+    </insert>
+
+    <select id="getSum" resultMap="SumResult">
+        select sum(share * current) as amount from stocks;
+    </select>
+
+    <select id="sumByRisk" resultMap="SumByRisk">
+        select risk, sum(current*share) as amount from stocks group by risk;
+    </select>
+
+    <insert id="updateCurrent" parameterType="java.util.Map">
+        update stocks set current = #{current} where code = #{code};
+    </insert>
+
+    <delete id="delete" parameterType="String">
+        delete from stocks where code = #{code};
+    </delete>
+</mapper>

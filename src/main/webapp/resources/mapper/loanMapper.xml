@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Loans">
+    <resultMap id="LoanResult" type="com.springapp.mvc.Model.Loan">
+        <id column="code" jdbcType="CHAR" property="code"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
+        <result column="interest_rate" jdbcType="DECIMAL" property="interestRate"/>
+        <!--<result column="inter" jdbcType="CHAR" property="inter"/>-->
+        <!--<result column="inter_long" jdbcType="DECIMAL" property="interLong"/>-->
+        <result column="approach" jdbcType="CHAR" property="approach"/>
+        <result column="start_time" jdbcType="DATE" property="startTime"/>
+        <result column="end_time" jdbcType="DATE" property="endTime"/>
+        <!--<result column="rinterest_rate" jdbcType="DECIMAL" property="realInterestRate"/>-->
+        <result column="risk" jdbcType="CHAR" property="risk"/>
+        <result column="interest" jdbcType="DECIMAL" property="interest"/>
+        <result column="hadPI" jdbcType="DECIMAL" property="hadPI"/>
+        <result column="waitPI" jdbcType="DECIMAL" property="waitPI"/>
+        <result column="valid" jdbcType="INTEGER" property="valid"/>
+    </resultMap>
+
+    <resultMap id="SumByRisk" type="java.util.Map">
+        <result column="risk" property="risk" jdbcType="CHAR"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <resultMap id="SumResult" type="java.util.HashMap">
+        <result column="sum(amount)" jdbcType="DECIMAL" property="sum"/>
+    </resultMap>
+
+    <select id="getValidLoanList" resultMap="LoanResult">
+        select code, amount, belong_to, interest_rate, approach, start_time, end_time, risk, interest, hadPI, waitPI, valid from loans where end_time > date_sub(curdate(),interval 1 day) order by risk;
+    </select>
+
+    <select id="getNotValidLoanList" resultMap="LoanResult">
+        select code, amount, belong_to, interest_rate, approach, start_time, end_time, risk, interest, hadPI, waitPI, valid from loans where end_time &lt; curdate() order by risk;
+    </select>
+
+    <insert id="insertLoan" parameterType="com.springapp.mvc.Model.Loan">
+        insert into loans(code, amount, belong_to, interest_rate, approach, start_time, end_time, risk, interest, hadPI, waitPI) values (#{code},#{amount},#{belongTo}, #{interestRate}, #{approach}, #{startTime}, #{endTime}, #{risk}, #{interest}, #{hadPI}, #{waitPI});
+    </insert>
+
+    <insert id="update" parameterType="com.springapp.mvc.Model.Loan">
+        update loans set amount=#{amount}, interest_rate=#{interestRate}, approach=#{approach}, start_time=#{startTime}, end_time=#{endTime}, valid=#{valid}, risk=#{risk}, interest=#{interest}, hadPI=${hadPI}, waitPI=#{waitPI} where code=#{code} and belong_to=#{belongTo};
+    </insert>
+
+    <select id="getSum" resultMap="SumResult">
+      select sum(amount)-sum(hadPI) as amountAll, sum(hadPI) as 已还金额, sum(waitPI) as 待还金额（包括利息）, sum(interest) as 总利息 from loans where end_time > date_sub(curdate(),interval 1 day);
+    </select>
+
+    <select id="getSumByBelongTo" resultMap="SumResult">
+        select belong_to as belongTo, sum(amount)-sum(hadPI) as amount from loans where end_time > date_sub(curdate(),interval 1 day) group by belong_to;
+    </select>
+
+    <select id="sumByRisk" resultMap="SumByRisk">
+        select risk, sum(amount)-sum(hadPI) as amount from loans where end_time > date_sub(curdate(),interval 1 day) group by risk;
+    </select>
+
+</mapper>

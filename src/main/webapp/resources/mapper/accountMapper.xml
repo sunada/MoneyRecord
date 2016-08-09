@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Accounts">
+    <resultMap id="AccountResult" type="com.springapp.mvc.Model.Account">
+        <id column="id" jdbcType="INTEGER" property="accountId"/>
+        <result column="owner" jdbcType="CHAR" property="owner"/>
+        <result column="account" jdbcType="CHAR" property="account"/>
+        <result column="type" typeHandler="com.springapp.mvc.Controller.EnumStatusHandler" property="type"/>
+        <result column="balance" jdbcType="DECIMAL" property="balance"/>
+    </resultMap>
+
+    <select id="getAccountList" resultMap="AccountResult" parameterType="int">
+      select id, owner, account, type, balance from accounts where type=#{type}
+    </select>
+
+    <insert id="insertAccount" parameterType="com.springapp.mvc.Model.Account" useGeneratedKeys="true" keyProperty="id">
+      insert into accounts(owner, account, type, balance) values (#{owner}, #{account},
+      #{type, typeHandler=com.springapp.mvc.Controller.EnumStatusHandler}, #{balance})
+    </insert>
+
+    <delete id="deleteAccount" parameterType="int">
+        delete from accounts where id=#{id}
+    </delete>
+
+    <update id="updateAccount" parameterType="com.springapp.mvc.Model.Account">
+        update accounts set owner=#{owner}, account=#{account}, balance=#{balance},
+        type=#{type, typeHandler=com.springapp.mvc.Controller.EnumStatusHandler } where id=#{accountId}
+    </update>
+
+    <select id="transBelongTo" parameterType="int" resultType="String">
+        select account from accounts where id=#{belongTo}
+    </select>
+
+</mapper>

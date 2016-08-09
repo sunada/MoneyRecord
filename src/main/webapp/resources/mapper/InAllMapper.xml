@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="InAlls">
+    <resultMap id="AllResult" type="com.springapp.mvc.Model.InAll">
+        <id column="risk" jdbcType="CHAR" property="risk"/>
+        <id column="attr" jdbcType="CHAR" property="attr"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+    </resultMap>
+
+    <resultMap id="SumResult" type="java.util.HashMap">
+        <result column="sum(amount)" jdbcType="DECIMAL" property="sum"/>
+    </resultMap>
+
+    <select id="getAllList" resultMap="AllResult">
+        select risk, attr, amount from alls;
+    </select>
+
+    <select id="getSum" resultMap="SumResult">
+        select sum(amount) as amount from alls;
+    </select>
+
+</mapper>
