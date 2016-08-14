@@ -24,6 +24,9 @@ public class GetNet {
     private static Logger log = LoggerFactory.getLogger(GetNet.class);
 
     public BigDecimal getFundNet(String code, Date date){
+        if(code.startsWith("-")){
+            return BigDecimal.ONE;
+        }
 //    public BigDecimal getFundNet(String code,  String date){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr=sdf.format(date);
@@ -44,6 +47,10 @@ public class GetNet {
 
     public Map<String, Object> getStockNet(String code){
         Map<String, Object> map = new HashMap<String, Object>();
+        if(code.startsWith("-")){
+            map.put("net", BigDecimal.ONE);
+            return map;
+        }
         if(code.startsWith("124") || code.startsWith("122")){
             map.put("net", getBondPayPrice(code));
             return map;
@@ -77,7 +84,6 @@ public class GetNet {
             Document doc = Jsoup.connect(url).get();
             Elements tds = doc.getElementById("exbondtitle").select("table").select("td");
             String contents = tds.get(4).text();
-            String tmp = contents.substring(3);
             res = new BigDecimal(contents.substring(3));
 
         }catch (Exception e){

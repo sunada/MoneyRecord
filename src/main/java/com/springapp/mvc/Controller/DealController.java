@@ -93,12 +93,16 @@ public class DealController {
         //删除基金交易数据
         myFund = myFundService.readMyFundByCB(code, belongTo);
         if(myFund != null) {
-            if(dealType == DealType.FAIP || dealType == DealType.FBUY || dealType == DealType.FREINVE) {
+            if(dealType == DealType.FAIP || dealType == DealType.FBUY) {
                 myFund.setShare(myFund.getShare().subtract(share));
                 myFund.setCost(myFund.getCost().subtract(amount).add(cost));
+            }else if(dealType == DealType.FREINVE){
+                myFund.setShare(myFund.getShare().subtract(share));
             }else if(dealType == DealType.FREDEMP){
                 myFund.setShare(myFund.getShare().add(share));
                 myFund.setCost(myFund.getCost().add(amount).subtract(cost));
+            }else if(dealType == DealType.FCASH){
+                myFund.setCost(myFund.getCost().add(amount));
             }
             myFundService.updateMyFund(myFund);
 

@@ -159,6 +159,7 @@
                         <td>
                             <a class="btn btn-primary" href="/fund/myFundAdd?code=${fund.code}&name=${fund.name}&belongTo=${fund.belongTo}&risk=${fund.risk}&prate=${fund.purchaseRate}&rrate=${fund.redemptionRate}&cMode=${fund.chargeMode}&dMode=${fund.dividendMode}&dealType=FBUY" role="button">买入</a>
                             <a class="btn btn-primary" href="/fund/myFundAdd?code=${fund.code}&name=${fund.name}&belongTo=${fund.belongTo}&rrate=${fund.redemptionRate}&dealType=FREDEMP" role="button">赎回</a>
+                            <a class="btn btn-primary" href="/fund/myFundAdd?code=${fund.code}&name=${fund.name}&belongTo=${fund.belongTo}&rrate=${fund.redemptionRate}&dealType=FCASH" role="button">现金分红</a>
                             <a class="btn" href="/deal/fundList?code=${fund.code}&belongTo=${fund.belongTo}" role="button">交易记录</a>
                             <%--<button class="edit">编辑</button>--%>
                             <%--<button class="update">更新</button>--%>

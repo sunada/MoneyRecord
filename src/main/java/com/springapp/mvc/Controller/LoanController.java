@@ -50,7 +50,7 @@ public class LoanController {
         Map<String, BigDecimal> sumByBelongTo = loanService.sumByBelongTo();
         view.addObject("sumByBelongTo", sumByBelongTo);
 
-        BigDecimal amountAll = sum.get("amountAll");
+        BigDecimal amountAll = sum.get("waitPIAll");
         view.addObject("amountAll", amountAll);
 
         return view;
@@ -112,6 +112,7 @@ public class LoanController {
         String belongTo = request.getParameter("belongTo");
         BigDecimal amount = new BigDecimal(request.getParameter("amount"));
         BigDecimal interestRate = new BigDecimal(request.getParameter("interestRate"));
+        BigDecimal interest = new BigDecimal(request.getParameter("interest"));
 
         loan.setCode(code);
         loan.setBelongTo(belongTo);
@@ -144,10 +145,10 @@ public class LoanController {
             cal = Calendar.getInstance();
             cal.setTime(time);
             long time2 = cal.getTimeInMillis();
-            BigDecimal interest = new BigDecimal(0.00);
-            if(!loan.getApproach().equals("等额本息")){
-                interest = calInterest(time1, time2, loan.getInterestRate(), loan.getAmount());
-            }
+//            BigDecimal interest = new BigDecimal(0.00);
+//            if(!loan.getApproach().equals("等额本息")){
+//                interest = calInterest(time1, time2, loan.getInterestRate(), loan.getAmount());
+//            }
             loan.setInterest(interest);
 //            loan.setInterest(new BigDecimal(request.getParameter("interest")));
         }catch (Exception e){

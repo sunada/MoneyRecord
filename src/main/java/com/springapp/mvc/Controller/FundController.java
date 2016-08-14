@@ -101,11 +101,19 @@ public class FundController {
         String name = request.getParameter("name");
 
         // for fund_deal
-        BigDecimal share = new BigDecimal(request.getParameter("share"));
-        BigDecimal cost = new BigDecimal(request.getParameter("cost"));
-        BigDecimal net = new BigDecimal(request.getParameter("net"));
-        BigDecimal amount = new BigDecimal(request.getParameter("amount"));
         DealType dealType = DealType.valueOf(request.getParameter("dealType"));
+        BigDecimal share = BigDecimal.ZERO;
+        BigDecimal cost = BigDecimal.ZERO;
+        BigDecimal net = BigDecimal.ZERO;
+        BigDecimal amount = BigDecimal.ZERO;
+        if(dealType != DealType.FCASH) {
+            share = new BigDecimal(request.getParameter("share"));
+            cost = new BigDecimal(request.getParameter("cost"));
+            net = new BigDecimal(request.getParameter("net"));
+            amount = new BigDecimal(request.getParameter("amount"));
+        }else{
+            amount = new BigDecimal(request.getParameter("cash_amount"));
+        }
 
 
         //update fund_deals
@@ -125,7 +133,7 @@ public class FundController {
         if(dealType == DealType.FBUY){
             BigDecimal prate = new BigDecimal(request.getParameter("prate"));
             BigDecimal prateCal = prate.divide(BigDecimal.valueOf(100));
-            BigDecimal clean = amount.divide(prateCal.add(BigDecimal.valueOf(1)),2,BigDecimal.ROUND_HALF_EVEN);
+            BigDecimal clean = amount.divide(prateCal.add(BigDecimal.ONE),2,BigDecimal.ROUND_HALF_EVEN);
             deal.setShare(clean.divide(net,2, BigDecimal.ROUND_HALF_EVEN));
             deal.setCost(amount.subtract(clean));
         }else if(dealType == DealType.FREINVE){
@@ -135,9 +143,10 @@ public class FundController {
             deal.setShare(BigDecimal.ZERO);
             deal.setCost(BigDecimal.ZERO);
         }else if(dealType == DealType.FREDEMP){
-            BigDecimal rrate = new BigDecimal(request.getParameter("rrate"));
-            BigDecimal reFee = net.multiply(share).multiply(rrate).divide(BigDecimal.valueOf(100));
-            deal.setCost(reFee);
+//            BigDecimal rrate = new BigDecimal(request.getParameter("rrate"));
+//            BigDecimal reFee = net.multiply(share).multiply(rrate).divide(BigDecimal.valueOf(100));
+//            deal.setCost(reFee);
+            deal.setCost(cost);
             deal.setShare(share);
         }
         deal.setAmount(amount);
@@ -152,7 +161,8 @@ public class FundController {
             myFund.setName(name);
             myFund.setShare(share);
             myFund.setNet(net);
-            myFund.setCost(cost);
+//            myFund.setCost(cost);
+            myFund.setCost(amount); //此处的cost为持有成本，而非单次交易成本
             myFund.setDate(new Date());
             myFund.setBelongTo(belongTo);
             myFund.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
@@ -166,12 +176,16 @@ public class FundController {
                 return "redirect:/";
             }
         }else{
-            if(dealType == DealType.FBUY || dealType == DealType.FREINVE) {
+            if(dealType == DealType.FBUY){
                 myFundSql.setShare(share.add(myFundSql.getShare()));
                 myFundSql.setCost(amount.add(myFundSql.getCost()));
+            }else if(dealType == DealType.FREINVE){
+                myFundSql.setShare(share.add(myFundSql.getShare()));
             }else if(dealType == DealType.FREDEMP){
                 myFundSql.setShare(myFundSql.getShare().subtract(share));
                 myFundSql.setCost(myFundSql.getCost().subtract(amount).add(cost));
+            }else if(dealType == DealType.FCASH){
+                myFundSql.setCost(myFundSql.getCost().subtract(amount));
             }
             if(myFundService.updateMyFund(myFundSql)){
                 return "redirect:/fund";

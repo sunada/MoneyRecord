@@ -34,7 +34,7 @@
     </select>
 
     <insert id="updateFundDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
-        insert into fund_deals(code, name, share, net,cost,belong_to,date_deal,date_deal_real,amount,deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{date},#{dateReal},#{amount},#{dealType});
+        insert into fund_deals(code, name, share, net,cost,belong_to,date_deal,date_deal_real,amount, deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{date},#{dateReal},#{amount},#{dealType});
     </insert>
 
     <select id="getNearDealDate" resultMap="nearDealDateResult">
@@ -46,7 +46,7 @@
     </select>
 
     <insert id="updateStockDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
-        insert into stock_deals(code, name, share, net,cost,amount,belong_to,date_deal,deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{amount},#{belongTo},#{date},#{dealType});
+        insert into stock_deals(code, name, share, net,cost,belong_to,amount, date_deal,deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{amount},#{date},#{dealType});
     </insert>
 
     <delete id="deleteFundDeal">

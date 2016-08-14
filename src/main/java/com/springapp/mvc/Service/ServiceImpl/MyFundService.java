@@ -36,8 +36,8 @@ public class MyFundService {
         BigDecimal amount;
         BigDecimal cost;
         BigDecimal tmp;
-        BigDecimal amountAll = BigDecimal.valueOf(0);
-        BigDecimal costAll = BigDecimal.valueOf(0);
+        BigDecimal amountAll = BigDecimal.ZERO;
+        BigDecimal costAll = BigDecimal.ZERO;
         BigDecimal sum = sum();
 
         for(MyFund fund : myFunds){
@@ -63,8 +63,8 @@ public class MyFundService {
                 list.add(amount.subtract(cost).divide(cost, 4, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
             }
             map.put(str, list);
-            amountAll = amountAll.add(amount);
-            costAll = costAll.add(cost);
+            amountAll = amountAll.add(tmp);
+            costAll = costAll.add(fund.getCost());
         }
         List<BigDecimal> list = new ArrayList<BigDecimal>();
         list.add(amountAll);

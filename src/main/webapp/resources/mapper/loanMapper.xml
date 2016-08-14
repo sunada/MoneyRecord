@@ -46,15 +46,16 @@
     </insert>
 
     <select id="getSum" resultMap="SumResult">
-      select sum(amount)-sum(hadPI) as amountAll, sum(hadPI) as 已还金额, sum(waitPI) as 待还金额（包括利息）, sum(interest) as 总利息 from loans where end_time > date_sub(curdate(),interval 1 day);
+      select sum(amount) as 总投入金额, sum(hadPI) as 已还金额, sum(waitPI) as waitPIAll, sum(interest) as 总利息 from loans where end_time > date_sub(curdate(),interval 1 day);
     </select>
 
+
     <select id="getSumByBelongTo" resultMap="SumResult">
-        select belong_to as belongTo, sum(amount)-sum(hadPI) as amount from loans where end_time > date_sub(curdate(),interval 1 day) group by belong_to;
+        select belong_to as belongTo, sum(waitPI) as amount from loans where end_time > date_sub(curdate(),interval 1 day) group by belong_to;
     </select>
 
     <select id="sumByRisk" resultMap="SumByRisk">
-        select risk, sum(amount)-sum(hadPI) as amount from loans where end_time > date_sub(curdate(),interval 1 day) group by risk;
+        select risk, sum(waitPI) as amount from loans where end_time > date_sub(curdate(),interval 1 day) group by risk;
     </select>
 
 </mapper>

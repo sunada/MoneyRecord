@@ -56,7 +56,7 @@
     </update>
 
     <select id="getSum" resultMap="SumResult">
-        select sum(net * share) as amount from myfunds;
+        select sum(net * share) as amount from myfunds where share > 0;
     </select>
 
     <select id="sumByRisk" resultMap="SumByRisk">

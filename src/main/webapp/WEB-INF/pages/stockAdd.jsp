@@ -122,9 +122,7 @@
                 <label for="risk"> 风险类型：</label>
                 <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
                 <input type="radio" name="risk" value="LOW"/>低
-                <input type="radio" name="risk" value="MIDLOW"/>中低
                 <input type="radio" name="risk" value="MID"/>中等
-                <input type="radio" name="risk" value="MIDHIGH" checked/>中高
                 <input type="radio" name="risk" value="HIGH"/>高
             </div>
 

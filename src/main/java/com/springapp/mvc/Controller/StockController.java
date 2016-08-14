@@ -54,11 +54,11 @@ public class StockController {
         Map<String, Date> accountNewDealDate = dealService.getAccountNewDealDate(AssetType.STOCK);
         view.addObject("accDate", accountNewDealDate);
 
-        BigDecimal sum = stockService.sum();
-        view.addObject("sum", sum);
-
         Map<String, List<BigDecimal>> map = stockService.addUp(stocks);
         view.addObject("group", map);
+
+        BigDecimal sum = stockService.sum();
+        view.addObject("sum", sum);
 
         List<HistoryAsset> historyAssets = historyAssetService.readHistory(AssetType.STOCK);
 //        List<Stock> historyAssets = stockService.readHistory();

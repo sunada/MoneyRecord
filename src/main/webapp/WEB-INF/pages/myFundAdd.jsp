@@ -45,18 +45,19 @@
                     var share = $("#share").val();
                     var net = $("#net").val();
                     var cMode = $('#cMode input[name="chargeMode"]:checked ').val();
-                    if (cMode != "FRONT"){
-                        $("#rrate").attr("value", 0);
-                    }
+//                    if (cMode != "FRONT"){
+//                        $("#rrate").attr("value", 0);
+//                    }
 
-                    var rrate = $("#rrate").val();
+//                    var rrate = $("#rrate").val();
+                    var dealType = $('#dealType input[name="dealType"]:checked').val();
                     if(net != null && net != ''){
-                        if(dealType != "FREINVE" && dealType != "FCASH"){
+                        if(dealType != "FREINVE" && dealType != "FCASH") {
                             var clean = net * share;
                             var cost = clean * rrate / 100;
                             $("#cost").attr("value", cost.toFixed(2));
                             $("#amount").attr("value", clean.toFixed(2));
-                        }else{
+                        }else if(dealType == "FREINVE"){
                             $("#cost").attr("value", 0);
                             $("#amount").attr("value", 0);
                         }
@@ -141,6 +142,7 @@
                 }
             %>
 
+
             <div class="form-group">
                 <label for="code">基金代码：</label>
                 <input type="text" name="code" value="<%=blanknull(request.getParameter("code"))%>"/>
@@ -152,90 +154,23 @@
             </div>
 
             <c:set var="dealType" value='<%=request.getParameter("dealType")%>' />
+
             <div class="form-group" id="dealType">
-                <label for="dealType"> 买入或卖出：</label>
                 <c:choose>
-                    <c:when test="${dealType=='FBUY'}">
+                    <c:when test="${dealType=='FREDEMP' or dealType=='FCASH'}">
+                        <label for="dealType"> 赎回 或 现金分红：</label>
+                        <input type="radio" name="dealType" value="FREDEMP" checked/>赎回
+                        <input type="radio" name="dealType" value="FCASH"/>现金分红
+                    </c:when>
+                    <c:otherwise>
+                        <label for="dealType"> 申购 或 分组再投入：</label>
                         <input type="radio" name="dealType" value="FBUY" checked/>买入
                         <input type="radio" name="dealType" value="FREINVE"/>分红再投入
-                        <input type="radio" name="dealType" value="FCASH"/>现金分红
-                    </c:when>
-                    <c:when test="${dealType=='FREDEMP'}">
-                        <input type="radio" name="dealType" value="FREDEMP" checked/>赎回
-                    </c:when>
-                    <c:otherwise>
-                        <input type="radio" name="dealType" value="FBUY"/>买入
-                        <input type="radio" name="dealType" value="FREINVE"/>分红再投入
-                        <input type="radio" name="dealType" value="FCASH"/>现金分红
-                        <input type="radio" name="dealType" value="FREDEMP"/>赎回
                     </c:otherwise>
                 </c:choose>
             </div>
 
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType=='FBUY'}">
-                        <label for="net">买入净值：</label>
-                    </c:when>
-                    <c:when test="${dealType=='FREDEMP'}">
-                        <label for="net">赎回净值：</label>
-                    </c:when>
-                    <c:otherwise>
-                        <label for="net">买入或赎回净值：</label>
-                    </c:otherwise>
-                </c:choose>
-                <input type="text" name="net" id="net">元
-            </div>
 
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType=='FBUY'}">
-                        <label for="amount">买入金额：</label>
-                    </c:when>
-                    <c:when test="${dealType=='FREDEMP'}">
-                        <label for="amount">赎回金额：</label>
-                    </c:when>
-                    <c:otherwise>
-                        <label for="net">买入或赎回金额：</label>
-                    </c:otherwise>
-                </c:choose>
-                <input type="text" name="amount" id="amount">元
-            </div>
-
-            <div class="form-group">
-                <label for="share">交易份额：</label>
-                <input type="text" name="share" id="share">份
-            </div>
-
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType=='FBUY'}">
-                        <label for="amount">申购费用：</label>
-                    </c:when>
-                    <c:when test="${dealType=='FREDEMP'}">
-                        <label for="amount">赎回费用：</label>
-                    </c:when>
-                    <c:otherwise>
-                        <label for="net">买入或赎回费用：</label>
-                    </c:otherwise>
-                </c:choose>
-                <input type="text" name="cost" id="cost">元
-            </div>
-
-            <div class="form-group">
-                <label for="date">申请日期：</label>
-                <input type="text" name="date" id="date">
-            </div>
-
-            <div class="form-group">
-                <label for="risk"> 基金风险类型：</label>
-                <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
-                <input type="radio" name="risk" value="LOW" id="low"/>低
-                <input type="radio" name="risk" value="MIDLOW" id="midlow"/>中低
-                <input type="radio" name="risk" value="MID" id="mid"/>中等
-                <input type="radio" name="risk" value="MIDHIGH" id="midhigh"/>中高
-                <input type="radio" name="risk" value="HIGH" id="high"/>高
-            </div>
 
             <% String i = request.getParameter("belongTo"); %>
 
@@ -275,28 +210,95 @@
                 <%}%>
             </div>
 
-            <div class="form-group" id="cMode">
-                <label for="chargeMode">收费模式：</label>
-                <input type="radio" name="chargeMode" value="FRONT" id="front">前端
-                <input type="radio" name="chargeMode" value="BACK" id="back">后端
-                <input type="radio" name="chargeMode" value="C" id="c">C
+            <c:choose>
+                <c:when test="${dealType!='FREDEMP' and dealType != 'FCASH'}">
+                    <div class="form-group">
+                        <label for="risk"> 风险类型：</label>
+                            <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
+                        <input type="radio" name="risk" value="LOW"/>低
+                        <input type="radio" name="risk" value="MID"/>中等
+                        <input type="radio" name="risk" value="HIGH"/>高
+                    </div>
+                    <div class="form-group">
+                        <label for="dividendMode">分红模式：</label>
+                        <input type="radio" name="dividendMode" value="CASH" id="cash">现金分红
+                        <input type="radio" name="dividendMode" value="FREINVE" id="reinvest">分红再投资
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prate">申购费率：</label>
+                        <input type="text" name="prate" id="prate">%
+                    </div>
+                </c:when>
+            </c:choose>
+
+            <div class="form-group">
+                <c:choose>
+                    <c:when test="${dealType=='FREDEMP'}">
+                        <label for="net">赎回净值：</label>
+                        <input type="text" name="net" id="net">元
+                    </c:when>
+                    <%--<c:when test="$dealType == 'FCASH'}">--%>
+                    <%--</c:when>--%>
+                    <c:when test="${dealType != 'FCASH'}">
+                        <label for="net">申购净值：</label>
+                        <input type="text" name="net" id="net">元
+                    </c:when>
+                    <%--</c:otherwise>--%>
+                </c:choose>
+
             </div>
 
             <div class="form-group">
-                <label for="prate">申购费率：</label>
-                <input type="text" name="prate" id="prate">%
+                <c:choose>
+                    <c:when test="${dealType != 'FCASH'}">
+                        <label for="share">交易份额：</label>
+                        <input type="text" name="share" id="share">份
+                    </c:when>
+                </c:choose>
             </div>
 
             <div class="form-group">
-                <label for="rrate">赎回费率：</label>
-                <input type="text" name="rrate" id="rrate">%
+                <c:choose>
+                    <c:when test="${dealType=='FREDEMP'}">
+                        <label for="amount">赎回金额：</label>
+                        <input type="text" name="amount" id="amount">元
+                    </c:when>
+                    <c:when test="${dealType != 'FCASH'}">
+                        <label for="net">申购金额：</label>
+                        <input type="text" name="amount" id="amount">元
+                    </c:when>
+                </c:choose>
+
             </div>
 
             <div class="form-group">
-                <label for="dividendMode">分红模式：</label>
-                <input type="radio" name="dividendMode" value="CASH" id="cash">现金分红
-                <input type="radio" name="dividendMode" value="REINVESTMENT" id="reinvest">分红再投资
+                <c:choose>
+                    <c:when test="${dealType=='FREDEMP'}">
+                        <label for="amount">赎回费用：</label>
+                        <input type="text" name="cost" id="cost">元
+                    </c:when>
+                    <c:when test="${dealType != 'FCASH'}">
+                        <label for="net">申购费用：</label>
+                        <input type="text" name="cost" id="cost">元
+                    </c:when>
+                </c:choose>
             </div>
+
+            <div class="form-group">
+                <c:choose>
+                    <c:when test="${dealType == 'FCASH'}">
+                        <label for="cash_amount">现金分红金额：</label>
+                        <input type="text" name="cash_amount" id="cash_amount">元
+                    </c:when>
+                </c:choose>
+            </div>
+
+            <div class="form-group">
+                <label for="date">申请日期：</label>
+                <input type="text" name="date" id="date">
+            </div>
+
 
             <input type="submit" value="保存" />
         </form>
