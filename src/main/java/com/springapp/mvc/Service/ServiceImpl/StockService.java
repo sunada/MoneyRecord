@@ -55,6 +55,7 @@ public class StockService {
 
     public ArrayList<Stock> readHistory(){ return (ArrayList<Stock>)stockDao.getHistoryStockList(); }
 
+    //costFromfile < 0时，表示不是从文件导入的交易记录
     public boolean saveStock(Stock stock, Date date, DealType dealType, BigDecimal costFromfile){
         BigDecimal cost;  //单次交易的费用
         //表示是从页面保存的交易记录，需自己计算交易费用
@@ -70,7 +71,7 @@ public class StockService {
         //买入之前持有这支证券
         if(stockSql != null) {
             share = share.add(stockSql.getShare());
-            if(costFromfile.compareTo(BigDecimal.ZERO) == 0){
+            if(costFromfile.compareTo(BigDecimal.ZERO) < 0){
                 amount = BigDecimal.ZERO.subtract(stock.getCost().multiply(stock.getShare()).add(cost));
             }else{
                 amount = stock.getAmount();
@@ -91,7 +92,7 @@ public class StockService {
                 //stockDao.delete(stockSql.getCode());
             }else if(share.compareTo(BigDecimal.ZERO) < 0){
                 return false;
-            }else {
+            }else{
                 costAll = stockSql.getCost().multiply(stockSql.getShare()).subtract(amount).divide(share, 3, BigDecimal.ROUND_HALF_EVEN);
             }
             //if(share.compareTo(BigDecimal.ZERO) != 0){
@@ -126,6 +127,7 @@ public class StockService {
             String line = br.readLine();
             while ((line = br.readLine()) != null) { //循环读取行
                 String[] segments = line.split("\t"); //按tab分割
+
                 if(segments[11].equals("0156915917") || segments[11].equals("A447655138")){
                     deal.setBelongTo("华010600052829");
                 }else if(segments[11].equals("A473653724") || segments[11].equals("0157570856")){
@@ -133,11 +135,16 @@ public class StockService {
                 }else{
                     continue;
                 }
+                String contract = segments[3];
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
                 Date dealDate = sdf.parse(segments[0]);
+                if(hasContract(contract, dealDate)){
+                    continue;
+                }
                 deal.setCode(segments[14]);
                 deal.setDate(dealDate);
                 deal.setName(segments[2]);
+                deal.setContract(segments[3]);
                 deal.setShare(new BigDecimal(segments[4]));
                 if(getStockType(deal.getCode()) == SecurityType.SHLOAN){
                     deal.setShare(deal.getShare().multiply(BigDecimal.TEN));
@@ -153,7 +160,7 @@ public class StockService {
                     deal.setDealType(DealType.SBUY);
                 }else if(segments[1].equals("证券卖出")) {
                     deal.setDealType(DealType.SSELL);
-                }else if(segments[1].equals("股息入账")) {
+                }else if(segments[1].equals("股息入帐")) {
                     deal.setDealType(DealType.INTEREST);
                 }else{
                     deal.setDealType(DealType.OTHERS);
@@ -350,8 +357,6 @@ public class StockService {
             amount = price.multiply(share).subtract(cost);
             share = stockSql.getShare().add(share);
             costAll = stockSql.getCost().multiply(stockSql.getShare()).add(amount).divide(share, 3, BigDecimal.ROUND_HALF_EVEN);
-        }else{
-            ;
         }
 
         return costAll;
@@ -373,5 +378,12 @@ public class StockService {
         }else{
             return SecurityType.UNKNOW;
         }
+    }
+
+    public boolean hasContract(String contract, Date date){
+        if(dealDao.hasContract(contract, date) > 0){
+            return true;
+        }
+        return false;
     }
 }

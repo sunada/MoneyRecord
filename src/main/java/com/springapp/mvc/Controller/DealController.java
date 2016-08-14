@@ -116,13 +116,20 @@ public class DealController {
         stock = stockService.readStockByCB(code, belongTo);
         BigDecimal costAll;
         if(stock != null){
-            BigDecimal price = new BigDecimal(request.getParameter("net"));
+            BigDecimal dealAmount = new BigDecimal(request.getParameter("amount"));
+            BigDecimal amountBefore = stock.getCost().multiply(stock.getShare()).add(dealAmount);
             stock.setShare(stock.getShare().subtract(share));
-            if(dealType == DealType.SSELL){
-                share = BigDecimal.ZERO.subtract(share);
+            if(stock.getShare().compareTo(BigDecimal.ZERO) > 0) {
+                stock.setCost(amountBefore.divide(stock.getShare()));
+            }else{
+                stock.setCost(BigDecimal.ZERO);
             }
 
-            stock.setCost(stockService.calStockCost(code, belongTo, price, share, dealType));
+//            if(dealType == DealType.SSELL){
+//                share = BigDecimal.ZERO.subtract(share);
+//            }
+//            stock.setCost(stockService.calStockCost(code, belongTo, price, share, dealType));
+
             stockService.update(stock);
 
             if(stock.getCost().compareTo(BigDecimal.ZERO) == 0){

@@ -56,7 +56,7 @@ public class GetNet {
             return map;
         }
         String url = "http://hq.sinajs.cn/?list=";
-        if(code.startsWith("6") || code.startsWith("510")){
+        if(code.startsWith("6") || code.startsWith("510")|| code.startsWith("501")){
             code = "sh" + code;
         }else{
             code = "sz" + code;

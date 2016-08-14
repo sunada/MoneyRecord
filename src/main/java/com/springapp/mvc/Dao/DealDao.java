@@ -122,5 +122,10 @@ public class DealDao {
         return map;
     }
 
-
+    public int hasContract(String contract, Date date){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("contract", contract);
+        map.put("date", date);
+        return sqlSession.selectOne("Deals.hasContract", map);
+    }
 }

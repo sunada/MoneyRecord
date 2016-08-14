@@ -124,7 +124,7 @@ public class StockController {
         Date date;
         try{
             date = sdf.parse(request.getParameter("date"));
-            if (stockService.saveStock(stock, date, dealType, BigDecimal.ZERO)) {
+            if (stockService.saveStock(stock, date, dealType, BigDecimal.valueOf(-1))) {
                 //return "redirect:/stock/stockAdd?code=" +code + "&name=" + name + "&belongTo=" + belongTo + "&cost=" + cost + "&dealType=SBUY";
                 BigDecimal costByDeal = stockService.calDealCost(stock.getCode(), stock.getCost(), stock.getShare().abs(), dealType);
                 BigDecimal amount = BigDecimal.ZERO;

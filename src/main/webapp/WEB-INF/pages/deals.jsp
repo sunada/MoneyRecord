@@ -39,7 +39,7 @@
                     <th>份额</th>
                     <th>交易费用</th>
                     <th>预定申请日期</th>
-                    <th>实际定投日期</th>
+                    <th>实际定投日期/合同号</th>
                     <th>方向</th>
                     <th>操作</th>
                 </tr>
@@ -65,7 +65,10 @@
                                 <fmt:setLocale value="zh"/>
                                 <fmt:formatDate value="${deal.date}"/>
                         </td>
-                        <td><fmt:formatDate value="${deal.dateReal}"/></td>
+                        <td>
+                            <fmt:formatDate value="${deal.dateReal}"/>
+                            ${deal.contract}
+                        </td>
                         <td>${deal.dealType}</td>
                         <td>
                             <a class="btn" href="/deal/delete?id=${deal.id}&code=${deal.code}&belongTo=${deal.belongTo}&share=${deal.share}&amount=${deal.amount}&net=${deal.net}&dealType=${deal.dealType}&cost=${deal.cost}" role="button">删除</a>

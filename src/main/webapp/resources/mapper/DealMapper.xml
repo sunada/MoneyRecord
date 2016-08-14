@@ -8,7 +8,8 @@
         <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="date_deal" jdbcType="DATE" property="date"/>
-        <result column="date_deal_real" jdbcType="DATE" property="dateReal"/>
+        <result column="deate_deal_real" jdbcType="DATE" property="date"/>
+        <result column="contract" jdbcType="CHAR" property="contract"/>
         <result column="net" jdbcType="DECIMAL" property="net"/>
         <result column="cost" jdbcType="DECIMAL" property="cost"/>
         <result column="amount" jdbcType="DECIMAL" property="amount"/>
@@ -42,11 +43,15 @@
     </select>
 
     <select id="getStockDeals" resultMap="DealResult">
-        select id, code, belong_to, name, date_deal, date_deal_real, net, cost, amount, share, deal_type from stock_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
+        select id, code, belong_to, name, date_deal, contract, net, cost, amount, share, deal_type from stock_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
+    </select>
+
+    <select id="hasContract" resultType="INTEGER">
+        select count(*) from stock_deals where contract=#{contract} and date_deal=#{date};
     </select>
 
     <insert id="updateStockDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
-        insert into stock_deals(code, name, share, net,cost,belong_to,amount, date_deal,deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{amount},#{date},#{dealType});
+        insert into stock_deals(code, name, share, net,cost,belong_to,amount, date_deal,deal_type, contract) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{amount},#{date},#{dealType},#{contract});
     </insert>
 
     <delete id="deleteFundDeal">

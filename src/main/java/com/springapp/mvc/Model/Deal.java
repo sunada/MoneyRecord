@@ -21,6 +21,15 @@ public class Deal {
     private BigDecimal amount;
     private BigDecimal share;
     private DealType dealType;        //是否是基金定投交易 0 基金买入 1 基金定投 2 基金赎回 3 证券买入 4 证券卖出
+    private String contract;            //文件导入证券交易记录时的合同号，用于避免重复导入
+
+    public String getContract() {
+        return contract;
+    }
+
+    public void setContract(String contract) {
+        this.contract = contract;
+    }
 
     public int getId() {
         return id;
