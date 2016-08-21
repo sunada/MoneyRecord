@@ -9,7 +9,7 @@
         <script>
             $(document).ready(function(){
                 var risk = getUrlParam('risk');
-                if(risk == "HIGH"){
+                if(risk = "HIGH"){
                     $("#high").attr("checked","checked");
                 }else if(risk == "LOW"){
                     $("#low").attr("checked","checked");
@@ -21,13 +21,20 @@
                     $("#midhigh").attr("checked","checked");
                 }
 
+                $("#C").focus(function(){
+                    $("#prate").attr("value", 0);
+                    $("#rrate").attr("value", 0);
+                })
+
                 $("#share").focus(function() {
                     var amount = $("#amount").val();
                     var net = $("#net").val();
                     var cMode = $('#cMode input[name="chargeMode"]:checked ').val();
                     var dealType = $('#dealType input[name="dealType"]:checked').val();
+//                    var dealType = getUrlParam("dealType");
                     if (cMode != "FRONT" || dealType == 'FREINVE'){
-                        $("#prate").attr("value", 0);
+                        $("#prate").attr("value", 0.0);
+                        $("#rrate").attr("value", 0.0);
                     }
                     var prate = $("#prate").val();
                     if(net != null && net != ''){
@@ -42,6 +49,7 @@
                 });
 
                 $("#amount").focus(function(){
+                    var prate = $("#prate").val();
                     var share = $("#share").val();
                     var net = $("#net").val();
                     var cMode = $('#cMode input[name="chargeMode"]:checked ').val();
@@ -54,7 +62,7 @@
                     if(net != null && net != ''){
                         if(dealType != "FREINVE" && dealType != "FCASH") {
                             var clean = net * share;
-                            var cost = clean * rrate / 100;
+                            var cost = clean * prate / 100;
                             $("#cost").attr("value", cost.toFixed(2));
                             $("#amount").attr("value", clean.toFixed(2));
                         }else if(dealType == "FREINVE"){
@@ -183,30 +191,35 @@
                 <input type="radio" name="belongTo" value="银河基金官网" id="yin"/>银河基金官网
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
+                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
                 <%} else if (i.equals("广发基金官网")) { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang" checked/>广发基金官网
                 <input type="radio" name="belongTo" value="银河基金官网" id="yin" >银河基金官网
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
+                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
                 <%}else if (i.equals("银河基金官网")) { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
                 <input type="radio" name="belongTo" value="银河基金官网" id="yin" checked/>银河基金官网
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
+                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
                 <%}else if (i.equals("陆金所")) { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
                 <input type="radio" name="belongTo" value="银河基金官网" id="yin"/>银河基金官网
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu" checked/>陆金所
+                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
                 <%}else { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
                 <input type="radio" name="belongTo" value="银河基金官网" id="yin"/>银河基金官网
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui" checked/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
+                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
                 <%}%>
             </div>
 
@@ -217,17 +230,28 @@
                             <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
                         <input type="radio" name="risk" value="LOW"/>低
                         <input type="radio" name="risk" value="MID"/>中等
-                        <input type="radio" name="risk" value="HIGH"/>高
+                        <input type="radio" name="risk" value="HIGH" checked/>高
                     </div>
                     <div class="form-group">
                         <label for="dividendMode">分红模式：</label>
                         <input type="radio" name="dividendMode" value="CASH" id="cash">现金分红
-                        <input type="radio" name="dividendMode" value="FREINVE" id="reinvest">分红再投资
+                        <input type="radio" name="dividendMode" value="REINVESTMENT" id="reinvest">分红再投资
+                    </div>
+
+                    <div class="form-group" id="cMode">
+                        <label for="chargeMode"> 收费类型：</label>
+                        <input type="radio" name="chargeMode" value="FRONT"/>前端
+                        <input type="radio" name="chargeMode" value="BACK"/>后端
+                        <input type="radio" name="chargeMode" value="C" id="C"/>C类
                     </div>
 
                     <div class="form-group">
                         <label for="prate">申购费率：</label>
                         <input type="text" name="prate" id="prate">%
+                    </div>
+                    <div class="form-group">
+                        <label for="prate">赎回费率：</label>
+                        <input type="text" name="rrate" id="rrate">%
                     </div>
                 </c:when>
             </c:choose>
@@ -284,6 +308,8 @@
                     </c:when>
                 </c:choose>
             </div>
+
+
 
             <div class="form-group">
                 <c:choose>

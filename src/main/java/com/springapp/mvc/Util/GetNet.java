@@ -51,7 +51,7 @@ public class GetNet {
             map.put("net", BigDecimal.ONE);
             return map;
         }
-        if(code.startsWith("124") || code.startsWith("122")){
+        if(code.startsWith("124") || code.startsWith("122")|| code.startsWith("112")){
             map.put("net", getBondPayPrice(code));
             return map;
         }

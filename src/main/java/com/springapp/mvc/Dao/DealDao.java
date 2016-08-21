@@ -95,6 +95,9 @@ public class DealDao {
         }catch (Exception e){
             e.printStackTrace();
         }
+        if(map == null){
+            return BigDecimal.ZERO;
+        }
         for(String key : map.keySet()){
             res = map.get(key);
         }
