@@ -78,6 +78,7 @@
                     <input type="radio" name="belongTo" value="广发基金官网"/>广发基金官网
                     <input type="radio" name="belongTo" value="银河基金官网"/>银河基金官网
                     <input type="radio" name="belongTo" value="汇添富基金官网"/>汇添富基金官网
+                    <input type="radio" name="belongTo" value="支付宝"/>支付宝
                 </div>
 
                 <div class="form-group">
