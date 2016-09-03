@@ -163,6 +163,8 @@
                 <th>扣款时间</th>
                 <th>收费方式</th>
                 <th>分红方式</th>
+                <th>申购费率</th>
+                <th>赎回费率</th>
                 <th>定投开始时间</th>
                 <th>定投是否有效</th>
                 <th>操作</th>
@@ -187,6 +189,8 @@
                 </c:choose>
                 <td>${fund.chargeMode}</td>
                 <td>${fund.dividendMode}</td>
+                <td>${fund.purchaseRate}</td>
+                <td>${fund.redemptionRate}</td>
                 <td><fmt:formatDate value="${fund.startTime}"/></td>
                 <td>${fund.valid}</td>
                 <td>
