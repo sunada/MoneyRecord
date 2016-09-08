@@ -39,7 +39,7 @@
     </insert>
 
     <select id="getNearDealDate" resultMap="nearDealDateResult">
-        select date_deal from fund_deals where code=#{code} and deal_type = "FAIP" order by date_deal desc limit 1;
+        select date_deal from fund_deals where code=#{code} and belong_to=#{belong_to} and deal_type = "FAIP" order by date_deal desc limit 1;
     </select>
 
     <select id="getStockDeals" resultMap="DealResult">

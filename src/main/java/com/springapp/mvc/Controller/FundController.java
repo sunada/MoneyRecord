@@ -320,8 +320,14 @@ public class FundController {
         fund.setName(request.getParameter("name"));
         fund.setAmount(new BigDecimal(request.getParameter("amount")));
         fund.setBelongTo(request.getParameter("belongTo"));
-        fund.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
-        fund.setRedemptionRate(new BigDecimal(request.getParameter("rrate")));
+        if(request.getParameter("prate") != null) {
+            fund.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
+            fund.setRedemptionRate(new BigDecimal(request.getParameter("rrate")));
+        }else{
+            fund.setPurchaseRate(BigDecimal.ZERO);
+            fund.setRedemptionRate(BigDecimal.ZERO);
+        }
+
         fund.setRisk(Risk.valueOf(request.getParameter("risk")));
         fund.setChargeMode(ChargeMode.valueOf(request.getParameter("cMode")));
         fund.setDividendMode(DividendMode.valueOf(request.getParameter("dMode")));

@@ -96,7 +96,7 @@ public class DealService {
         for(Fund fund : funds){
 //            log.debug("updateAipDeals: " + fund.getCode());
             //先为每个code灌一条定投数据到表中，保证nearDealDate是上次定投的日期
-            nearDealDate = dealDao.getNearDealDate(fund.getCode());
+            nearDealDate = dealDao.getNearDealDate(fund.getCode(),fund.getBelongTo());
 
             int inter;
             int mul = 1;
