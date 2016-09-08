@@ -114,8 +114,8 @@
                         <td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td>${stock.risk}</td>
                         <td>
-                            <%--<button class="edit">编辑</button>--%>
-                            <%--<button class="update">更新</button>--%>
+                            <a class="btn btn-primary edit">编辑</button>
+                            <a class="btn btn-primary update">更新</button>
                             <a class="btn btn-primary" href="/stock/stockAdd?code=${stock.code}&name=${stock.name}&belongTo=${stock.belongTo}&cost=${stock.cost}&share=${stock.share}&amount=${stock.amount}&dealType=SBUY" role="button">买入</a>
                             <a class="btn btn-primary" href="/stock/stockAdd?code=${stock.code}&name=${stock.name}&belongTo=${stock.belongTo}&cost=${stock.cost}&share=${stock.share}&amount=${stock.amount}&dealType=SSELL" role="button">卖出</a>
                             <a class="btn" href="/deal/stockList?code=${stock.code}&belongTo=${stock.belongTo}" role="button">交易记录</a>
