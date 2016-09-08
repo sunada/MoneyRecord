@@ -192,6 +192,7 @@
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
                 <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
+                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
                 <%} else if (i.equals("广发基金官网")) { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang" checked/>广发基金官网
@@ -199,6 +200,7 @@
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
                 <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
+                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
                 <%}else if (i.equals("银河基金官网")) { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
@@ -206,6 +208,7 @@
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
                 <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
+                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
                 <%}else if (i.equals("陆金所")) { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
@@ -213,6 +216,7 @@
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu" checked/>陆金所
                 <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
+                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
                 <%}else { %>
                 <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
                 <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
@@ -220,6 +224,7 @@
                 <input type="radio" name="belongTo" value="汇添富基金官网" id="hui" checked/>汇添富基金官网
                 <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
                 <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
+                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
                 <%}%>
             </div>
 
