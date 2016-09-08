@@ -286,7 +286,7 @@
                 <c:choose>
                     <c:when test="${dealType=='FREDEMP'}">
                         <label for="amount">赎回金额：</label>
-                        <input type="text" name="amount" id="amount">元
+                        <input type="text" name="amount" id="amount">元 (无需修改，使用程序自动运算结果)
                     </c:when>
                     <c:when test="${dealType != 'FCASH'}">
                         <label for="net">申购金额：</label>
