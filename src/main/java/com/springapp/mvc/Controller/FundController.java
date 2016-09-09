@@ -115,7 +115,6 @@ public class FundController {
             amount = new BigDecimal(request.getParameter("cash_amount"));
         }
 
-
         //update fund_deals
         Deal deal = new Deal();
         deal.setCode(code);
@@ -131,11 +130,14 @@ public class FundController {
             e.printStackTrace();
         }
         if(dealType == DealType.FBUY){
-            BigDecimal prate = new BigDecimal(request.getParameter("prate"));
-            BigDecimal prateCal = prate.divide(BigDecimal.valueOf(100));
-            BigDecimal clean = amount.divide(prateCal.add(BigDecimal.ONE),2,BigDecimal.ROUND_HALF_EVEN);
-            deal.setShare(clean.divide(net,2, BigDecimal.ROUND_HALF_EVEN));
-            deal.setCost(amount.subtract(clean));
+//            BigDecimal prate = new BigDecimal(request.getParameter("prate"));
+//            BigDecimal prateCal = prate.divide(BigDecimal.valueOf(100));
+//            BigDecimal clean = amount.divide(prateCal.add(BigDecimal.ONE),2,BigDecimal.ROUND_HALF_EVEN);
+//            deal.setShare(clean.divide(net,2, BigDecimal.ROUND_HALF_EVEN));
+//            deal.setCost(amount.subtract(clean));
+            deal.setShare(share);
+            deal.setCost(cost);
+            amount = amount.add(cost);
         }else if(dealType == DealType.FREINVE){
             deal.setShare(share);
             deal.setCost(BigDecimal.ZERO);

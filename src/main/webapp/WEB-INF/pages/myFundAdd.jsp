@@ -105,7 +105,7 @@
 
                 var prate = getUrlParam("prate");
                 if(prate == null){
-                    prate = 0.6;
+                    prate = 0.15;
                 }
                 $("#prate").attr("value", prate);
 
@@ -295,7 +295,7 @@
                     </c:when>
                     <c:when test="${dealType != 'FCASH'}">
                         <label for="net">申购金额：</label>
-                        <input type="text" name="amount" id="amount">元
+                        <input type="text" name="amount" id="amount">元 (无需修改，使用程序自动运算结果)
                     </c:when>
                 </c:choose>
 

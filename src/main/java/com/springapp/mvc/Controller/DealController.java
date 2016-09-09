@@ -95,7 +95,7 @@ public class DealController {
         if(myFund != null) {
             if(dealType == DealType.FAIP || dealType == DealType.FBUY) {
                 myFund.setShare(myFund.getShare().subtract(share));
-                myFund.setCost(myFund.getCost().subtract(amount).add(cost));
+                myFund.setCost(myFund.getCost().subtract(amount));
             }else if(dealType == DealType.FREINVE){
                 myFund.setShare(myFund.getShare().subtract(share));
             }else if(dealType == DealType.FREDEMP){
