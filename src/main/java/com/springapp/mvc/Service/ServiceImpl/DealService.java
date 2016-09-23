@@ -132,7 +132,7 @@ public class DealService {
             cal.add(inter, mul);
             nextDealDay = cal.get(Calendar.DAY_OF_YEAR);
             nextDealDate = cal.getTime();
-            while(todayDay - nextDealDay > 0){
+            while(todayDay - nextDealDay >= 0){
                 realNextDealDate = myFundService.calRealAipDate(nextDealDate);
                 updateOneAipDeal(fund, nextDealDate,realNextDealDate);
                 cal.setTime(nextDealDate);
