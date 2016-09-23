@@ -32,7 +32,7 @@
     </insert>
 
     <insert id="updateAip" parameterType="com.springapp.mvc.Model.Fund">
-        update funds set name=#{name}, purchase_rate=#{purchaseRate}, redemption_rate=#{redemptionRate}, amount=#{amount}, inter=#{interval}, start_time=#{startTime}, valid=#{valid},charge_mode=#{chargeMode},dividend_mode=#{dividendMode}, risk=#{risk, typeHandler=com.springapp.mvc.Controller.EnumStatusHandler} where code=#{code} and belong_to=#{belongTo};
+        update funds set name=#{name}, purchase_rate=#{purchaseRate}, redemption_rate=#{redemptionRate}, amount=#{amount}, inter=#{interval}, start_time=#{startTime}, week_aip=#{week}, date_aip=#{date}, valid=#{valid},charge_mode=#{chargeMode},dividend_mode=#{dividendMode}, risk=#{risk, typeHandler=com.springapp.mvc.Controller.EnumStatusHandler} where code=#{code} and belong_to=#{belongTo};
     </insert>
 
     <insert id="npdateNextAipDate" parameterType="java.util.Map">

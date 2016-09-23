@@ -33,7 +33,7 @@
                     $(this).siblings().show();
 
                     var str = "code=" + para[0] + "&name=" + para[1] + "&belongTo=" + para[2] + "&risk=" + para[3]
-                            + "&amount=" + para[4] + "&interval=" + para[5] + "&cMode=" + para[7] + "&dMode=" + para[8]
+                            + "&amount=" + para[4] + "&interval=" + para[5] + "&time=" + para[6] + "&cMode=" + para[7] + "&dMode=" + para[8]
                             + "&prate=" + para[9] + "&rrate=" + para[10] + "&startTime=" + para[11] + "&valid=" + para[12];
 //                    alert(str);
                     //ajax提交表单

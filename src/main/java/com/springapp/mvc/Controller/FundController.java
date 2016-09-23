@@ -343,6 +343,13 @@ public class FundController {
             e.printStackTrace();
         }
         fund.setInterval(interval);
+        if(interval.equals(Interval.MONTH)){
+            fund.setDate(Integer.valueOf(request.getParameter("time")));
+            fund.setWeek(Week.EXC);
+        }else{
+            fund.setWeek(Week.valueOf(request.getParameter("time")));
+            fund.setDate(-1);
+        }
 
         if (fundService.updateAip(fund)){
             return "redirect:/fund";
