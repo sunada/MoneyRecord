@@ -28,11 +28,11 @@
     </resultMap>
 
     <select id="getMyFundList" resultMap="MyFundResult">
-        select code, name,share, net, date_net,cost, purchase_rate, redemption_rate, risk, belong_to, charge_mode, dividend_mode from myfunds where share > 0 order by code;
+        select code, name,share, net, date_net,cost, purchase_rate, redemption_rate, risk, belong_to, charge_mode, dividend_mode from myfunds where share > 0 order by belong_to;
     </select>
 
     <select id="getMyHistoryFundList" resultMap="MyFundResult">
-        select code, name,share, cost,risk, belong_to from myfunds where share &lt;= 0 order by code;
+        select code, name,share, cost,risk, belong_to from myfunds where share &lt;= 0 order by belong_to;
     </select>
 
     <select id="getMyFundByCB" resultMap="MyFundResult">
