@@ -91,4 +91,19 @@ public class GetNet {
         }
         return res;
     }
+
+    public BigDecimal getDanjuanNet(String code){
+        String url = "https://danjuanapp.com/plan/CSI" + code;
+        String res = HttpRequest.sendGet(url, "");
+        String seq[] = res.split("<div class=\"data\">");
+        BigDecimal net = BigDecimal.ZERO;
+        if(seq.length == 3){
+            String netStr = seq[2].split("</div>")[0];
+            net = new BigDecimal(netStr);
+        }else if(seq.length == 2){
+            String netStr = seq[1].split("</div>")[0];
+            net = new BigDecimal(netStr);
+        }
+        return net;
+    }
 }

@@ -115,7 +115,16 @@ public class MyFundService {
         Map<String, Object> map = new HashMap<String, Object>();
         boolean res = true;
 
-        if (myFund.getCode().length() == 6) {
+        if(myFund.getBelongTo().contains("蛋卷")){
+            net = getNet.getDanjuanNet(myFund.getCode());
+            if(!net.equals(BigDecimal.ZERO)){
+                myFund.setNet(net);
+                map.put("code", myFund.getCode());
+                map.put("net", net);
+                map.put("date", new Date());
+                myFundDao.updateNet(map);
+            }
+        }else if (myFund.getCode().length() == 6) {
             net = getNet.getFundNet(myFund.getCode(), date);
             while(net.equals(BigDecimal.valueOf(0))){
                 cal.add(Calendar.DATE, -1);
