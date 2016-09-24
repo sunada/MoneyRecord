@@ -319,7 +319,7 @@
             <div class="form-group">
                 <c:choose>
                     <c:when test="${dealType == 'FCASH'}">
-                        <label for="cash_amount">现金分红金额：</label>
+                        <label for="amount">现金分红金额：</label>
                         <input type="text" name="cash_amount" id="cash_amount">元
                     </c:when>
                 </c:choose>

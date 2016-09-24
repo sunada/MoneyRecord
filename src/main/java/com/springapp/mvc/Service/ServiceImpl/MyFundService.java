@@ -24,6 +24,10 @@ public class MyFundService {
     private static Logger log = LoggerFactory.getLogger(MyFundService.class);
 //    private Deal deal;
     private MyFund myFund;
+    private DealService dealService;
+
+    @Autowired
+    public void setDealService(DealService dealService){ this.dealService = dealService; }
 
     @Autowired
     public void setMyFund(MyFund myFund){ this.myFund = myFund; }
@@ -88,6 +92,41 @@ public class MyFundService {
     public ArrayList<MyFund> readMyHistoryFund() {
         ArrayList<MyFund> funds = (ArrayList)myFundDao.getMyHistoryFundList();
         return funds;
+    }
+
+    public Map<String, List<BigDecimal>> getHistoryProfit(){
+        ArrayList<MyFund> funds = readMyHistoryFund();
+        Map<String, List<BigDecimal>> res = new HashMap<String, List<BigDecimal>>();  //key: 风险
+        List<BigDecimal> list;  //0:成本 1：盈利 3:收益率
+        BigDecimal costInAll = BigDecimal.ZERO;
+        BigDecimal profitInAll = BigDecimal.ZERO;
+        for(MyFund fund : funds){
+            list = new ArrayList<BigDecimal>();
+            String risk = fund.getRisk().getName();
+
+            BigDecimal cost = dealService.sumCost(fund.getCode(), "fund");  //赎回实得
+            BigDecimal profit = BigDecimal.ZERO.subtract(fund.getCost());  //赎回时的盈利
+            cost = cost.subtract(profit);          //成本+盈利=实得
+
+            if(res.containsKey(risk)){
+                List<BigDecimal> newList = res.get(risk);
+                list.add(newList.get(0).add(cost));
+                list.add(newList.get(1).add(profit));
+            }else{
+                list.add(cost);
+                list.add(profit);
+            }
+            costInAll = costInAll.add(cost);
+            profitInAll = profitInAll.add(profit);
+            list.add(list.get(1).divide(list.get(0),2,BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
+            res.put(risk, list);
+        }
+        list = new ArrayList<BigDecimal>();
+        list.add(costInAll);
+        list.add(profitInAll);
+        list.add(profitInAll.divide(costInAll, 2, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
+        res.put("总计", list);
+        return res;
     }
 
     public MyFund readMyFundByCB(String code, String belongTo){
@@ -237,6 +276,8 @@ public class MyFundService {
         }
         return date;
     }
+
+
 
 //    public boolean updateAipDeals(List<Fund> funds){
 //        Date nearDealDate;

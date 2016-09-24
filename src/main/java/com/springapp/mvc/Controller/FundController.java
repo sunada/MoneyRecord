@@ -60,9 +60,9 @@ public class FundController {
         ArrayList<MyFund> hisFunds = myFundService.readMyHistoryFund();
         BigDecimal cost = BigDecimal.ZERO;
         for(MyFund fund : hisFunds){
-            cost = dealService.sumCost(fund.getCode(), "fund");
-            fund.setProfit(BigDecimal.ZERO.subtract(fund.getCost()));
-            fund.setCost(cost.subtract(fund.getProfit()));
+            cost = dealService.sumCost(fund.getCode(), "fund");  //赎回实得
+            fund.setProfit(BigDecimal.ZERO.subtract(fund.getCost()));  //赎回时的盈利
+            fund.setCost(cost.subtract(fund.getProfit()));          //成本+盈利=实得
         }
         view.addObject("hisFunds", hisFunds);
 
@@ -71,6 +71,9 @@ public class FundController {
 
         Map<String, List<BigDecimal>> map = myFundService.addUp(funds);
         view.addObject("group", map);
+
+        Map<String, List<BigDecimal>> historyProfit = myFundService.getHistoryProfit();
+        view.addObject("historyProfit", historyProfit);
 
         return  view;
     }

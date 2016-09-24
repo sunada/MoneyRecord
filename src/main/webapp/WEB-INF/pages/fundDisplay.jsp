@@ -196,6 +196,30 @@
             </tbody>
         </table>
 
+        <table class="table table-bordered">
+            <caption>历史收益统计（按风险）</caption>
+            <thead>
+            <tr>
+                <th>风险等级</th>
+                <th>成本</th>
+                <th>盈亏</th>
+                <th>收益率(%)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${historyProfit}" var="g">
+                <tr>
+                    <td>${g.key}</td>
+                    <c:forEach items="${g.value}" var="gc">
+                        <td>
+                            <fmt:formatNumber type="number" value="${gc}" pattern="0.00" maxFractionDigits="2"/>
+                        </td>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
         <h4>历史基金记录：</h4>
 
         <table class="table table-striped">
