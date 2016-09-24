@@ -63,6 +63,9 @@ public class StockController {
         List<HistoryAsset> historyAssets = historyAssetService.readHistory(AssetType.STOCK);
 //        List<Stock> historyAssets = stockService.readHistory();
         view.addObject("historyAssets", historyAssets);
+
+        Map<String, List<BigDecimal>> historyProfit = historyAssetService.getHistoryProfit(AssetType.STOCK);
+        view.addObject("historyProfit", historyProfit);
         return view;
     }
 

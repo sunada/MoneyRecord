@@ -154,6 +154,31 @@
         </table>
 
         <table class="table table-bordered">
+            <caption>历史持仓盈亏统计（按风险）</caption>
+            <thead>
+            <tr>
+                <th>风险等级</th>
+                <th>成本</th>
+                <th>盈亏</th>
+                <th>收益率(%)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${historyProfit}" var="g" varStatus="status">
+                <tr>
+                    <td>${g.key}</td>
+                    <c:forEach items="${g.value}" var="ac" varStatus="status">
+                        <td>
+                            <fmt:formatNumber type="number" value="${ac}" pattern="0.00" maxFractionDigits="2"/><br/>
+                                <%--<fmt:formatNumber type="number" value="${ac/sum * 100}" pattern="0.00" maxFractionDigits="2"/>--%>
+                        </td>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
             <caption>历史持仓</caption>
             <thead>
             <tr>
