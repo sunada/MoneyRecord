@@ -24,12 +24,12 @@
     </resultMap>
 
     <select id="getStockList" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk from stocks where share > 0 order by risk;
+        select code, name, belong_to, cost, current, share, risk from stocks where share > 0 order by risk,belong_to;
     </select>
 
     <select id="getHistoryStockList" resultMap="StockResult">
         <![CDATA[
-          select code, name, belong_to, cost, current, share, risk from stocks where share <= 0 order by risk;
+          select code, name, belong_to, cost, current, share, risk from stocks where share <= 0 order by risk.belong_to;
         ]]>
     </select>
 
