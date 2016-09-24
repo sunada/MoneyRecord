@@ -34,6 +34,8 @@
                 <th>基金</th>
                 <th>证券</th>
                 <th>网贷</th>
+                <th>各风险累计金额</th>
+                <th>占比(%)</th>
             </tr>
             </thead>
             <tbody>
@@ -48,29 +50,6 @@
             </tbody>
         </table>
 
-        <table class="table table-bordered">
-            <caption>分类统计（按风险）</caption>
-            <thead>
-                <tr>
-                    <th>风险等级</th>
-                    <th>资金</th>
-                    <th>占比(%)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach items="${group}" var="g" varStatus="status">
-                    <tr>
-                        <td>${g.key}</td>
-                        <td><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/></td>
-                        <td><fmt:formatNumber type="number" value="${g.value/sum * 100}" pattern="0.00" maxFractionDigits="2"/></td>
-                    </tr>
-                </c:forEach>
-                <tr>
-                    <td>总计</td>
-                    <td><fmt:formatNumber type="number" value="${sum}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td>100</td>
-                </tr>
-            </tbody>
-        </table>
+
     </body>
 </html>

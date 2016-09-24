@@ -85,20 +85,34 @@ public class InAllController {
                 riskValues.put(risk, list);
             }
         }
-        view.addObject("riskValues", riskValues);
 
-        Map<String, BigDecimal> g = new HashMap<String, BigDecimal>();
-        BigDecimal amount = BigDecimal.valueOf(0);
-
-        allService.sumByRisk(sumFund, g);
-        allService.sumByRisk(sumStock, g);
-        allService.sumByRisk(sumLoan, g);
-        view.addObject("group", g);
-
-        for(String k : g.keySet()){
-            amount = amount.add(g.get(k));
+        BigDecimal riskInAll = BigDecimal.ZERO;
+        List<BigDecimal> assetInAll = new ArrayList<BigDecimal>();
+        assetInAll.add(BigDecimal.ZERO);
+        assetInAll.add(BigDecimal.ZERO);
+        assetInAll.add(BigDecimal.ZERO);
+        for(String key : riskValues.keySet()){
+            for(int i = 0; i < riskValues.get(key).size(); i++){
+                BigDecimal value = riskValues.get(key).get(i);
+                assetInAll.set(i, assetInAll.get(i).add(value));
+            }
         }
-        view.addObject("sum", amount);
+        BigDecimal sumAll = BigDecimal.ZERO;
+        for(BigDecimal b : assetInAll){
+            sumAll = sumAll.add(b);
+        }
+//        assetInAll.add(sumAll);
+        riskValues.put("总计", assetInAll);
+
+        for(String key : riskValues.keySet()){
+            riskInAll = BigDecimal.ZERO;
+            for(BigDecimal b : riskValues.get(key)){
+                riskInAll = riskInAll.add(b);
+            }
+            riskValues.get(key).add(riskInAll);
+            riskValues.get(key).add(riskInAll.divide(sumAll, 4, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
+        }
+        view.addObject("riskValues", riskValues);
         return view;
     }
 }
