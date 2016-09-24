@@ -27,37 +27,24 @@
         </div>
         </nav>
 
-
-        <table class="table table-striped">
+        <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>资产性质</th>
-                    <th>风险</th>
-                    <th>金额</th>
-                </tr>
+            <tr>
+                <th>风险/资产</th>
+                <th>基金</th>
+                <th>证券</th>
+                <th>网贷</th>
+            </tr>
             </thead>
             <tbody>
-                <c:forEach items="${sumFund}" var="f" varStatus="status">
-                    <tr>
-                        <td>基金</td>
-                        <td>${f.key}</td>
-                        <td><fmt:formatNumber type="number" value="${f.value}" pattern="0.00" maxFractionDigits="2"/></td>
-                    </tr>
-                </c:forEach>
-                <c:forEach items="${sumLoan}" var="l" varStatus="status">
-                    <tr>
-                        <td>网贷</td>
-                        <td>${l.key}</td>
-                        <td><fmt:formatNumber type="number" value="${l.value}" pattern="0.00" maxFractionDigits="2"/></td>
-                    </tr>
-                </c:forEach>
-                <c:forEach items="${sumStock}" var="s" varStatus="status">
-                    <tr>
-                        <td>证券</td>
-                        <td>${s.key}</td>
-                        <td><fmt:formatNumber type="number" value="${s.value}" pattern="0.00" maxFractionDigits="2"/></td>
-                    </tr>
-                </c:forEach>
+            <c:forEach items="${riskValues}" var="s">
+                <tr>
+                    <td>${s.key}</td>
+                    <c:forEach items="${s.value}" var="sv">
+                        <td><fmt:formatNumber type="number" value="${sv}" pattern="0.00" maxFractionDigits="2"/></td>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
 

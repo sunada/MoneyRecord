@@ -1,9 +1,6 @@
 package com.springapp.mvc.Controller;
 
-import com.springapp.mvc.Model.InAll;
-import com.springapp.mvc.Model.Loan;
-import com.springapp.mvc.Model.Risk;
-import com.springapp.mvc.Model.Stock;
+import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Service.ServiceImpl.InAllService;
 import com.springapp.mvc.Service.ServiceImpl.LoanService;
 import com.springapp.mvc.Service.ServiceImpl.MyFundService;
@@ -55,9 +52,40 @@ public class InAllController {
         Map<String, BigDecimal> sumFund = myFundService.sumByRisk();
         Map<String, BigDecimal> sumStock = stockService.sumByRisk();
         Map<String, BigDecimal> sumLoan = loanService.sumByRisk();
-        view.addObject("sumFund", sumFund);
-        view.addObject("sumStock", sumStock);
-        view.addObject("sumLoan", sumLoan);
+
+        Map<AssetType, Map<String, BigDecimal>> typeRisk = new HashMap<AssetType, Map<String, BigDecimal>>();
+        typeRisk.put(AssetType.FUND, sumFund);
+        typeRisk.put(AssetType.LOAN, sumLoan);
+        typeRisk.put(AssetType.STOCK, sumStock);
+
+        Map<String, List<BigDecimal>> riskValues = new HashMap<String, List<BigDecimal>>();
+        List<BigDecimal> list;
+        for(AssetType key : typeRisk.keySet()){
+            Map<String, BigDecimal> map = typeRisk.get(key);
+            int index = 0;
+            for(String risk : map.keySet()){
+                if(key.equals(AssetType.FUND)){
+                    index = 0;
+                }else if(key.equals(AssetType.STOCK)){
+                    index = 1;
+                }else if(key.equals(AssetType.LOAN)){
+                    index = 2;
+                }
+
+                if(riskValues.containsKey(risk)){
+                    list = riskValues.get(risk);
+                    list.set(index, map.get(risk).add(list.get(index)));
+                }else{
+                    list = new ArrayList<BigDecimal>();  //0:基金 1:证券 2：网贷
+                    list.add(BigDecimal.ZERO);
+                    list.add(BigDecimal.ZERO);
+                    list.add(BigDecimal.ZERO);
+                    list.set(index, map.get(risk));
+                }
+                riskValues.put(risk, list);
+            }
+        }
+        view.addObject("riskValues", riskValues);
 
         Map<String, BigDecimal> g = new HashMap<String, BigDecimal>();
         BigDecimal amount = BigDecimal.valueOf(0);
