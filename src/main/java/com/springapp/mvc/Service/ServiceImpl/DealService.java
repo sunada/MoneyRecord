@@ -50,6 +50,9 @@ public class DealService {
         BigDecimal prate = fund.getPurchaseRate().divide(BigDecimal.valueOf(100));
         BigDecimal clean = fund.getAmount().divide(prate.add(BigDecimal.valueOf(1)),2,BigDecimal.ROUND_HALF_EVEN);
 
+        if(net.equals(BigDecimal.ZERO)){
+            return false;
+        }
         deal.setCode(fund.getCode());
         deal.setBelongTo(fund.getBelongTo());
         deal.setName(fund.getName());
