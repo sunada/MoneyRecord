@@ -20,7 +20,7 @@
     </insert>
 
     <select id="getList" resultMap="HistoryAssetResult">
-        select code, name, belong_to, cost, profit, start, end, risk from history where type=#{type} order by code;
+        select code, name, belong_to, cost, profit, start, end, risk from history where type=#{type} order by profit;
     </select>
 
 </mapper>

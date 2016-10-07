@@ -32,7 +32,7 @@
     </select>
 
     <select id="getMyHistoryFundList" resultMap="MyFundResult">
-        select code, name,share, cost,risk, belong_to from myfunds where share &lt;= 0 order by belong_to;
+        select code, name,share, cost,risk, belong_to from myfunds where share &lt;= 0 order by belong_to, cost;
     </select>
 
     <select id="getMyFundByCB" resultMap="MyFundResult">
