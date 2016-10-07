@@ -27,17 +27,20 @@ public class InsuranceService {
     public Map<String, Integer> addUpByOwner(ArrayList<Insurance> arr){
         Map<String, Integer> map = new HashMap<String, Integer>();
         String owner;
+        Integer tmp = 0;
         Integer sum = 0;
         for(Insurance i : arr){
-            owner = i.getBelongTo();
-            sum = i.getAmount();
+            owner = i.getOwner();
+            tmp = i.getAmount();
+            sum += tmp;
             if(map.containsKey(owner)){
-                sum += map.get(owner);
-                map.put(owner, sum);
+                tmp += map.get(owner);
+                map.put(owner, tmp);
             }else{
-                map.put(owner, sum);
+                map.put(owner, tmp);
             }
         }
+        map.put("总计", sum);
         return map;
     }
     public boolean save(Insurance insurance){

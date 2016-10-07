@@ -68,6 +68,25 @@
         </tbody>
     </table>
 
+    <table class="table table-bordered">
+        <caption>预计保费支出</caption>
+        <thead>
+            <tr>
+                <td>被保险人</td>
+                <td>保费(元）</td>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${addUpByOwner}" var="m">
+                <tr>
+                    <td>${m.key}</td>
+                    <td>${m.value}</td>
+                </tr>
+
+            </c:forEach>
+        </tbody>
+    </table>
+
     <a class="btn btn-primary" onclick="window.location='/insurance/add'">买入保险</a></button>
 </body>
 </html>
