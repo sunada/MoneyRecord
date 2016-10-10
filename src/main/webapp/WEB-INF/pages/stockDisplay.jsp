@@ -6,7 +6,7 @@
 
 <html>
     <head>
-        <title>证券一览</title>
+        <title>证券</title>
             <link href="/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
             <script src="/resources/js/jquery-2.2.3.min.js" type="text/javascript"></script>
             <script src="/resources/js/bootstrap.min.js" type="text/javascript"></script>
@@ -65,12 +65,12 @@
                 <li><a href="/fund">基金</a></li>
                 <li><a href="/fund/aipDisplay">定投</a></li>
                 <li><a href="/loan">网贷</a></li>
-                <li class="active"><a href="/stock">股票</a></li>
+                <li class="active"><a href="/stock">证券</a></li>
                 <li><a href="/insurance">保险</a></li>
-                <li><a href="/fund/myFundAdd">买入基金</a></li>
+                <li><a href="/fund/myFundAdd">基金操作</a></li>
                 <li><a href="/loan/loanAdd">买入网贷</a></li>
-                <li><a href="/stock/stockAdd">买入股票</a></li>
-                <li><a href="/stock/updateCurrent">更新股票现价</a></li>
+                <li><a href="/stock/stockAdd">证券操作</a></li>
+                <li><a href="/stock/updateCurrent">更新证券现价</a></li>
             </ul>
         </div>
         </nav>
