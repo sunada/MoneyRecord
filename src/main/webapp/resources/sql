@@ -137,3 +137,37 @@ drop table if exists 'accounts';
   `end` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+
+保险
+|insurance| CREATE TABLE `insurance` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `belong_to` char(8) DEFAULT NULL,
+  `coverage` int(5) NOT NULL,
+  `years` int(5) NOT NULL,
+  `start` date NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `owner` char(10) NOT NULL,
+  `type` char(10) NOT NULL,
+  `age` int(5) NOT NULL,
+  `amount` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8
+
+工资
+|salary|CREATE TABLE `salary` (
+          `owner` char(10) NOT NULL,
+          `date_salary` date DEFAULT NULL,
+          `before_tax` decimal(9,2) DEFAULT NULL,
+          `after_tax` decimal(9,2) DEFAULT NULL,
+          `house_funds_company` decimal(9,2) DEFAULT NULL,
+          `house_funds` decimal(9,2) DEFAULT NULL,
+          `medicare_company` decimal(9,2) DEFAULT NULL,
+          `medicare` decimal(9,2) DEFAULT NULL,
+          `pension_insurance_compay` decimal(9,2) DEFAULT NULL,
+          `pension_insurance` decimal(9,2) DEFAULT NULL,
+          `unemploy_insurance` decimal(9,2) DEFAULT NULL,
+          `tax` decimal(9,2) DEFAULT NULL,
+          `insurance_base` decimal(9,2) DEFAULT NULL,
+          `fund_base` decimal(9,2) DEFAULT NULL,
+          `unemploy_insurance_company` decimal(9,2) DEFAULT NULL
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8
