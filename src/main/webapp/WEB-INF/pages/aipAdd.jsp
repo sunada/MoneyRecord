@@ -44,11 +44,11 @@
                     <li><a href="/fund">基金</a></li>
                     <li class="active"><a href="/fund/aipDisplay">定投</a></li>
                     <li><a href="/loan">网贷</a></li>
-                    <li><a href="/stock">股票</a></li>
+                    <li><a href="/stock">证券</a></li>
                     <li><a href="/insurance">保险</a></li>
                     <li><a href="/fund/myFundAdd">买入基金</a></li>
                     <li><a href="/loan/loanAdd">买入网贷</a></li>
-                    <li><a href="/stock/stockAdd">买入股票</a></li>
+                    <li><a href="/stock/stockAdd">买入证券</a></li>
                 </ul>
             </div>
         </nav>

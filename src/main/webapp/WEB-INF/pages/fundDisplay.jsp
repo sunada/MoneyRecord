@@ -5,6 +5,7 @@
 
 <html>
     <head>
+        <title>基金一览</title>
             <link href="/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
             <script src="/resources/js/jquery-2.2.3.min.js" type="text/javascript"></script>
             <script src="/resources/js/bootstrap.min.js" type="text/javascript"></script>
@@ -71,11 +72,11 @@
                 <li class="active"><a href="/fund">基金</a></li>
                 <li><a href="/fund/aipDisplay">定投</a></li>
                 <li><a href="/loan">网贷</a></li>
-                <li><a href="/stock">股票</a></li>
+                <li><a href="/stock">证券</a></li>
                 <li><a href="/insurance">保险</a></li>
                 <li><a href="/fund/myFundAdd">买入基金</a></li>
                 <li><a href="/loan/loanAdd">买入网贷</a></li>
-                <li><a href="/stock/stockAdd">买入股票</a></li>
+                <li><a href="/stock/stockAdd">买入证券</a></li>
                 <li><a href="/fund/updateFundNet">更新基金净值</a></li>
                 <li><a href="/deal/updateAipDeal">更新定投交易</a></li>
             </ul>
