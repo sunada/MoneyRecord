@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
     <head>
+        <title>新增定投</title>
         <link href="/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <script src="/resources/js/jquery-2.2.3.min.js" type="text/javascript"></script>
         <script src="/resources/js/bootstrap.min.js" type="text/javascript"></script>
@@ -39,6 +40,7 @@
             <div>
                 <ul class="nav navbar-nav">
                     <li><a href="/inAll">总览</a></li>
+                    <li><a href="income">收支表</a> </li>
                     <li><a href="/fund">基金</a></li>
                     <li class="active"><a href="/fund/aipDisplay">定投</a></li>
                     <li><a href="/loan">网贷</a></li>
