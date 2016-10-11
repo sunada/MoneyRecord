@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -30,5 +31,27 @@
         </ul>
     </div>
 </nav>
+
+<table class="table table-bordered">
+    <caption>工资收入</caption>
+    <a class="btn btn-primary" onclick="window.location='/balance/addSalary'">新增工资收入</a></button>
+    <thead>
+    <tr>
+        <th>日期</th>
+        <th>来源</th>
+        <th>税前</th>
+        <th>税后</th>
+        <th>公积金(个人)</th>
+        <th>公积金(公司)</th>
+        <th>医疗保险(个人)</th>
+        <th>医疗保险(公司)</th>
+        <th>养老保险(个人)</th>
+        <th>养老保险(公司)</th>
+        <th>工伤保险(个人)</th>
+        <th>工伤保险(公司)</th>
+        <th>个人所得税</th>
+    </tr>
+    </thead>
+</table>
 </body>
 </html>

@@ -59,7 +59,7 @@
         <div>
             <ul class="nav navbar-nav">
                 <li><a href="/inAll">总览</a></li>
-                <li><a href="income">收支表</a> </li>
+                <li><a href="/balance">收支表</a> </li>
                 <li><a href="/fund">基金</a></li>
                 <li class="active"><a href="/fund/aipDisplay">定投</a></li>
                 <li><a href="/loan">网贷</a></li>
