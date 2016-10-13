@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Balance">
+    <resultMap id="SalaryResult" type="com.springapp.mvc.Model.Salary">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="date_salary" jdbcType="DATE" property="date"/>
+        <result column="owner" jdbcType="CHAR" property="owner"/>
+        <result column="before_tax" jdbcType="DECIMAL" property="beforeTax"/>
+        <result column="after_tax" jdbcType="DECIMAL" property="afterTax"/>
+        <result column="house_funds_company" jdbcType="DECIMAL" property="houseFundsCompany"/>
+        <result column="house_funds" jdbcType="DECIMAL" property="houseFunds"/>
+        <result column="medicare_company" jdbcType="DECIMAL" property="medicareCompany"/>
+        <result column="medicare" jdbcType="DECIMAL" property="medicare"/>
+        <result column="pension_insurance_company" jdbcType="DECIMAL" property="pensionInsuranceCompany"/>
+        <result column="pension_insurance" jdbcType="DECIMAL" property="pensionInsurance"/>
+        <result column="unemploy_insurance" jdbcType="DECIMAL" property="unemployInsurance"/>
+        <result column="unemploy_insurance_company" jdbcType="DECIMAL" property="unemployInsuranceCompany"/>
+        <result column="tax" jdbcType="DECIMAL" property="tax"/>
+        <result column="insurance_base" jdbcType="DECIMAL" property="insuranceBase"/>
+        <result column="fund_base" jdbcType="DECIMAL" property="fundBase"/>
+    </resultMap>
+
+    <select id="getSalaryList" resultMap="SalaryResult">
+        select id,date_salary, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
+        medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
+        insurance_base, fund_base from salary order by date_salary;
+    </select>
+
+    <insert id="saveSalary" parameterType="com.springapp.mvc.Model.Salary" useGeneratedKeys="true" keyProperty="id">
+        insert into salary (date_salary,owner,before_tax,after_tax,house_funds_company,house_funds,medicare_company,
+        medicare,pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
+        insurance_base,fund_base) value(#{date},#{owner},#{beforeTax},#{afterTax},#{houseFundsCompany},#{houseFunds},
+        #{medicareCompany},#{medicare},#{pensionInsuranceCompany},#{pensionInsurance},#{unemployInsurance},
+        #{unemployInsuranceCompany},#{tax},${insuranceBase},${fundBase});
+    </insert>
+</mapper>

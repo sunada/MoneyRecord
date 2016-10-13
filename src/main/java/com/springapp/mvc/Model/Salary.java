@@ -10,6 +10,7 @@ import java.util.Date;
  */
 @Repository
 public class Salary {
+    private int id;
     private String owner;
     private Date date;
     private BigDecimal beforeTax;
@@ -25,6 +26,14 @@ public class Salary {
     private BigDecimal tax;
     private BigDecimal insuranceBase;
     private BigDecimal fundBase;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Date getDate() {
         return date;

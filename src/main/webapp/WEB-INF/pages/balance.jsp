@@ -33,8 +33,11 @@
 </nav>
 
 <table class="table table-bordered">
-    <caption>工资收入</caption>
-    <a class="btn btn-primary" onclick="window.location='/balance/addSalary'">新增工资收入</a></button>
+    <caption>
+        工资收入
+        <a class="btn btn-primary" onclick="window.location='/balance/addSalary'">新增工资收入</a></button>
+    </caption>
+
     <thead>
     <tr>
         <th>日期</th>
