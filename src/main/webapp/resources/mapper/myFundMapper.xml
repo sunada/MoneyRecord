@@ -36,7 +36,7 @@
     </select>
 
     <select id="getMyFundByCB" resultMap="MyFundResult">
-        select code, name,share, net, cost, risk, belong_to from myfunds where code=#{code} and belong_to=#{belongTo};
+        select code, name,share, net, cost, risk, belong_to, purchase_rate from myfunds where code=#{code} and belong_to=#{belongTo};
     </select>
 
     <insert id="insertMyFund" parameterType="com.springapp.mvc.Model.MyFund">
