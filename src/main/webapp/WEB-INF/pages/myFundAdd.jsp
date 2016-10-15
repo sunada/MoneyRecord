@@ -105,13 +105,13 @@
 
                 var prate = getUrlParam("prate");
                 if(prate == null){
-                    prate = 0.15;
+                    prate = 0.00;
                 }
                 $("#prate").attr("value", prate);
 
                 var rrate = getUrlParam("rrate");
                 if(rrate == null){
-                    rrate = 0.5;
+                    rrate = 0.00;
                 }
                 $("#rrate").attr("value", rrate);
 
@@ -245,7 +245,10 @@
                         <input type="radio" name="dividendMode" value="REINVESTMENT" id="reinvest">分红再投资
                     </div>
 
-                    <% String cm = request.getParameter("cMode"); %>
+                    <%
+                        String cm = request.getParameter("cMode");
+                        cm = (cm==null) ? "C" : cm;
+                    %>
 
                     <div class="form-group" id="cMode">
                         <label for="chargeMode"> 收费类型：</label>
