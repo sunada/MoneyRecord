@@ -44,7 +44,7 @@
     </insert>
 
     <select id="updateMyFund" parameterType="com.springapp.mvc.Model.MyFund">
-      update myfunds set name=#{name}, share=#{share}, cost=#{cost},risk=#{risk},date_net=#{date},net=#{net} where code=#{code} and belong_to=#{belongTo};
+      update myfunds set name=#{name}, share=#{share}, cost=#{cost},risk=#{risk},date_net=#{date},net=#{net},purchase_rate=#{purchaseRate} where code=#{code} and belong_to=#{belongTo};
     </select>
 
     <update id="updateNet" parameterType="java.util.Map">
