@@ -47,6 +47,10 @@
                         $("#amount").attr("value", 0);
                         $("cost").attr("value", 0);
                     }
+                    if(dealType == 'FBUY'){
+                        var share = (amount - cost) / net;
+                        $("#share").attr("value", share.toFixed(2));
+                    }
                 });
 
                 $("#amount").focus(function(){
@@ -62,7 +66,7 @@
 //                    var rrate = $("#rrate").val();
                     var dealType = $('#dealType input[name="dealType"]:checked').val();
                     if(net != null && net != ''){
-                        if(dealType != "FREINVE" && dealType != "FCASH") {
+                        if(dealType != "FREINVE" && dealType != "FCASH" && dealType != 'FBUY') {
                             var clean = net * share - cost;
                             $("#amount").attr("value", clean.toFixed(2));
                         }else if(dealType == "FREINVE"){
@@ -179,8 +183,6 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-
-
 
             <% String i = request.getParameter("belongTo"); %>
 
@@ -321,7 +323,7 @@
                     </c:when>
                     <c:when test="${dealType != 'FCASH'}">
                         <label for="net">申购费用：</label>
-                        <input type="text" name="cost" id="cost">元
+                        <input type="text" name="cost" id="cost" readonly="true">元
                     </c:when>
                 </c:choose>
             </div>

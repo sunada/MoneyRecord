@@ -142,7 +142,7 @@ public class FundController {
 //            deal.setCost(amount.subtract(clean));
             deal.setShare(share);
             deal.setCost(cost);
-            amount = amount.add(cost);
+//            amount = amount.add(cost);
         }else if(dealType == DealType.FREINVE){
             deal.setShare(share);
             deal.setCost(BigDecimal.ZERO);
@@ -186,6 +186,7 @@ public class FundController {
             if(dealType == DealType.FBUY){
                 myFundSql.setShare(share.add(myFundSql.getShare()));
                 myFundSql.setCost(amount.add(myFundSql.getCost()));
+                myFundSql.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
             }else if(dealType == DealType.FREINVE){
                 myFundSql.setShare(share.add(myFundSql.getShare()));
             }else if(dealType == DealType.FREDEMP){
