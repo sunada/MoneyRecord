@@ -38,7 +38,7 @@
                         $("#rrate").attr("value", 0.0);
                     }
                     var prate = $("#prate").val();
-                    if(net != null && net != ''){
+                    if(net != null && net != '' && amount != null && amount != ''){
                         var clean = amount / (1 + prate / 100);
                         var cost = amount - clean;
                         $("#cost").attr("value", cost.toFixed(2));
@@ -63,8 +63,6 @@
                     if(net != null && net != ''){
                         if(dealType != "FREINVE" && dealType != "FCASH") {
                             var clean = net * share;
-                            var cost = clean * prate / 100;
-                            $("#cost").attr("value", cost.toFixed(2));
                             $("#amount").attr("value", clean.toFixed(2));
                         }else if(dealType == "FREINVE"){
                             $("#cost").attr("value", 0);
@@ -278,7 +276,6 @@
                     </c:when>
                     <%--</c:otherwise>--%>
                 </c:choose>
-
             </div>
 
             <div class="form-group">
@@ -294,14 +291,13 @@
                 <c:choose>
                     <c:when test="${dealType=='FREDEMP'}">
                         <label for="amount">赎回金额：</label>
-                        <input type="text" name="amount" id="amount">元 (无需修改，使用程序自动运算结果)
+                        <input type="text" name="amount" id="amount" readonly="true">元 (无需修改，使用程序自动运算结果)
                     </c:when>
                     <c:when test="${dealType != 'FCASH'}">
                         <label for="net">申购金额：</label>
-                        <input type="text" name="amount" id="amount">元 (无需修改，使用程序自动运算结果)
+                        <input type="text" name="amount" id="amount" readonly="true">元 (无需修改，使用程序自动运算结果)
                     </c:when>
                 </c:choose>
-
             </div>
 
             <div class="form-group">
@@ -316,8 +312,6 @@
                     </c:when>
                 </c:choose>
             </div>
-
-
 
             <div class="form-group">
                 <c:choose>
