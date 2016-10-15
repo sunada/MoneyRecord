@@ -33,9 +33,12 @@
                     $(this).hide();
                     $(this).siblings().show();
 
+//                    var str = "code=" + para[0] + "&name=" + para[1] + "&belongTo=" + para[2] + "&risk=" + para[3]
+//                            + "&amount=" + para[4] + "&interval=" + para[5] + "&time=" + para[6] + "&cMode=" + para[7] + "&dMode=" + para[8]
+//                            + "&prate=" + para[8] + "&rrate=" + para[9] + "&startTime=" + para[10] + "&valid=" + para[11];
                     var str = "code=" + para[0] + "&name=" + para[1] + "&belongTo=" + para[2] + "&risk=" + para[3]
-                            + "&amount=" + para[4] + "&interval=" + para[5] + "&time=" + para[6] + "&cMode=" + para[7] + "&dMode=" + para[8]
-                            + "&prate=" + para[9] + "&rrate=" + para[10] + "&startTime=" + para[11] + "&valid=" + para[12];
+                            + "&amount=" + para[4] + "&interval=" + para[5] + "&time=" + para[6] + "&cMode=" + para[7]
+                            + "&prate=" + para[8] + "&rrate=" + para[9] + "&startTime=" + para[10] + "&valid=" + para[11];
 //                    alert(str);
                     //ajax提交表单
                     $.ajax({
@@ -83,7 +86,7 @@
                     <th>定投周期</th>
                     <th>扣款时间</th>
                     <th>收费方式</th>
-                    <th>分红方式</th>
+                    <%--<th>分红方式</th>--%>
                     <th>申购费率（%）</th>
                     <th>赎回费率（%）</th>
                     <th>定投开始时间</th>
@@ -109,7 +112,7 @@
                             </c:otherwise>
                         </c:choose>
                         <td>${fund.chargeMode}</td>
-                        <td>${fund.dividendMode}</td>
+                        <%--<td>${fund.dividendMode}</td>--%>
                         <td>${fund.purchaseRate}</td>
                         <td>${fund.redemptionRate}</td>
                         <td><fmt:formatDate value="${fund.startTime}"/></td>

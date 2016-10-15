@@ -327,15 +327,17 @@ public class FundController {
         fund.setBelongTo(request.getParameter("belongTo"));
         if(request.getParameter("prate") != null) {
             fund.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
+
             fund.setRedemptionRate(new BigDecimal(request.getParameter("rrate")));
         }else{
             fund.setPurchaseRate(BigDecimal.ZERO);
             fund.setRedemptionRate(BigDecimal.ZERO);
         }
-
         fund.setRisk(Risk.valueOf(request.getParameter("risk")));
         fund.setChargeMode(ChargeMode.valueOf(request.getParameter("cMode")));
-        fund.setDividendMode(DividendMode.valueOf(request.getParameter("dMode")));
+        if(request.getParameter("dMode") != null) {
+            fund.setDividendMode(DividendMode.valueOf(request.getParameter("dMode")));
+        }
         fund.setValid(Boolean.valueOf(request.getParameter("valid")));
         Interval interval = Interval.valueOf(request.getParameter("interval"));
         String date = request.getParameter("startTime");
