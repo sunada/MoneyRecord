@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Controller
@@ -327,7 +329,6 @@ public class FundController {
         fund.setBelongTo(request.getParameter("belongTo"));
         if(request.getParameter("prate") != null) {
             fund.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
-
             fund.setRedemptionRate(new BigDecimal(request.getParameter("rrate")));
         }else{
             fund.setPurchaseRate(BigDecimal.ZERO);
@@ -349,7 +350,12 @@ public class FundController {
         }
         fund.setInterval(interval);
         if(interval.equals(Interval.MONTH)){
-            fund.setDate(Integer.valueOf(request.getParameter("time")));
+            Pattern p = Pattern.compile("\\d+");
+            Matcher m=p.matcher(request.getParameter("time"));
+            if(m.find()) {
+                String time = m.group();
+                fund.setDate(Integer.valueOf(time));
+            }
             fund.setWeek(Week.EXC);
         }else{
             fund.setWeek(Week.valueOf(request.getParameter("time")));
