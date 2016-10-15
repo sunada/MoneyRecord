@@ -190,7 +190,8 @@ public class FundController {
                 myFundSql.setShare(share.add(myFundSql.getShare()));
             }else if(dealType == DealType.FREDEMP){
                 myFundSql.setShare(myFundSql.getShare().subtract(share));
-                myFundSql.setCost(myFundSql.getCost().subtract(amount).add(cost));
+//                myFundSql.setCost(myFundSql.getCost().subtract(amount).add(cost));
+                myFundSql.setCost(myFundSql.getCost().subtract(amount));
             }else if(dealType == DealType.FCASH){
                 myFundSql.setCost(myFundSql.getCost().subtract(amount));
             }

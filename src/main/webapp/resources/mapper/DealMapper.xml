@@ -63,7 +63,7 @@
     </delete>
 
     <select id="sumFundCost" resultMap="sumCost">
-        select sum(amount) - sum(cost) from fund_deals where code=#{code} and deal_type="FREDEMP";
+        select sum(amount) from fund_deals where code=#{code} and deal_type="FREDEMP";
     </select>
 
     <select id="sumStockCost" resultMap="sumCost">

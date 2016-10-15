@@ -100,7 +100,8 @@ public class DealController {
                 myFund.setShare(myFund.getShare().subtract(share));
             }else if(dealType == DealType.FREDEMP){
                 myFund.setShare(myFund.getShare().add(share));
-                myFund.setCost(myFund.getCost().add(amount).subtract(cost));
+                myFund.setCost(myFund.getCost().add(amount));
+//                myFund.setCost(myFund.getCost().add(amount).subtract(cost));
             }else if(dealType == DealType.FCASH){
                 myFund.setCost(myFund.getCost().add(amount));
             }
