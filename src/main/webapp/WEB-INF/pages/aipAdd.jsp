@@ -69,10 +69,10 @@
                     <label for="risk"> 基金风险类型：</label>
                     <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
                     <input type="radio" name="risk" value="LOW"/>低
-                    <input type="radio" name="risk" value="MIDLOW"/>中低
+                    <%--<input type="radio" name="risk" value="MIDLOW"/>中低--%>
                     <input type="radio" name="risk" value="MID"/>中等
-                    <input type="radio" name="risk" value="MIDHIGH" checked/>中高
-                    <input type="radio" name="risk" value="HIGH"/>高
+                    <%--<input type="radio" name="risk" value="MIDHIGH" checked/>中高--%>
+                    <input type="radio" name="risk" value="HIGH" checked/>高
                 </div>
 
                 <div class="form-group">
@@ -86,7 +86,7 @@
 
                 <div class="form-group">
                     <label for="prate">申购费率：</label>
-                    <input type="text" name="prate" value="0.6">%
+                    <input type="text" name="prate" value="0.15">%
                 </div>
 
                 <div class="form-group">
