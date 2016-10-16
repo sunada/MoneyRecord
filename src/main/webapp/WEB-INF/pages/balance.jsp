@@ -36,14 +36,47 @@
 
 <table class="table table-bordered">
     <caption>
-        工资收入
-        <a class="btn btn-primary" onclick="window.location='/balance/addSalary'">新增工资收入</a></button>
+        月收支状态
+        <a class="btn btn-primary" onclick="window.location='/balance/addSalary'">新增月工资记录</a></button>
+        <a class="btn btn-primary" onclick="window.location='/balance/addExpense'">新增月支出记录</a></button>
     </caption>
 
     <thead>
     <tr>
         <th>日期</th>
         <th>来源</th>
+        <th>贡献者</th>
+        <th>总计</th>
+        <th>税后</th>
+        <th>公积金(个人)</th>
+        <th>公积金(公司)</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${salary}" var="s">
+        <tr>
+            <td><fmt:formatDate value="${s.date}"/></td>
+            <td>工资收入</td>
+            <td>${s.owner}</td>
+            <td>${s.afterTax + s.houseFunds + s.houseFundsCompany}</td>
+            <td>${s.afterTax}</td>
+            <td>${s.houseFunds}</td>
+            <td>${s.houseFundsCompany}</td>
+
+        </tr>
+    </c:forEach>
+    </tbody>
+
+<table class="table table-bordered">
+    <caption>
+        详细工资收入
+    </caption>
+
+    <thead>
+    <tr>
+        <th>日期</th>
+        <th>贡献者</th>
         <th>税前</th>
         <th>税后</th>
         <th>公积金<br/>(个人)</th>
@@ -52,8 +85,8 @@
         <th>医疗保险<br/>(公司)</th>
         <th>养老保险<br/>(个人)</th>
         <th>养老保险<br/>(公司)</th>
-        <th>工伤保险<br/>(个人)</th>
-        <th>工伤保险<br/>(公司)</th>
+        <th>失业保险<br/>(个人)</th>
+        <th>失业保险<br/>(公司)</th>
         <th>个人所得税</th>
     </tr>
     </thead>
@@ -64,12 +97,12 @@
                 <td>${s.owner}</td>
                 <td>${s.beforeTax}</td>
                 <td>${s.afterTax}</td>
-                <td>${s.houseFundsCompany}</td>
                 <td>${s.houseFunds}</td>
-                <td>${s.medicareCompany}</td>
+                <td>${s.houseFundsCompany}</td>
                 <td>${s.medicare}</td>
-                <td>${s.pensionInsuranceCompany}</td>
+                <td>${s.medicareCompany}</td>
                 <td>${s.pensionInsurance}</td>
+                <td>${s.pensionInsuranceCompany}</td>
                 <td>${s.unemployInsurance}</td>
                 <td>${s.unemployInsuranceCompany}</td>
                 <td>${s.tax}</td>
