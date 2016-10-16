@@ -29,72 +29,129 @@
             </ul>
         </div>
     </nav>
+
+    <script>
+        $(document).ready(function() {
+            $("#husband").focus(function () {
+                $("#beforeTax").attr("value", 25480);
+                $("#insuranceBase").attr("value", 21258);
+                $("#fundBase").attr("value", 21258);
+                $("#date").attr("value", "2016--30");
+                $("#afterTax").attr("value", 0)
+            });
+
+            $("#wife").focus(function () {
+                $("#date").attr("value", "2016--30");
+                $("#beforeTax").attr("value", 17219);
+                $("#insuranceBase").attr("value", 20237);
+                $("#fundBase").attr("value", 20237);
+
+                $("#afterTax").attr("value", 0)
+
+            });
+
+            $("#afterTax").focus(function(){
+                var insuranceBase = $("#insuranceBase").val();
+                var fundBase = $("#fundBase").val();
+                var beforeTax = $("#beforeTax").val();
+                $("#houseFunds").attr("value", (fundBase * 0.12).toFixed(0));
+                $("#houseFundsCompany").attr("value", (fundBase * 0.12).toFixed(0));
+                $("#medicareCompany").attr("value", insuranceBase * 0.1);
+                $("#medicare").attr("value", (insuranceBase * 0.020148).toFixed(2));
+                $("#pensionInsuranceCompany").attr("value", insuranceBase * 0.19);
+                $("#pensionInsurance").attr("value", insuranceBase * 0.08);
+                $("#unemployInsurance").attr("value", (insuranceBase * 0.002).toFixed(2));
+                $("#unemployInsuranceCompany").attr("value", (insuranceBase * 0.008).toFixed(2));
+
+                var houseFunds = $("#houseFunds").val()
+                var medicare = $("#medicare").val()
+                var pensionInsurance = $("#pensionInsurance").val()
+                var unemployInsurance = $("#unemployInsurance").val()
+
+                var factor1 = 0;
+                var factor2 = 0;
+                var tmp = beforeTax - 3500 - houseFunds - medicare - pensionInsurance - unemployInsurance;
+                if(tmp > 9000 && tmp < 35000){
+                    factor1 = 0.25;
+                    factor2 = 1005;
+                }
+                var tax = tmp * factor1 - factor2;
+                $("#tax").attr("value", tax.toFixed(2));
+                $("#afterTax").attr("value", (tmp + 3500 - tax).toFixed(2));
+            })
+        });
+
+    </script>
 </head>
 <body>
     <form action="/balance/saveSalary" method="post" accept-charset="utf-8" role="form">
-        <div>
-            <label>日期：</label>
-            <input type="text" name="date">
-        </div>
-        <br/>
+
         <div>
             <label>来源：</label>
-            <input type="radio" name="owner" value="wife">老婆
-            <input type="radio" name="owner" value="husband">老公
+            <input type="radio" name="owner" value="老婆" id="wife">老婆
+            <input type="radio" name="owner" value="老公" id="husband">老公
         </div>
         <br/>
+
         <div>
+            <label>日期：</label>
+            <input type="text" name="date" id="date">
+        </div>
+
+        <br/>
+        <div>
+            <label>税前工资：</label>
+            <input type="text" name="beforeTax" id="beforeTax">
+
             <label>社保基数：</label>
-            <input type="text" name="insuranceBase" value="1000">
+            <input type="text" name="insuranceBase" id="insuranceBase">
 
             <label>公积金基数：</label>
-            <input type="text" name="fundBase" value="1000">
+            <input type="text" name="fundBase" id="fundBase">
         </div>
         <br/>
 
         <div>
-            <label>税&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;前：</label>
-            <input type="text" name="beforeTax" value="1000">
             <label>税&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;后：</label>
-            <input type="text" name="afterTax" value="1000">
+            <input type="text" name="afterTax" id="afterTax">
         </div>
         <br/>
 
         <div>
             <label>公积金（个人）：</label>
-            <input type="text" name="houseFunds" value="1000">
+            <input type="text" name="houseFunds" id="houseFunds"> (12%)
             <label>公积金（公司）：</label>
-            <input type="text" name="houseFundsCompany" value="1000">
+            <input type="text" name="houseFundsCompany" id="houseFundsCompany"> (12%)
         </div>
         <br/>
 
         <div>
             <label>医疗保险(个人)：</label>
-            <input type="text" name="medicare" value="1000">
+            <input type="text" name="medicare" id="medicare"> (2.0148%)
             <label>医疗保险(公司)：</label>
-            <input type="text" name="medicareCompany" value="1000">
+            <input type="text" name="medicareCompany" id="medicareCompany"> (10%)
         </div>
         <br/>
 
         <div>
             <label>养老保险(个人)：</label>
-            <input type="text" name="pensionInsurance" value="1000">
+            <input type="text" name="pensionInsurance" id="pensionInsurance"> (8%)
             <label>养老保险(公司)：</label>
-            <input type="text" name="pensionInsuranceCompany" value="1000">
+            <input type="text" name="pensionInsuranceCompany" id="pensionInsuranceCompany"> (19%)
         </div>
         <br/>
 
         <div>
-            <label>工伤保险(个人)：</label>
-            <input type="text" name="unemployInsurance" value="1000">
-            <label>工伤保险(公司)：</label>
-            <input type="text" name="unemployInsuranceCompany" value="1000">
+            <label>失业保险(个人)：</label>
+            <input type="text" name="unemployInsurance" id="unemployInsurance"> (0.2%)
+            <label>失业保险(公司)：</label>
+            <input type="text" name="unemployInsuranceCompany" id="unemployInsuranceCompany"> (0.8%)
         </div>
         <br/>
 
         <div>
             <label>个人所得税：</label>
-            <input type="text" name="tax" value="1000">
+            <input type="text" name="tax" id="tax">
         </div>
         <br/>
 
