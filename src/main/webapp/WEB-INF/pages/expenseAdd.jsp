@@ -35,7 +35,7 @@
 
         <div>
             <label>日期：</label>
-            <input type="text" name="date" id="date">
+            <input type="text" name="date" id="date" value="2016-">
         </div>
 
         <br/>

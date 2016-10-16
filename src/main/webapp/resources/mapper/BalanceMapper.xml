@@ -4,7 +4,7 @@
 <mapper namespace="Balance">
     <resultMap id="SalaryResult" type="com.springapp.mvc.Model.Salary">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="date_salary" jdbcType="DATE" property="date"/>
+        <result column="date" jdbcType="CHAR" property="date"/>
         <result column="owner" jdbcType="CHAR" property="owner"/>
         <result column="before_tax" jdbcType="DECIMAL" property="beforeTax"/>
         <result column="after_tax" jdbcType="DECIMAL" property="afterTax"/>
@@ -21,31 +21,62 @@
         <result column="fund_base" jdbcType="DECIMAL" property="fundBase"/>
     </resultMap>
 
-    <resultMap id="getExpense" type="java.util.Map">
-        <result column="date_expense" jdbcType="DATE" property="date"/>
+    <resultMap id="ExpenseResult" type="com.springapp.mvc.Model.Expense">
+        <result column="date_expense" jdbcType="CHAR" property="date"/>
         <result column="daily_expense" jdbcType="CHAR" property="dailyExpense"/>
         <result column="mortgage" jdbcType="DECIMAL" property="mortgage"/>
     </resultMap>
 
+    <resultMap id="BalanceResult" type="com.springapp.mvc.Model.Balance">
+        <result column="date" jdbcType="CHAR" property="date"/>
+        <result column="month_left" jdbcType="DECIMAL" property="left"/>
+        <result column="month_budget" jdbcType="DECIMAL" property="budget"/>
+        <result column="month_budget_left_sum" jdbcType="DECIMAL" property="monthBudgetLeftSum"/>
+        <result column="month_budget_left" jdbcType="DECIMAL" property="monthBudgetLeft"/>
+
+    </resultMap>
+
     <select id="getSalaryList" resultMap="SalaryResult">
-        select id,date_salary, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
+        select id,date, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
         medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
-        insurance_base, fund_base from salary order by date_salary desc limit 24;
+        insurance_base, fund_base from salary order by date desc limit 24;
+    </select>
+
+    <select id="getSalaryListByDate" resultMap="SalaryResult">
+        select id,date, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
+        medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
+        insurance_base, fund_base from salary where date=#{date};
     </select>
 
     <insert id="saveSalary" parameterType="com.springapp.mvc.Model.Salary" useGeneratedKeys="true" keyProperty="id">
-        insert into salary (date_salary,owner,before_tax,after_tax,house_funds_company,house_funds,medicare_company,
+        insert into salary (date,owner,before_tax,after_tax,house_funds_company,house_funds,medicare_company,
         medicare,pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
         insurance_base,fund_base) value(#{date},#{owner},#{beforeTax},#{afterTax},#{houseFundsCompany},#{houseFunds},
         #{medicareCompany},#{medicare},#{pensionInsuranceCompany},#{pensionInsurance},#{unemployInsurance},
         #{unemployInsuranceCompany},#{tax},${insuranceBase},${fundBase});
     </insert>
 
-    <insert id="saveExpense" parameterType="java.util.Map">
+    <insert id="saveExpense" parameterType="com.springapp.mvc.Model.Expense">
         insert into expense (date_expense, daily_expense, mortgage) value(#{date}, #{dailyExpense}, #{mortgage});
     </insert>
 
-    <select id="getExpenseList" resultMap="getExpense">
-        select date_expense, daily_expense, mortgage from expense order by date_expense desc;
+    <select id="getExpenseList" resultMap="ExpenseResult">
+        select date_expense, daily_expense, mortgage from expense order by date_expense desc limit 12;
     </select>
+
+    <select id="getExpenseListByDate" resultMap="ExpenseResult">
+        select date_expense, daily_expense, mortgage from expense where date=#{date};
+    </select>
+
+    <update id="updateBalance" parameterType="com.springapp.mvc.Model.Balance">
+        update balance set month_left=#{left}, month_budget=${budget},month_budget_left_sum=#{monthBudgetLeftSum}, month_budget_left=#{monthBudgetLeft} where date = #{date};
+    </update>
+
+    <select id="getBalance" resultMap="BalanceResult">
+        select date, month_left, month_budget, month_budget_left_sum, month_budget_left from balance where date=#{date};
+    </select>
+
+    <insert id="insertBalance" parameterType="com.springapp.mvc.Model.Balance">
+        insert balance (date, month_left, month_budget, month_budget_left, month_budget_left_sum) values(#{date},#{left},#{monthBudgetLeft}, #{budget},#{monthBudgetLeftSum});
+    </insert>
 </mapper>

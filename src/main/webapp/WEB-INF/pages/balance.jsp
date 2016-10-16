@@ -44,26 +44,61 @@
     <thead>
     <tr>
         <th>日期</th>
-        <th>来源</th>
-        <th>贡献者</th>
-        <th>总计</th>
-        <th>税后</th>
-        <th>公积金(个人)</th>
-        <th>公积金(公司)</th>
-
+        <th>收入</th>
+        <th>支出</th>
     </tr>
     </thead>
     <tbody>
-    <c:forEach items="${salary}" var="s">
+    <c:forEach items="${balanceList}" var="b">
         <tr>
-            <td><fmt:formatDate value="${s.date}"/></td>
-            <td>工资收入</td>
-            <td>${s.owner}</td>
-            <td>${s.afterTax + s.houseFunds + s.houseFundsCompany}</td>
-            <td>${s.afterTax}</td>
-            <td>${s.houseFunds}</td>
-            <td>${s.houseFundsCompany}</td>
+            <td width="20%">
+                ${b.date} <br/>
+                当月结余：${b.left}<br/>
+                月消费支出预算：${b.budget}<br/>
+                月消费支出预算结余：${b.monthBudgetLeft}<br/>
+                月消费支出预算累计结余：${b.monthBudgetLeftSum}
+            </td>
+            <td>
+                总计：
+                <table class="table table-bordered">
+                    <thead>
+                        <th>贡献者</th>
+                        <th>收入总计</th>
+                        <th>税后</th>
+                        <th>公积金(个人)</th>
+                        <th>公积金(公司)</th>
+                    </thead>
+                    <tbody>
+                    <c:set var="all" value="${0}"/>
+                    <c:forEach items="${b.incomeList}" var="bl">
+                            <tr>
+                                <td>${bl.owner}</td>
+                                <td>${bl.incomeAll}</td>
+                                <td>${bl.afterTax}</td>
+                                <td>${bl.houseFunds}</td>
+                                <td>${bl.houseFundsCompany}</td>
+                                <c:set var = "all" value="${all + bl.incomeAll}"/>
+                            </tr>
+                        </c:forEach>
+                    <c:out value="${all}"/>
+                    </tbody>
 
+                </table>
+
+            </td>
+            <td>
+                <table class="table table-bordered">
+                    总计：${b.expense.dailyExpense + b.expense.mortgage}
+                    <thead>
+                        <th>日常支出</th>
+                        <th>房贷</th>
+                    </thead>
+                    <tbody>
+                        <td>${b.expense.dailyExpense}</td>
+                        <td>${b.expense.mortgage}</td>
+                    </tbody>
+                </table>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
@@ -93,7 +128,7 @@
     <tbody>
         <c:forEach items="${salary}" var="s">
             <tr>
-                <td><fmt:formatDate value="${s.date}"/></td>
+                <td>${s.date}</td>
                 <td>${s.owner}</td>
                 <td>${s.beforeTax}</td>
                 <td>${s.afterTax}</td>

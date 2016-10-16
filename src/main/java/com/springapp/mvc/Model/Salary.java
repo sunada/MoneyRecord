@@ -12,7 +12,7 @@ import java.util.Date;
 public class Salary {
     private int id;
     private String owner;
-    private Date date;
+    private String date;
     private BigDecimal beforeTax;
     private BigDecimal afterTax;
     private BigDecimal houseFundsCompany;
@@ -35,11 +35,11 @@ public class Salary {
         this.id = id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

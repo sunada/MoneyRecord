@@ -1,5 +1,7 @@
 package com.springapp.mvc.Dao;
 
+import com.springapp.mvc.Model.Balance;
+import com.springapp.mvc.Model.Expense;
 import com.springapp.mvc.Model.Salary;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -20,17 +22,36 @@ public class BalanceDao {
         return sqlSession.selectList("Balance.getSalaryList");
     }
 
+    public List<Salary> getSalaryList(String date){
+        return sqlSession.selectList("Balance.getSalaryListByDate", date);
+    }
+
     public int saveSalary(Salary salary){ return sqlSession.insert("Balance.saveSalary", salary); }
 
-    public Map<String, Object> getExpenseMap(){
-        HashMap<String, Object> map = sqlSession.selectOne("Balance.getExpenseList");
-        return map;
+    public List<Expense> getExpense(){
+        List<Expense> expenseList = sqlSession.selectList("Balance.getExpenseList");
+        return expenseList;
     }
-    public int saveExpense(Date date, BigDecimal dailyExpense, BigDecimal mortgage){
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("date", date);
-        map.put("dailyExpense", dailyExpense);
-        map.put("mortgage", mortgage);
-        return sqlSession.insert("Balance.saveExpense", map);
+
+    public Expense getExpense(String date){
+        Expense expense = sqlSession.selectOne("Balance.getExpenseListByDate", date);
+        return expense;
     }
+
+    public int saveExpense(Expense expense){
+        return sqlSession.insert("Balance.saveExpense", expense);
+    }
+
+    public int updateBalance(Balance balance){
+        return sqlSession.update("Balance.updateBalance", balance);
+    }
+
+    public Balance getBalance(String date){
+        return sqlSession.selectOne("Balance.getBalance", date);
+    }
+
+    public int saveBalance(Balance balance){
+        return sqlSession.insert("Balance.insertBalance", balance);
+    }
+
 }

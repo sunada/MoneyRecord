@@ -1,8 +1,12 @@
 package com.springapp.mvc.Controller;
 
+import com.springapp.mvc.Model.Balance;
+import com.springapp.mvc.Model.Expense;
+import com.springapp.mvc.Model.Income;
 import com.springapp.mvc.Model.Salary;
 import com.springapp.mvc.Service.ServiceImpl.BalanceService;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,6 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +30,22 @@ public class BalanceController {
     private BalanceService balanceService;
     @Resource
     private Salary salary;
+    @Resource
+    private Income income;
+    @Resource
+    private Expense expense;
+    @Resource
+    private Balance balance;
 
     @RequestMapping
     public ModelAndView balanceSheet(){
         ModelAndView mv = new ModelAndView("balance");
-        List<Salary> list = balanceService.getSalaryList();
-        mv.addObject("salary", list);
+        List<Salary> salaryList = balanceService.getSalaryList();
+        mv.addObject("salary", salaryList);
 
-        Map<String, Object> map = balanceService.getExpenseMap();
-        mv.addObject("expense", map);
+        List<Expense> expenseList = balanceService.getExpenseMap();
+        List<Balance> balanceList = balanceService.getBalanceList(salaryList, expenseList);
+        mv.addObject("balanceList", balanceList);
         return mv;
     }
 
@@ -51,13 +63,7 @@ public class BalanceController {
 
     @RequestMapping(value="/saveSalary", method= RequestMethod.POST)
     public String saveSalary(HttpServletRequest request){
-        Date date = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            date = sdf.parse(request.getParameter("date"));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        String date = request.getParameter("date");
         String owner = request.getParameter("owner");
         BigDecimal fundBase = new BigDecimal(request.getParameter("fundBase"));
         BigDecimal insuranceBase = new BigDecimal(request.getParameter("insuranceBase"));
@@ -90,21 +96,20 @@ public class BalanceController {
         salary.setTax(tax);
 
         balanceService.saveSalary(salary);
+        balanceService.updateBalance(date, salary);
         return "redirect:/balance";
     }
 
     @RequestMapping("/saveExpense")
     public String saveExpense(HttpServletRequest request){
-        Date date = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            date = sdf.parse(request.getParameter("date"));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        String date = request.getParameter("date");
         BigDecimal dailyExpense = new BigDecimal(request.getParameter("dailyExpense"));
         BigDecimal mortgage = new BigDecimal(request.getParameter("mortgage"));
-        balanceService.saveExpense(date, dailyExpense, mortgage);
+        expense.setDailyExpense(BigDecimal.ZERO.subtract(dailyExpense));
+        expense.setDate(date);
+        expense.setMortgage(BigDecimal.ZERO.subtract(mortgage));
+        balanceService.saveExpense(expense);
+        balanceService.updateBalance(date, expense);
         return "redirect:/balance";
     }
 
