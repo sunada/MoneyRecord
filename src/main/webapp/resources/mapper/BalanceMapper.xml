@@ -33,7 +33,14 @@
         <result column="month_budget" jdbcType="DECIMAL" property="budget"/>
         <result column="month_budget_left_sum" jdbcType="DECIMAL" property="monthBudgetLeftSum"/>
         <result column="month_budget_left" jdbcType="DECIMAL" property="monthBudgetLeft"/>
+    </resultMap>
 
+    <resultMap id="BugdgetSum" type="java.math.BigDecimal">
+        <result column="budgetSum" jdbcType="DECIMAL" property="bugetSum"/>
+    </resultMap>
+
+    <resultMap id="leftSum" type="java.math.BigDecimal">
+        <result column="leftSum" jdbcType="DECIMAL" property="leftSum"/>
     </resultMap>
 
     <select id="getSalaryList" resultMap="SalaryResult">
@@ -79,4 +86,12 @@
     <insert id="insertBalance" parameterType="com.springapp.mvc.Model.Balance">
         insert balance (date, month_left, month_budget, month_budget_left, month_budget_left_sum) values(#{date},#{left},#{monthBudgetLeft}, #{budget},#{monthBudgetLeftSum});
     </insert>
+
+    <select id="getBudgetSum" resultMap="BugdgetSum">
+      select sum(month_budget_left) as budgetSum from balance;
+    </select>
+
+    <select id="getLeftSum" resultMap="leftSum">
+        select sum(month_left) as leftSum from balance;
+    </select>
 </mapper>

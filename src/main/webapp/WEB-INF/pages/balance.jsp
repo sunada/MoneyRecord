@@ -35,10 +35,14 @@
 </nav>
 
 <table class="table table-bordered">
+
     <caption>
-        月收支状态
         <a class="btn btn-primary" onclick="window.location='/balance/addSalary'">新增月工资记录</a></button>
         <a class="btn btn-primary" onclick="window.location='/balance/addExpense'">新增月支出记录</a></button>
+        <br/><br/>
+        月收支状态
+        月结余总计：${leftSum}
+        月消费支出预算结余总计：${budgetSum}
     </caption>
 
     <thead>
@@ -56,7 +60,6 @@
                 当月结余：${b.left}<br/>
                 月消费支出预算：${b.budget}<br/>
                 月消费支出预算结余：${b.monthBudgetLeft}<br/>
-                月消费支出预算累计结余：${b.monthBudgetLeftSum}
             </td>
             <td>
                 总计：

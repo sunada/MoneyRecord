@@ -54,4 +54,8 @@ public class BalanceDao {
         return sqlSession.insert("Balance.insertBalance", balance);
     }
 
+    public BigDecimal getBudgetSum(){ return sqlSession.selectOne("Balance.getBudgetSum"); }
+
+    public BigDecimal getLeftSum(){ return sqlSession.selectOne("Balance.getLeftSum"); }
+
 }

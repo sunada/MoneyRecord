@@ -104,7 +104,6 @@ public class BalanceService {
             b.setLeft(incomeSum.add(expenseSum));
             Balance tmp = balanceDao.getBalance(b.getDate());
             b.setBudget(tmp.getBudget());
-            b.setMonthBudgetLeftSum(tmp.getMonthBudgetLeftSum());
             b.setMonthBudgetLeft(tmp.getMonthBudgetLeft());
         }
         return balanceList;
@@ -137,14 +136,12 @@ public class BalanceService {
         balance = balanceDao.getBalance(date);
         if(balance != null) {
             balance.setLeft(balance.getLeft().add(income));
-            balance.setMonthBudgetLeftSum(balance.getMonthBudgetLeftSum().add(income));
             return balanceDao.updateBalance(balance);
         }else{
             balance = new Balance();
             balance.setDate(date);
             balance.setLeft(income);
             balance.setBudget(ConstantInterface.Budget);
-            balance.setMonthBudgetLeftSum(income);
             balance.setMonthBudgetLeft(ConstantInterface.Budget);
             return balanceDao.saveBalance(balance);
         }
@@ -155,7 +152,6 @@ public class BalanceService {
         balance = balanceDao.getBalance(date);
         if(balance != null) {
             balance.setLeft(balance.getLeft().add(exp));
-            balance.setMonthBudgetLeftSum(balance.getMonthBudgetLeftSum().add(exp));
             balance.setMonthBudgetLeft(balance.getMonthBudgetLeft().add(exp));
             return balanceDao.updateBalance(balance);
         }else{
@@ -163,8 +159,15 @@ public class BalanceService {
             balance.setDate(date);
             balance.setLeft(exp);
             balance.setMonthBudgetLeft(ConstantInterface.Budget.add(exp));
-            balance.setMonthBudgetLeftSum(BigDecimal.ZERO);
             return balanceDao.saveBalance(balance);
         }
+    }
+
+    public BigDecimal getBudgetSum(){
+        return balanceDao.getBudgetSum();
+    }
+
+    public BigDecimal getLeftSum(){
+        return balanceDao.getLeftSum();
     }
 }

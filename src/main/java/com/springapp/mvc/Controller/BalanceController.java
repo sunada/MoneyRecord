@@ -46,6 +46,11 @@ public class BalanceController {
         List<Expense> expenseList = balanceService.getExpenseMap();
         List<Balance> balanceList = balanceService.getBalanceList(salaryList, expenseList);
         mv.addObject("balanceList", balanceList);
+
+        BigDecimal budgetSum = balanceService.getBudgetSum();
+        BigDecimal leftSum = balanceService.getLeftSum();
+        mv.addObject("budgetSum", budgetSum);
+        mv.addObject("leftSum", leftSum);
         return mv;
     }
 
