@@ -21,10 +21,16 @@
         <result column="fund_base" jdbcType="DECIMAL" property="fundBase"/>
     </resultMap>
 
+    <resultMap id="getExpense" type="java.util.Map">
+        <result column="date_expense" jdbcType="DATE" property="date"/>
+        <result column="daily_expense" jdbcType="CHAR" property="dailyExpense"/>
+        <result column="mortgage" jdbcType="DECIMAL" property="mortgage"/>
+    </resultMap>
+
     <select id="getSalaryList" resultMap="SalaryResult">
         select id,date_salary, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
         medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
-        insurance_base, fund_base from salary order by date_salary;
+        insurance_base, fund_base from salary order by date_salary desc limit 24;
     </select>
 
     <insert id="saveSalary" parameterType="com.springapp.mvc.Model.Salary" useGeneratedKeys="true" keyProperty="id">
@@ -34,4 +40,12 @@
         #{medicareCompany},#{medicare},#{pensionInsuranceCompany},#{pensionInsurance},#{unemployInsurance},
         #{unemployInsuranceCompany},#{tax},${insuranceBase},${fundBase});
     </insert>
+
+    <insert id="saveExpense" parameterType="java.util.Map">
+        insert into expense (date_expense, daily_expense, mortgage) value(#{date}, #{dailyExpense}, #{mortgage});
+    </insert>
+
+    <select id="getExpenseList" resultMap="getExpense">
+        select date_expense, daily_expense, mortgage from expense order by date_expense desc;
+    </select>
 </mapper>

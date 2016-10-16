@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/10/10.
@@ -30,12 +31,21 @@ public class BalanceController {
         ModelAndView mv = new ModelAndView("balance");
         List<Salary> list = balanceService.getSalaryList();
         mv.addObject("salary", list);
+
+        Map<String, Object> map = balanceService.getExpenseMap();
+        mv.addObject("expense", map);
         return mv;
     }
 
     @RequestMapping("/addSalary")
     public ModelAndView addSalary(){
         ModelAndView mv = new ModelAndView("salaryAdd");
+        return mv;
+    }
+
+    @RequestMapping("/addExpense")
+    public ModelAndView addExpense(){
+        ModelAndView mv = new ModelAndView("expenseAdd");
         return mv;
     }
 
@@ -80,6 +90,21 @@ public class BalanceController {
         salary.setTax(tax);
 
         balanceService.saveSalary(salary);
+        return "redirect:/balance";
+    }
+
+    @RequestMapping("/saveExpense")
+    public String saveExpense(HttpServletRequest request){
+        Date date = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            date = sdf.parse(request.getParameter("date"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        BigDecimal dailyExpense = new BigDecimal(request.getParameter("dailyExpense"));
+        BigDecimal mortgage = new BigDecimal(request.getParameter("mortgage"));
+        balanceService.saveExpense(date, dailyExpense, mortgage);
         return "redirect:/balance";
     }
 
