@@ -17,15 +17,6 @@ public class Balance {
     private BigDecimal budget;
     private BigDecimal left;
     private BigDecimal monthBudgetLeft;
-    private BigDecimal monthBudgetLeftSum;
-
-    public BigDecimal getMonthBudgetLeftSum() {
-        return monthBudgetLeftSum;
-    }
-
-    public void setMonthBudgetLeftSum(BigDecimal monthBudgetLeftSum) {
-        this.monthBudgetLeftSum = monthBudgetLeftSum;
-    }
 
     public BigDecimal getMonthBudgetLeft() {
         return monthBudgetLeft;
