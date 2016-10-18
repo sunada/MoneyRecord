@@ -83,6 +83,7 @@ public class BalanceController {
         BigDecimal unemployInsurance = new BigDecimal(request.getParameter("unemployInsurance"));
         BigDecimal unemployInsuranceCompany = new BigDecimal(request.getParameter("unemployInsuranceCompany"));
         BigDecimal tax = new BigDecimal(request.getParameter("tax"));
+        BigDecimal mediaCash = new BigDecimal(request.getParameter("mediaCash"));
 
         salary.setDate(date);
         salary.setOwner(owner);
@@ -99,6 +100,7 @@ public class BalanceController {
         salary.setUnemployInsurance(unemployInsurance);
         salary.setUnemployInsuranceCompany(unemployInsuranceCompany);
         salary.setTax(tax);
+        salary.setMediaCash(mediaCash);
 
         balanceService.saveSalary(salary);
         balanceService.updateBalance(date, salary);
