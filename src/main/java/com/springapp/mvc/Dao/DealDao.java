@@ -53,11 +53,12 @@ public class DealDao {
         return res != -1;
     }
 
-    public Date getNearDealDate(String code, String belongTo, Date startTime){
+    public Date getNearDealDate(String code, String belongTo, Date startTime, BigDecimal amount){
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("code", code);
         param.put("belong_to", belongTo);
         param.put("start_time", startTime);
+        param.put("amount", amount);
         Map<String, Date> map = sqlSession.selectOne("Deals.getNearDealDate", param);
         Date date;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
