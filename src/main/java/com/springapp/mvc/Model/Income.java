@@ -15,13 +15,22 @@ public class Income {
     private BigDecimal afterTax;
     private BigDecimal houseFundsCompany;
     private BigDecimal houseFunds;
+    private BigDecimal mediaCash;
+
+    public BigDecimal getMediaCash() {
+        return mediaCash;
+    }
+
+    public void setMediaCash(BigDecimal mediaCash) {
+        this.mediaCash = mediaCash;
+    }
 
     public BigDecimal getIncomeAll() {
         return incomeAll;
     }
 
     public void setIncomeAll() {
-        this.incomeAll = afterTax.add(houseFunds).add(houseFundsCompany);
+        this.incomeAll = afterTax.add(houseFunds).add(houseFundsCompany).add(mediaCash);
     }
 
     public String getDate() {

@@ -26,6 +26,15 @@ public class Salary {
     private BigDecimal tax;
     private BigDecimal insuranceBase;
     private BigDecimal fundBase;
+    private BigDecimal mediaCash;
+
+    public BigDecimal getMediaCash() {
+        return mediaCash;
+    }
+
+    public void setMediaCash(BigDecimal mediaCash) {
+        this.mediaCash = mediaCash;
+    }
 
     public int getId() {
         return id;

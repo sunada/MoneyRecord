@@ -59,6 +59,7 @@ public class BalanceService {
             i.setHouseFundsCompany(s.getHouseFundsCompany());
             i.setHouseFunds(s.getHouseFunds());
             i.setAfterTax(s.getAfterTax());
+            i.setMediaCash(s.getMediaCash());
             i.setIncomeAll();
             i.setDate(s.getDate());
             if(incomeMap.containsKey(date)){
@@ -96,15 +97,10 @@ public class BalanceService {
         }
 
         for(Balance b : balanceList){
-            BigDecimal incomeSum = incomeSum(b.getIncomeList());
-            BigDecimal expenseSum = BigDecimal.ZERO;
-            if(b.getExpense() != null){
-                expenseSum = b.getExpense().getDailyExpense().add(b.getExpense().getMortgage());
-            }
-            b.setLeft(incomeSum.add(expenseSum));
             Balance tmp = balanceDao.getBalance(b.getDate());
             b.setBudget(tmp.getBudget());
             b.setMonthBudgetLeft(tmp.getMonthBudgetLeft());
+            b.setLeft(tmp.getLeft());
         }
         return balanceList;
     }
@@ -132,7 +128,7 @@ public class BalanceService {
     }
 
     public int updateBalance(String date, Salary salary){
-        BigDecimal income = salary.getAfterTax().add(salary.getHouseFundsCompany()).add(salary.getHouseFunds());
+        BigDecimal income = salary.getAfterTax().add(salary.getHouseFundsCompany()).add(salary.getHouseFunds()).add(salary.getMediaCash());
         balance = balanceDao.getBalance(date);
         if(balance != null) {
             balance.setLeft(balance.getLeft().add(income));
