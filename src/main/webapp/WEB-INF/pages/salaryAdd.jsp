@@ -63,10 +63,10 @@
                 $("#unemployInsurance").attr("value", (insuranceBase * 0.002).toFixed(2));
                 $("#unemployInsuranceCompany").attr("value", (insuranceBase * 0.008).toFixed(2));
 
-                var houseFunds = $("#houseFunds").val()
-                var medicare = $("#medicare").val()
-                var pensionInsurance = $("#pensionInsurance").val()
-                var unemployInsurance = $("#unemployInsurance").val()
+                var houseFunds = $("#houseFunds").val();
+                var medicare = $("#medicare").val();
+                var pensionInsurance = $("#pensionInsurance").val();
+                var unemployInsurance = $("#unemployInsurance").val();
 
                 var factor1 = 0;
                 var factor2 = 0;
@@ -75,9 +75,12 @@
                     factor1 = 0.25;
                     factor2 = 1005;
                 }
+
                 var tax = tmp * factor1 - factor2;
                 $("#tax").attr("value", tax.toFixed(2));
                 $("#afterTax").attr("value", (tmp + 3500 - tax).toFixed(2));
+
+                $("#mediaCash").attr("value", (insuranceBase * 0.020148 + insuranceBase*0.008).toFixed(2));
             })
         });
 
@@ -154,6 +157,11 @@
             <input type="text" name="tax" id="tax">
         </div>
         <br/>
+
+        <div>
+            <label>计算得到医保个人账户金额：</label>
+            <input type="text" name="mediaCash" id="mediaCash"/>
+        </div>
 
         <input type="submit" value="保存" />
     </form>

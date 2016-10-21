@@ -70,6 +70,7 @@
                         <th>税后</th>
                         <th>公积金(个人)</th>
                         <th>公积金(公司)</th>
+                        <th>医保个人账户</th>
                     </thead>
                     <tbody>
                     <c:set var="all" value="${0}"/>
@@ -80,6 +81,7 @@
                                 <td>${bl.afterTax}</td>
                                 <td>${bl.houseFunds}</td>
                                 <td>${bl.houseFundsCompany}</td>
+                                <td>${bl.mediaCash}</td>
                                 <c:set var = "all" value="${all + bl.incomeAll}"/>
                             </tr>
                         </c:forEach>
