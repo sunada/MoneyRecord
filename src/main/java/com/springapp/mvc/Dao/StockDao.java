@@ -82,6 +82,11 @@ public class StockDao {
         return sum;
     }
 
+    public List<Map<String, Object>> sumByBelongTo(Currency currency){
+        List<Map<String, Object>> map = sqlSession.selectList("Stocks.sumByBelongTo", currency);
+        return map;
+    }
+
     public List<Map<String, Object>> sumByRisk(Currency currency){
         List<Map<String, Object>> map = sqlSession.selectList("Stocks.sumByRisk", currency);
         return map;

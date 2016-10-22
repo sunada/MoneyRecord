@@ -199,7 +199,24 @@
                     </c:forEach>
                 </tr>
             </c:forEach>
+            </tbody>
+        </table>
 
+        <table class="table table-bordered">
+            <caption>分类统计（按帐户）</caption>
+            <thead>
+            <tr>
+                <th>账户</th>
+                <th>资金</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${belongToSum}" var="g" varStatus="status">
+                <tr>
+                    <td>${g.key}</td>
+                    <td></t><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/><br/></td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
 

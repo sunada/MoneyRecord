@@ -67,6 +67,9 @@ public class StockController {
         BigDecimal rmbSum = stockService.sum(Currency.RMB);
         view.addObject("rmbSum", rmbSum);
 
+        Map<String, BigDecimal> belongToSum = stockService.sumByBelongTo(Currency.RMB);
+        view.addObject("belongToSum", belongToSum);
+
         List<HistoryAsset> historyAssets = historyAssetService.readHistory(AssetType.STOCK);
 //        List<Stock> historyAssets = stockService.readHistory();
         view.addObject("historyAssets", historyAssets);

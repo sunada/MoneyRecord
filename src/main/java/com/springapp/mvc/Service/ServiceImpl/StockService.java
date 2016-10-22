@@ -209,6 +209,24 @@ public class StockService {
 
     public BigDecimal sum(Currency currency){ return stockDao.sum(currency);}
 
+    public Map<String, BigDecimal> sumByBelongTo(Currency currency){
+        List<Map<String, Object>> map = stockDao.sumByBelongTo(currency);
+        String belongTo = "";
+        BigDecimal amount = BigDecimal.ZERO;
+        Map<String, BigDecimal> val = new HashMap<String, BigDecimal>();
+        for(Map<String, Object> m : map){
+            for(String k : m.keySet()){
+                if(k.equals("belongTo")) {
+                    belongTo = (String)m.get(k);
+                }else {
+                    amount = (BigDecimal)m.get(k);
+                }
+            }
+            val.put(belongTo, amount);
+        }
+        return val;
+    }
+
     public boolean update(Stock stock) { return stockDao.updateStock(stock); }
 
     public Map<String, BigDecimal> sumByRisk(Currency currency){
