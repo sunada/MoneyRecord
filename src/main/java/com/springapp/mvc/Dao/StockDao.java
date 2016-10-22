@@ -1,5 +1,6 @@
 package com.springapp.mvc.Dao;
 
+import com.springapp.mvc.Model.Currency;
 import com.springapp.mvc.Model.Loan;
 import com.springapp.mvc.Model.Stock;
 import org.apache.ibatis.session.SqlSession;
@@ -24,10 +25,10 @@ public class StockDao {
     @Resource
     private SqlSession sqlSession;
 
-    public List<Stock> getStockList(){
+    public List<Stock> getStockList(Currency currency){
         List<Stock> stockList = new ArrayList<Stock>();
         try{
-            stockList = sqlSession.selectList("Stocks.getStockList");
+            stockList = sqlSession.selectList("Stocks.getStockList", currency);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -71,8 +72,8 @@ public class StockDao {
         return res != -1;
     }
 
-    public BigDecimal sum(){
-        HashMap<String, BigDecimal> map = sqlSession.selectOne("Stocks.getSum");
+    public BigDecimal sum(Currency currency){
+        HashMap<String, BigDecimal> map = sqlSession.selectOne("Stocks.getSum", currency);
 
         BigDecimal sum = new BigDecimal(0.00);
         for(String key : map.keySet()){
@@ -81,8 +82,8 @@ public class StockDao {
         return sum;
     }
 
-    public List<Map<String, Object>> sumByRisk(){
-        List<Map<String, Object>> map = sqlSession.selectList("Stocks.sumByRisk");
+    public List<Map<String, Object>> sumByRisk(Currency currency){
+        List<Map<String, Object>> map = sqlSession.selectList("Stocks.sumByRisk", currency);
         return map;
     }
 

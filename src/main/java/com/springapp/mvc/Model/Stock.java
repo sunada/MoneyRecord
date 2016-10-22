@@ -19,6 +19,24 @@ public class Stock {
     private BigDecimal share;
     private BigDecimal amount;
     private Risk risk;
+    private Currency currency;
+    private BigDecimal rmbCost;
+
+    public BigDecimal getRmbCost() {
+        return rmbCost;
+    }
+
+    public void setRmbCost(BigDecimal rmbCost) {
+        this.rmbCost = rmbCost;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
     public String getCode() {
         return code;

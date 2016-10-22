@@ -1,6 +1,7 @@
 package com.springapp.mvc.Controller;
 
 import com.springapp.mvc.Model.*;
+import com.springapp.mvc.Model.Currency;
 import com.springapp.mvc.Service.ServiceImpl.DealService;
 import com.springapp.mvc.Service.ServiceImpl.HistoryAssetService;
 import com.springapp.mvc.Service.ServiceImpl.LoanService;
@@ -48,8 +49,14 @@ public class StockController {
     @RequestMapping
     public ModelAndView stockDisplay(){
         ModelAndView view = new ModelAndView("stockDisplay");
-        ArrayList<Stock> stocks = stockService.read();
+        ArrayList<Stock> stocks = stockService.read(Currency.RMB);
         view.addObject("stocks", stocks);
+
+//        GetNet getNet = new GetNet();
+//        view.addObject("exchangeRate", getNet.getExchangeRate(Currency.USA));
+
+        ArrayList<Stock> useStocks = stockService.read(Currency.USA);
+        view.addObject("useStocks", useStocks);
 
         Map<String, Date> accountNewDealDate = dealService.getAccountNewDealDate(AssetType.STOCK);
         view.addObject("accDate", accountNewDealDate);
@@ -57,8 +64,8 @@ public class StockController {
         Map<String, List<BigDecimal>> map = stockService.addUp(stocks);
         view.addObject("group", map);
 
-        BigDecimal sum = stockService.sum();
-        view.addObject("sum", sum);
+        BigDecimal rmbSum = stockService.sum(Currency.RMB);
+        view.addObject("rmbSum", rmbSum);
 
         List<HistoryAsset> historyAssets = historyAssetService.readHistory(AssetType.STOCK);
 //        List<Stock> historyAssets = stockService.readHistory();
@@ -71,7 +78,8 @@ public class StockController {
 
     @RequestMapping("updateCurrent")
     public String updateStockNet(){
-        ArrayList<Stock> stocks = stockService.read();
+        ArrayList<Stock> stocks = stockService.read(Currency.RMB);
+        stocks.addAll(stockService.read(Currency.USA));
         GetNet getNet = new GetNet();
         BigDecimal net;
         Map<String, Object> netMap = new HashMap<String, Object>();
@@ -122,12 +130,18 @@ public class StockController {
 //        stock.setAmount(amount);
         stock.setRisk(Risk.valueOf(request.getParameter("risk")));
 
+        if(belongTo.equals("积7XJ11330")){
+            stock.setCurrency(Currency.USA);
+        }else{
+            stock.setCurrency(Currency.RMB);
+        }
+
         log.debug("In StockController.save, {}", stock.toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date;
         try{
             date = sdf.parse(request.getParameter("date"));
-            if (stockService.saveStock(stock, date, dealType, BigDecimal.valueOf(-1))) {
+            if (stockService.saveStock(stock, date, dealType, BigDecimal.valueOf(0))) {
                 //return "redirect:/stock/stockAdd?code=" +code + "&name=" + name + "&belongTo=" + belongTo + "&cost=" + cost + "&dealType=SBUY";
                 BigDecimal costByDeal = stockService.calDealCost(stock.getCode(), stock.getCost(), stock.getShare().abs(), dealType);
                 BigDecimal amount = BigDecimal.ZERO;

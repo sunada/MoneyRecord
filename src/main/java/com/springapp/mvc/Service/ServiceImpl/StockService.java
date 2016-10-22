@@ -4,6 +4,7 @@ import com.springapp.mvc.Dao.DealDao;
 import com.springapp.mvc.Dao.HistoryAssetDao;
 import com.springapp.mvc.Dao.StockDao;
 import com.springapp.mvc.Model.*;
+import com.springapp.mvc.Model.Currency;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class StockService {
     @Autowired
     public void setHistoryAssetDao(HistoryAssetDao historyAssetDao){ this.historyAssetDao = historyAssetDao;}
 
-    public ArrayList<Stock> read(){ return (ArrayList<Stock>)stockDao.getStockList(); }
+    public ArrayList<Stock> read(Currency currency){ return (ArrayList<Stock>)stockDao.getStockList(currency); }
 
     public ArrayList<Stock> readHistory(){ return (ArrayList<Stock>)stockDao.getHistoryStockList(); }
 
@@ -206,12 +207,12 @@ public class StockService {
         return dealDao.updateDeal(deal, AssetType.STOCK);
     }
 
-    public BigDecimal sum(){ return stockDao.sum();}
+    public BigDecimal sum(Currency currency){ return stockDao.sum(currency);}
 
     public boolean update(Stock stock) { return stockDao.updateStock(stock); }
 
-    public Map<String, BigDecimal> sumByRisk(){
-        List<Map<String, Object>> map = stockDao.sumByRisk();
+    public Map<String, BigDecimal> sumByRisk(Currency currency){
+        List<Map<String, Object>> map = stockDao.sumByRisk(currency);
         String risk = "";
         BigDecimal amount = BigDecimal.ZERO;
         Map<String, BigDecimal> val = new HashMap<String, BigDecimal>();
@@ -232,7 +233,7 @@ public class StockService {
 
     //stock统计用的数据
     public Map<String, List<BigDecimal>> addUp(ArrayList<Stock> stocks){
-        BigDecimal sum = sum();
+        BigDecimal sum = sum(Currency.RMB);
         Map<String, List<BigDecimal>> map = new HashMap<String, List<BigDecimal>>();
         String str;
         BigDecimal amount;
@@ -291,6 +292,7 @@ public class StockService {
 
     //计算单位交易成本价
     public BigDecimal calDealCost(String code, BigDecimal price, BigDecimal share, DealType buyOrSell){
+
         BigDecimal cost = BigDecimal.valueOf(0);
         BigDecimal brokerage = BigDecimal.valueOf(0);
         BigDecimal transferFee = BigDecimal.valueOf(0);

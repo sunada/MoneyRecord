@@ -129,7 +129,7 @@
                 <input type="radio" name="risk" value="HIGH"/>高
             </div>
 
-            <input type="submit" value="继续" />
+            <input type="submit" value="保存" />
         </form>
 
     </body>
