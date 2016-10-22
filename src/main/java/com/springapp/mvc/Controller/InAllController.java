@@ -1,6 +1,7 @@
 package com.springapp.mvc.Controller;
 
 import com.springapp.mvc.Model.*;
+import com.springapp.mvc.Model.Currency;
 import com.springapp.mvc.Service.ServiceImpl.InAllService;
 import com.springapp.mvc.Service.ServiceImpl.LoanService;
 import com.springapp.mvc.Service.ServiceImpl.MyFundService;
@@ -50,7 +51,7 @@ public class InAllController {
         ModelAndView view = new ModelAndView("inAllDisplay");
 
         Map<String, BigDecimal> sumFund = myFundService.sumByRisk();
-        Map<String, BigDecimal> sumStock = stockService.sumByRisk();
+        Map<String, BigDecimal> sumStock = stockService.sumByRisk(Currency.RMB);
         Map<String, BigDecimal> sumLoan = loanService.sumByRisk();
 
         Map<AssetType, Map<String, BigDecimal>> typeRisk = new HashMap<AssetType, Map<String, BigDecimal>>();
@@ -113,6 +114,10 @@ public class InAllController {
             riskValues.get(key).add(riskInAll.divide(sumAll, 4, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
         }
         view.addObject("riskValues", riskValues);
+
+        Map<String, BigDecimal> sumUSA = stockService.sumByRisk(Currency.USA);
+        sumUSA.put("总计",stockService.sum(Currency.USA));
+        view.addObject("sumUSA", sumUSA);
         return view;
     }
 }
