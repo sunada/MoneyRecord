@@ -111,11 +111,18 @@ public class FundController {
         BigDecimal cost = BigDecimal.ZERO;
         BigDecimal net = BigDecimal.ZERO;
         BigDecimal amount = BigDecimal.ZERO;
-        if(dealType != DealType.FCASH) {
+        if(dealType == DealType.FBUY) {
             share = new BigDecimal(request.getParameter("share"));
             cost = new BigDecimal(request.getParameter("cost"));
             net = new BigDecimal(request.getParameter("net"));
             amount = new BigDecimal(request.getParameter("amount"));
+        }if(dealType == DealType.FREDEMP) {
+            share = new BigDecimal(request.getParameter("fredemp_share"));
+            cost = new BigDecimal(request.getParameter("fredemp_cost"));
+            net = new BigDecimal(request.getParameter("fredemp_net"));
+            amount = new BigDecimal(request.getParameter("fredemp_amount"));
+        }else if(dealType == DealType.FREINVE){
+            share = new BigDecimal(request.getParameter("freinve_share"));
         }else{
             amount = new BigDecimal(request.getParameter("cash_amount"));
         }

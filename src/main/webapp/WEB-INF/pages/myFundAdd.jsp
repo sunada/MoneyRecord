@@ -9,23 +9,38 @@
         <script src="/resources/js/bootstrap.min.js" type="text/javascript"></script>
         <script>
             $(document).ready(function(){
-                var risk = getUrlParam('risk');
-                if(risk = "HIGH"){
-                    $("#high").attr("checked","checked");
-                }else if(risk == "LOW"){
-                    $("#low").attr("checked","checked");
-                }else if(risk == "MIDLOW"){
-                    $("#midlow").attr("checked","checked");
-                }else if(risk == "MID"){
-                    $("#mid").attr("checked","checked");
-                }else{
-                    $("#midhigh").attr("checked","checked");
-                }
+                $("#FBUY_RADIO").click(function(){
+                    $('.FBUY').show();
+                    $('.FREDEMP').hide();
+                    $('.FREINVE').hide();
+                    $('.FCASH').hide();
+                });
+
+                $("#FREDEMP_RADIO").click(function(){
+                    $('.FBUY').hide();
+                    $('.FREDEMP').show();
+                    $('.FREINVE').hide();
+                    $('.FCASH').hide();
+                });
+
+                $("#FREINVE_RADIO").click(function(){
+                    $('.FBUY').hide();
+                    $('.FREDEMP').hide();
+                    $('.FREINVE').show();
+                    $('.FCASH').hide();
+                });
+
+                $("#FCASH_RADIO").click(function(){
+                    $('.FBUY').hide();
+                    $('.FREDEMP').hide();
+                    $('.FREINVE').hide();
+                    $('.FCASH').show();
+                });
 
                 $("#C").focus(function(){
                     $("#prate").attr("value", 0);
                     $("#rrate").attr("value", 0);
-                })
+                });
 
                 $("#share").focus(function() {
                     var amount = $("#amount").val();
@@ -53,69 +68,28 @@
                     }
                 });
 
-                $("#amount").focus(function(){
-                    var prate = $("#prate").val();
-                    var share = $("#share").val();
-                    var net = $("#net").val();
-                    var cost = $("#cost").val()
-                    var cMode = $('#cMode input[name="chargeMode"]:checked ').val();
-//                    if (cMode != "FRONT"){
-//                        $("#rrate").attr("value", 0);
-//                    }
-
-//                    var rrate = $("#rrate").val();
+                $("#fredemp_amount").focus(function(){
+                    var share = $("#fredemp_share").val();
+                    var net = $("#fredemp_net").val();
+                    var cost = $("#fredemp_cost").val()
                     var dealType = $('#dealType input[name="dealType"]:checked').val();
                     if(net != null && net != ''){
-                        if(dealType != "FREINVE" && dealType != "FCASH" && dealType != 'FBUY') {
+                        if(dealType == 'FREDEMP') {
                             var clean = net * share - cost;
-                            $("#amount").attr("value", clean.toFixed(2));
-                        }else if(dealType == "FREINVE"){
-                            $("#cost").attr("value", 0);
-                            $("#amount").attr("value", 0);
+                            $("#fredemp_amount").attr("value", clean.toFixed(2));
                         }
                     }
                 });
 
-//                var belongTo = decodeURI(getUrlParam('belongTo')); //这样也不能解决中文乱码的问题
-//                if(belongTo == "汇添富基金官网"){
-//                    alert(1);
-//                    $("#tian").attr("checked","checked");
-//                }else if(belongTo == "广发基金官网"){
-//                    alert(2);
-//                    $("#guang").attr("checked","checked");
-//                }else if(belongTo == "银河基金官网"){
-//                    alert(3);
-//                    $("#yin").attr("checked","checked");
-//                }else{
-//                    alert(belongTo);
-//                    $("#tian").attr("checked","checked");
-//                }
-
-                var cMode = getUrlParam("cMode");
-                if(cMode == "BACK"){
-                    $("#back").attr("checked","checked");
-                }else if(cMode == "C"){
-                    $("#c").attr("checked","checked");
-                }else{
-                    $("#front").attr("checked","checked");
-                }
-
-                var dMode = getUrlParam("dMode");
-                if(dMode == "CASH"){
-                    $("#cash").attr("checked","checked");
-                }else{
-                    $("#reinvest").attr("checked","checked");
-                }
-
                 var prate = getUrlParam("prate");
                 if(prate == null){
-                    prate = 0.00;
+                    prate = 0.15;
                 }
                 $("#prate").attr("value", prate);
 
                 var rrate = getUrlParam("rrate");
                 if(rrate == null){
-                    rrate = 0.00;
+                    rrate = 0.50;
                 }
                 $("#rrate").attr("value", rrate);
 
@@ -156,7 +130,6 @@
                 }
             %>
 
-
             <div class="form-group">
                 <label for="code">基金代码：</label>
                 <input type="text" name="code" value="<%=blanknull(request.getParameter("code"))%>"/>
@@ -167,190 +140,124 @@
                 <input type="text" name="name" value="<%=blanknull(request.getParameter("name"))%>"/>
             </div>
 
-            <c:set var="dealType" value='<%=request.getParameter("dealType")%>' />
 
             <div class="form-group" id="dealType">
-                <c:choose>
-                    <c:when test="${dealType=='FREDEMP' or dealType=='FCASH'}">
-                        <label for="dealType"> 赎回 或 现金分红：</label>
-                        <input type="radio" name="dealType" value="FREDEMP" checked/>赎回
-                        <input type="radio" name="dealType" value="FCASH"/>现金分红
-                    </c:when>
-                    <c:otherwise>
-                        <label for="dealType"> 申购 或 分组再投入：</label>
-                        <input type="radio" name="dealType" value="FBUY" checked/>买入
-                        <input type="radio" name="dealType" value="FREINVE"/>分红再投入
-                    </c:otherwise>
-                </c:choose>
+                <label for="dealType"> 基金操作：</label>
+                <input type="radio" name="dealType" value="FBUY" id="FBUY_RADIO"/>申购
+                <input type="radio" name="dealType" value="FREDEMP" id="FREDEMP_RADIO"/>赎回
+                <input type="radio" name="dealType" value="FREINVE" id="FREINVE_RADIO"/>分红再投入
+                <input type="radio" name="dealType" value="FCASH" id="FCASH_RADIO"/>现金分红
             </div>
 
-            <% String i = request.getParameter("belongTo"); %>
-
+            <c:set var="belong_to" value='<%=request.getParameter("belongTo")%>'/>
             <div class="form-group">
                 <label for="belongTo">开户网站：</label>
-                <%--因为jquery里不能解决中文乱码的问题，所以用这个方法解决--%>
-                <% if (i == null || i.equals("天天基金网")) { %>
-                <input type="radio" name="belongTo" value="天天基金网" checked/>天天基金网
-                <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
-                <input type="radio" name="belongTo" value="银河基金官网" id="yin"/>银河基金官网
-                <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
-                <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
-                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
-                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
-                <%} else if (i.equals("广发基金官网")) { %>
-                <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
-                <input type="radio" name="belongTo" value="广发基金官网" id="guang" checked/>广发基金官网
-                <input type="radio" name="belongTo" value="银河基金官网" id="yin" >银河基金官网
-                <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
-                <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
-                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
-                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
-                <%}else if (i.equals("银河基金官网")) { %>
-                <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
-                <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
-                <input type="radio" name="belongTo" value="银河基金官网" id="yin" checked/>银河基金官网
-                <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
-                <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
-                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
-                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
-                <%}else if (i.equals("陆金所")) { %>
-                <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
-                <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
-                <input type="radio" name="belongTo" value="银河基金官网" id="yin"/>银河基金官网
-                <input type="radio" name="belongTo" value="汇添富基金官网" id="hui"/>汇添富基金官网
-                <input type="radio" name="belongTo" value="陆金所" id="lu" checked/>陆金所
-                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
-                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
-                <%}else { %>
-                <input type="radio" name="belongTo" value="天天基金网"/>天天基金网
-                <input type="radio" name="belongTo" value="广发基金官网" id="guang"/>广发基金官网
-                <input type="radio" name="belongTo" value="银河基金官网" id="yin"/>银河基金官网
-                <input type="radio" name="belongTo" value="汇添富基金官网" id="hui" checked/>汇添富基金官网
-                <input type="radio" name="belongTo" value="陆金所" id="lu"/>陆金所
-                <input type="radio" name="belongTo" value="蛋卷基金" id="dan">蛋卷基金
-                <input type="radio" name="belongTo" value="支付宝" id="zhi">支付宝
-                <%}%>
+                <input type="radio" name="belongTo" value="天天基金网" <c:out value='${belong_to=="天天基金网"||belong_to==null? "checked":""}'/>>天天基金网
+                <input type="radio" name="belongTo" value="广发基金官网" <c:out value='${belong_to=="广发基金官网"? "checked":""}'/> id="guang"/>广发基金官网
+                <input type="radio" name="belongTo" value="银河基金官网" <c:out value='${belong_to=="银河基金官网"? "checked":""}'/> id="yin"/>银河基金官网
+                <input type="radio" name="belongTo" value="汇添富基金官网" <c:out value='${belong_to=="汇添富基金官网"? "checked":""}'/> id="hui"/>汇添富基金官网
+                <input type="radio" name="belongTo" value="陆金所" <c:out value='${belong_to=="陆金所"? "checked":""}'/> id="lu"/>陆金所
+                <input type="radio" name="belongTo" value="蛋卷基金" <c:out value='${belong_to=="蛋卷基金"? "checked":""}'/> id="dan">蛋卷基金
+                <input type="radio" name="belongTo" value="支付宝" <c:out value='${belong_to=="支付宝"? "checked":""}'/> id="zhi">支付宝
             </div>
 
-            <c:choose>
-                <c:when test="${dealType!='FREDEMP' and dealType != 'FCASH'}">
-                    <div class="form-group">
-                        <label for="risk"> 风险类型：</label>
-                            <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
-                        <input type="radio" name="risk" value="LOW"/>低
-                        <input type="radio" name="risk" value="MID"/>中等
-                        <input type="radio" name="risk" value="HIGH" checked/>高
-                    </div>
-                    <div class="form-group">
-                        <label for="dividendMode">分红模式：</label>
-                        <input type="radio" name="dividendMode" value="CASH" id="cash">现金分红
-                        <input type="radio" name="dividendMode" value="REINVESTMENT" id="reinvest">分红再投资
-                    </div>
+            <c:set var="risk" value='<%=request.getParameter("risk")%>'/>
+            <div class="form-group FBUY" style="display:none">
+                <div class="form-group">
+                    <label for="risk"> 风险类型：</label>
+                        <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
+                    <input type="radio" name="risk" value="LOW" <c:out value='${risk=="LOW"? "checked":""}'/>/>低
+                    <input type="radio" name="risk" value="MID" <c:out value='${risk=="MID"? "checked":""}'/>/>中等
+                    <input type="radio" name="risk" value="HIGH" <c:out value='${risk=="HIGH"||risk==null? "checked":""}'/>/>高
+                </div>
 
-                    <%
-                        String cm = request.getParameter("cMode");
-                        cm = (cm==null) ? "C" : cm;
-                    %>
+                <c:set var="mode" value='<%=request.getParameter("dMode")%>'/>
+                <div class="form-group">
+                    <label for="dividendMode">分红模式：</label>
+                    <input type="radio" name="dividendMode" value="CASH" <c:out value='${mode=="CASH"||mode==null? "checked":""}'/> id="cash">现金分红
+                    <input type="radio" name="dividendMode" value="REINVESTMENT" <c:out value='${mode=="REINVESTMENT"? "checked":""}'/> id="reinvest">分红再投资
+                </div>
 
-                    <div class="form-group" id="cMode">
-                        <label for="chargeMode"> 收费类型：</label>
-                        <%if (cm.equals("FRONT")) { %>
-                            <input type="radio" name="chargeMode" value="FRONT" checked/>前端
-                            <input type="radio" name="chargeMode" value="BACK"/>后端
-                            <input type="radio" name="chargeMode" value="C" id="C"/>C类
-                        <%}else if (cm.equals("BACK")) { %>
-                            <input type="radio" name="chargeMode" value="FRONT"/>前端
-                            <input type="radio" name="chargeMode" value="BACK" checked/>后端
-                            <input type="radio" name="chargeMode" value="C" id="C"/>C类
-                        <%}else{ %>
-                            <input type="radio" name="chargeMode" value="FRONT"/>前端
-                            <input type="radio" name="chargeMode" value="BACK"/>后端
-                            <input type="radio" name="chargeMode" value="C" id="C" checked/>C类
-                        <%}%>
-                    </div>
+                <%
+                    String cm = request.getParameter("cMode");
+                    cm = (cm==null) ? "C" : cm;
+                %>
 
-                    <div class="form-group">
-                        <label for="prate">申购费率：</label>
-                        <input type="text" name="prate" id="prate">%
-                    </div>
-                    <div class="form-group">
-                        <label for="prate">赎回费率：</label>
-                        <input type="text" name="rrate" id="rrate">%
-                    </div>
-                </c:when>
-            </c:choose>
+                <c:set var="mode" value='<%=request.getParameter("cMode")%>'/>
+                <div class="form-group" id="cMode">
+                    <label for="chargeMode"> 收费类型：</label>
+                    <input type="radio" name="chargeMode" value="FRONT" <c:out value='${mode=="FRONT"||mode==null? "checked":""}'/>/>前端
+                    <input type="radio" name="chargeMode" value="BACK" <c:out value='${mode=="BACK"? "checked":""}'/>/>后端
+                    <input type="radio" name="chargeMode" value="C" <c:out value='${mode=="C"? "checked":""}'/> id="C"/>C类
+                </div>
 
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType=='FREDEMP'}">
-                        <label for="net">赎回净值：</label>
-                        <input type="text" name="net" id="net">元
-                    </c:when>
-                    <%--<c:when test="$dealType == 'FCASH'}">--%>
-                    <%--</c:when>--%>
-                    <c:when test="${dealType != 'FCASH'}">
-                        <label for="net">申购净值：</label>
-                        <input type="text" name="net" id="net">元
-                    </c:when>
-                    <%--</c:otherwise>--%>
-                </c:choose>
+                <div class="form-group">
+                    <label for="prate">申购费率：</label>
+                    <input type="text" name="prate" id="prate" value="0.15">%
+                </div>
+
+                <div class="form-group">
+                    <label for="prate">赎回费率：</label>
+                    <input type="text" name="rrate" id="rrate" value="0.5">%
+                </div>
+
+                <div class="form-group">
+                    <label for="net">申购净值：</label>
+                    <input type="text" name="net" id="net">元
+                </div>
+
+                <div class="form-group">
+                    <label for="net">申购金额：</label>
+                    <input type="text" name="amount" id="amount">元
+                </div>
+
+                <div class="form-group">
+                    <label for="share">申购份额：</label>
+                    <input type="text" name="share" id="share">份
+                </div>
+
+                <div class="form-group">
+                    <label for="net">申购费用：</label>
+                    <input type="text" name="cost" id="cost" readonly="true">元
+                </div>
             </div>
 
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType != 'FCASH' && dealType != 'FREDEMP'}">
-                        <label for="net">申购金额：</label>
-                        <input type="text" name="amount" id="amount">元
-                    </c:when>
-                </c:choose>
+            <div class="FREDEMP" style="display:none">
+                <div class="form-group">
+                    <label for="net">赎回净值：</label>
+                    <input type="text" name="fredemp_net" id="fredemp_net">元
+                </div>
+
+                <div class="form-group">
+                    <label for="share">赎回份额：</label>
+                    <input type="text" name="fredemp_share" id="fredemp_share">份
+                </div>
+
+                <div class="form-group ">
+                    <label for="amount">赎回费用：</label>
+                    <input type="text" name="fredemp_cost" id="fredemp_cost">元
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">赎回金额：</label>
+                    <input type="text" name="fredemp_amount" id="fredemp_amount" readonly="true">元
+                </div>
             </div>
 
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType != 'FCASH'}">
-                        <label for="share">交易份额：</label>
-                        <input type="text" name="share" id="share">份
-                    </c:when>
-                </c:choose>
+            <div class="form-group FREINVE" style="display:none">
+                <label for="amount">分红再投入份额：</label>
+                <input type="text" name="freinve_share">元
             </div>
 
-
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType=='FREDEMP'}">
-                        <label for="amount">赎回费用：</label>
-                        <input type="text" name="cost" id="cost">元
-                    </c:when>
-                    <c:when test="${dealType != 'FCASH'}">
-                        <label for="net">申购费用：</label>
-                        <input type="text" name="cost" id="cost" readonly="true">元
-                    </c:when>
-                </c:choose>
-            </div>
-
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType=='FREDEMP'}">
-                        <label for="amount">赎回金额：</label>
-                        <input type="text" name="amount" id="amount" readonly="true">元
-                    </c:when>
-                </c:choose>
-            </div>
-
-            <div class="form-group">
-                <c:choose>
-                    <c:when test="${dealType == 'FCASH'}">
-                        <label for="amount">现金分红金额：</label>
-                        <input type="text" name="cash_amount" id="cash_amount">元
-                    </c:when>
-                </c:choose>
+            <div class="form-group FCASH" style="display:none">
+                <label for="amount">现金分红金额：</label>
+                <input type="text" name="cash_amount">元
             </div>
 
             <div class="form-group">
                 <label for="date">申请日期：</label>
-                <input type="text" name="date" id="date">
+                <input type="text" name="date">
             </div>
-
 
             <input type="submit" value="保存" />
         </form>
