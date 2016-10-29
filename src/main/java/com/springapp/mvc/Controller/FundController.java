@@ -116,7 +116,7 @@ public class FundController {
             cost = new BigDecimal(request.getParameter("cost"));
             net = new BigDecimal(request.getParameter("net"));
             amount = new BigDecimal(request.getParameter("amount"));
-        }if(dealType == DealType.FREDEMP) {
+        }else if(dealType == DealType.FREDEMP) {
             share = new BigDecimal(request.getParameter("fredemp_share"));
             cost = new BigDecimal(request.getParameter("fredemp_cost"));
             net = new BigDecimal(request.getParameter("fredemp_net"));
