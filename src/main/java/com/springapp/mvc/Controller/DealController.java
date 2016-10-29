@@ -121,7 +121,7 @@ public class DealController {
             BigDecimal amountBefore = stock.getCost().multiply(stock.getShare()).add(dealAmount);
             stock.setShare(stock.getShare().subtract(share));
             if(stock.getShare().compareTo(BigDecimal.ZERO) > 0) {
-                stock.setCost(amountBefore.divide(stock.getShare()));
+                stock.setCost(amountBefore.divide(stock.getShare(), 2, BigDecimal.ROUND_HALF_EVEN));
             }else{
                 stock.setCost(BigDecimal.ZERO);
             }
