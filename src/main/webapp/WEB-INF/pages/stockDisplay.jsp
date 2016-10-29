@@ -13,6 +13,7 @@
         <script>
             $(function(){
                 $(".update").hide();
+                $(".updateUSD").hide();
                 $(".edit").click(function(){
                     $(this).closest('td').siblings().html(function(i,html){
                         return "<input type=\"text\" style=\"width:80px;\" value=" + html + ">";
@@ -43,6 +44,38 @@
                     $.ajax({
                         type: "post",
                         url: "/stock/update",
+                        data: str,
+                        success: function() {
+                            alert("保存成功！");
+                        },
+                        error: function() {
+                            alert("出错啦");
+                        }
+                    })
+                });
+            });
+
+            $(function(){
+                $('.updateUSD').click(function(){
+                    var list = $(this).parent().parent().find("td :input[type='text']");
+                    var para = new Array();
+                    $.each(list, function (i, obj) {
+                        $(obj).parent().html($(obj).val());
+                        para.push($(obj).val());
+//                        alert($(obj).val());
+                    });
+                    //alert(para.toString());
+                    $(this).hide();
+                    $(this).siblings().show();
+
+                    var str = "code=" + para[0] + "&name=" + para[1] + "&rmb_cost=" + para[2] + "&usd_cost=" + para[4]
+                            + "&current=" + para[5] + "&share=" + para[6] + "&risk=" + para[10] + "&belongTo=" + para[11];
+
+//                    alert(str);
+                    //ajax提交表单
+                    $.ajax({
+                        type: "post",
+                        url: "/stock/updateUSD",
                         data: str,
                         success: function() {
                             alert("保存成功！");
@@ -145,6 +178,7 @@
                 <th>盈亏(RMB)</th>
                 <th>盈亏率(%)</th>
                 <th>风险</th>
+                <th>帐户</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -163,9 +197,10 @@
                     <%--<td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>--%>
                     <td><fmt:formatNumber type="number" value="${(stock.current * stock.share * exchangeRate - stock.rmbCost) / stock.rmbCost * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td>${stock.risk}</td>
+                    <td>${stock.belongTo}</td>
                     <td>
                         <a class="btn btn-primary edit">编辑</button>
-                            <a class="btn btn-primary update">更新</button>
+                            <a class="btn btn-primary updateUSD">更新</button>
                                 <a class="btn btn-primary" href="/stock/stockAdd?code=${stock.code}&name=${stock.name}&belongTo=${stock.belongTo}&cost=${stock.cost}&share=${stock.share}&amount=${stock.amount}&dealType=SBUY" role="button">买入</a>
                                 <a class="btn btn-primary" href="/stock/stockAdd?code=${stock.code}&name=${stock.name}&belongTo=${stock.belongTo}&cost=${stock.cost}&share=${stock.share}&amount=${stock.amount}&dealType=SSELL" role="button">卖出</a>
                                 <a class="btn" href="/deal/stockList?code=${stock.code}&belongTo=${stock.belongTo}" role="button">交易记录</a>

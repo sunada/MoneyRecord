@@ -227,7 +227,12 @@ public class StockService {
         return val;
     }
 
-    public boolean update(Stock stock) { return stockDao.updateStock(stock); }
+    public boolean update(Stock stock) {
+        if(stock.getRmbCost() == null){
+            stock.setRmbCost(stock.getCost());
+        }
+        return stockDao.updateStock(stock);
+    }
 
     public Map<String, BigDecimal> sumByRisk(Currency currency){
         List<Map<String, Object>> map = stockDao.sumByRisk(currency);

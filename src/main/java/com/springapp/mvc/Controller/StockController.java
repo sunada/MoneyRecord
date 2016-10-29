@@ -196,5 +196,32 @@ public class StockController {
         }
     }
 
+    @RequestMapping(value = "updateUSD", method = RequestMethod.POST)
+    public String updateUSD(HttpServletRequest request){
+        String code = request.getParameter("code");
+        String name = request.getParameter("name");
+        BigDecimal rmbCost = new BigDecimal(request.getParameter("rmb_cost"));
+        BigDecimal usdCost = new BigDecimal(request.getParameter("usd_cost"));
+        BigDecimal share = new BigDecimal(request.getParameter("share"));
+        BigDecimal current = new BigDecimal(request.getParameter("current"));
+        String belongTo = request.getParameter("belongTo");
+
+        stock.setCode(code);
+        stock.setName(name);
+        stock.setRmbCost(rmbCost);
+        stock.setCost(usdCost);
+        stock.setCurrent(current);
+        stock.setShare(share);
+        stock.setRisk(Risk.valueOf(request.getParameter("risk")));
+        stock.setBelongTo(belongTo);
+
+        log.debug("In LoansController.save, {}", stock.toString());
+        if (stockService.update(stock)) {
+            return "redirect:/stock";
+        }else{
+            return "redirect:/";
+        }
+    }
+
 
 }

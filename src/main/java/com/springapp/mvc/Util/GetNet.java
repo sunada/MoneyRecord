@@ -1,5 +1,6 @@
 package com.springapp.mvc.Util;
 
+import com.springapp.mvc.Model.Currency;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -105,5 +106,31 @@ public class GetNet {
             net = new BigDecimal(netStr);
         }
         return net;
+    }
+
+    //请求结果回来太慢
+    public BigDecimal getExchangeRate(Currency currency){
+        String url = "http://www.usd-cny.com/";
+        String res = HttpRequest.sendGet(url, "");
+//        String res = "<TD HEIGHT=28 valign=\"middle\" bgcolor=\"#FFFFFF\">       <div align=\"center\"><!--?hbmc=美元&topic=\"><u--><a href=\"http://www.usd-cny.com/usd-rmb.htm\">美元 USD</u></a></div></TD>    <TD HEIGHT=15 align=\"center\" valign=\"middle\"><div align=\"right\">675.47&nbsp;</div></TD>    <TD HEIGHT=15 align=\"center\" valign=\"middle\"><div align=\"right\">669.93&nbsp;</div></TD>    <TD align=\"center\" valign=\"middle\"><div align=\"right\">678.04&nbsp;</div></TD>    <TD align=\"center\" valign=\"middle\"><div align=\"right\">678.04&nbsp;</div></TD> ";
+        String seq[] = null;
+        String tmp[] = null;
+        if(currency.equals(Currency.USA)){
+            seq = res.split("美元 USD");
+        }
+        if(seq.length == 0){
+            return BigDecimal.ONE;
+        }
+
+        tmp = seq[1].split("TD>");
+        if(tmp.length == 0){
+            return BigDecimal.ONE;
+        }
+        seq = tmp[1].split("right");
+        if(seq.length == 0){
+            return BigDecimal.ONE;
+        }
+        String sub = seq[1].substring(2,8);
+        return new BigDecimal(sub);
     }
 }

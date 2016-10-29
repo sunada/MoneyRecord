@@ -49,7 +49,7 @@
     </insert>
 
     <insert id="updateStock" parameterType="com.springapp.mvc.Model.Stock">
-        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, currency=#{currency} where code=#{code} and belong_to=#{belongTo};
+        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost} where code=#{code} and belong_to=#{belongTo};
     </insert>
 
     <select id="getSum" resultMap="SumResult">
