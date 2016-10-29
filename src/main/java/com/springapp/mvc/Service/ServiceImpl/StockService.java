@@ -174,6 +174,7 @@ public class StockService {
                 stock.setBelongTo(deal.getBelongTo());
                 stock.setShare(deal.getShare());
                 stock.setAmount(deal.getAmount());
+                stock.setCurrency(Currency.RMB);
                 if(saveStock(stock, deal.getDate(), deal.getDealType(), deal.getCost())){
                     if(!saveDeal(deal)){
                         return false;
