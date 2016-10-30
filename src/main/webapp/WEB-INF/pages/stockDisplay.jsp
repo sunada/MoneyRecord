@@ -108,17 +108,34 @@
         </div>
         </nav>
 
-        <c:forEach items="${accDate}" var="date" varStatus="status">
-            ${date.key}:${date.value} <br/>
-        </c:forEach>
+        <table class="table table-bordered">
+            <tr>
+                <c:forEach items="${accDate}" var="date" varStatus="status">
+                    <td>${date.key}:${date.value} </td>
+                </c:forEach>
+            </tr>
+            <tr>
+                <td>
+                    <form class="form-inline" role="form" action="/stock/saveStockByFile" method="post" accept-charset="utf-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="strPath" placeholder="交易记录文件本地地址">
+                        </div>
+                        <input type="submit" value="提交"/>
+                    </form>
+                </td>
+                <td>
+                    <form class="form-inline" role="form" action="/stock/picture" method="post" accept-charset="utf-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="date" placeholder="快照日期">
+                        </div>
+                        <input type="submit" value="保存快照"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
 
 
-        <form class="form-inline" role="form" action="/stock/saveStockByFile" method="post" accept-charset="utf-8">
-            <div class="form-group">
-                <input type="text" class="form-control" name="strPath" placeholder="交易记录文件本地地址">
-            </div>
-            <input type="submit" value="提交"/>
-        </form>
+
 
         <table class="table table-striped">
             <thead>

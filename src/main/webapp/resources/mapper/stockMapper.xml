@@ -71,4 +71,15 @@
     <delete id="delete" parameterType="String">
         delete from stocks where code = #{code};
     </delete>
+
+    <select id="picture" parameterType="java.util.List">
+        insert into assets_every_month(code, name, share, net, risk) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.code,jdbcType=CHAR},#{item.name,jdbcType=CHAR},#{item.share,jdbcType=DECIMAL},#{item.current,jdbcType=DECIMAL},#{item.risk,jdbcType=CHAR})
+        </foreach>
+    </select>
+
+    <select id="updatePicture" parameterType="java.util.Map">
+        update assets_every_month set deal_date=#{date}, type=#{type} where type is null;
+    </select>
 </mapper>

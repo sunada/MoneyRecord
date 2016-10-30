@@ -223,5 +223,20 @@ public class StockController {
         }
     }
 
-
+    @RequestMapping(value = "picture", method = RequestMethod.POST)
+    public String picture(HttpServletRequest request){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+        try {
+            date = sdf.parse(request.getParameter("date"));
+            if (stockService.picture(date)) {
+                return "redirect:/stock";
+            }else{
+                return "redirect:/";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return "redirect:/";
+        }
+    }
 }

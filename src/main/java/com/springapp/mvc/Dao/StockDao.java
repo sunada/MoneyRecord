@@ -10,10 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2015/11/10.
@@ -109,6 +106,18 @@ public class StockDao {
         }catch (Exception e){
             e.printStackTrace();
         }
+        return res != -1;
+    }
+
+    public boolean picture(ArrayList<Stock> stocks, Map<String, Object> map){
+        int res = -1;
+        try{
+            res = sqlSession.insert("Stocks.picture", stocks);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        res = sqlSession.update("Stocks.updatePicture", map);
         return res != -1;
     }
 }

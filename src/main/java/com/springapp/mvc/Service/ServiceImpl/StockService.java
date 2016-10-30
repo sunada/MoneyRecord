@@ -412,4 +412,12 @@ public class StockService {
         }
         return false;
     }
+
+    public boolean picture(Date date){
+        ArrayList<Stock> stocks = read(Currency.RMB);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("date", date);
+        map.put("type", AssetType.STOCK);
+        return stockDao.picture(stocks, map);
+    }
 }
