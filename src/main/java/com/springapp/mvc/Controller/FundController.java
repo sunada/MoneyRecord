@@ -138,6 +138,7 @@ public class FundController {
         try{
             date = sdf.parse(request.getParameter("date"));
             deal.setDate(date);
+            deal.setDateReal(date);
         }catch (Exception e){
             e.printStackTrace();
         }
