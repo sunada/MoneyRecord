@@ -290,6 +290,10 @@ public class MyFundService {
         return myFundDao.picture(funds, map);
     }
 
+    public Date getLatestPictureDate(){
+        return myFundDao.getLatestPictureDate(AssetType.STOCK);
+    }
+
 //    public boolean updateAipDeals(List<Fund> funds){
 //        Date nearDealDate;
 //        NetDay netDay = new NetDay();

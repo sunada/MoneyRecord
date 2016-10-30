@@ -77,6 +77,8 @@ public class FundController {
         Map<String, List<BigDecimal>> historyProfit = myFundService.getHistoryProfit();
         view.addObject("historyProfit", historyProfit);
 
+        Date date = myFundService.getLatestPictureDate();
+        view.addObject("latestDate", date);
         return  view;
     }
 

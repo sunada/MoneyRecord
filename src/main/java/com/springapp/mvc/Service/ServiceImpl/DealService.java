@@ -162,4 +162,6 @@ public class DealService {
     public Map<String, Date> getAccountNewDealDate(AssetType type){
         return dealDao.getAccountNewDealDate(type);
     }
+
+
 }

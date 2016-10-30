@@ -1,5 +1,6 @@
 package com.springapp.mvc.Dao;
 
+import com.springapp.mvc.Model.AssetType;
 import com.springapp.mvc.Model.Deal;
 import com.springapp.mvc.Model.MyFund;
 import org.apache.ibatis.session.SqlSession;
@@ -137,6 +138,11 @@ public class MyFundDao {
         }
         res = sqlSession.update("MyFunds.updatePicture", map);
         return res != -1;
+    }
+
+    public Date getLatestPictureDate(AssetType type){
+        Date date = sqlSession.selectOne("MyFunds.getLatestPictureDate", type);
+        return date;
     }
 
 //    public boolean updateFundDeal(Deal deal){
