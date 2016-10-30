@@ -53,9 +53,6 @@ public class StockService {
     public void setHistoryAssetDao(HistoryAssetDao historyAssetDao){ this.historyAssetDao = historyAssetDao;}
 
     public ArrayList<Stock> read(Currency currency){
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("currency", currency);
-        map.put("flag", -100);
         return (ArrayList<Stock>)stockDao.getStockList(currency);
     }
 
