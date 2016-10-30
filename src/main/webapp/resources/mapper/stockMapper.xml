@@ -30,8 +30,8 @@
         <result column="amount" property="amount" jdbcType="DECIMAL"/>
     </resultMap>
 
-    <select id="getStockList" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk, rmb_cost from stocks where share > 0 and currency=#{currency} order by belong_to,risk;
+    <select id="getStockList" resultMap="StockResult" parameterType="java.util.Map">
+        select code, name, belong_to, cost, current, share, risk, rmb_cost from stocks where share > 0 and currency=#{currency} and code > ${flag} order by belong_to,risk;
     </select>
 
     <select id="getHistoryStockList" resultMap="StockResult">

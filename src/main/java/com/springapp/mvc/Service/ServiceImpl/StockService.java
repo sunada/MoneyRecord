@@ -52,7 +52,19 @@ public class StockService {
     @Autowired
     public void setHistoryAssetDao(HistoryAssetDao historyAssetDao){ this.historyAssetDao = historyAssetDao;}
 
-    public ArrayList<Stock> read(Currency currency){ return (ArrayList<Stock>)stockDao.getStockList(currency); }
+    public ArrayList<Stock> read(Currency currency){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("currency", currency);
+        map.put("flag", -100);
+        return (ArrayList<Stock>)stockDao.getStockList(currency);
+    }
+
+    public ArrayList<Stock> read(Currency currency, int flag){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("currency", currency);
+        map.put("flag", flag);
+        return (ArrayList<Stock>)stockDao.getStockList(map);
+    }
 
     public ArrayList<Stock> readHistory(){ return (ArrayList<Stock>)stockDao.getHistoryStockList(); }
 
@@ -414,7 +426,7 @@ public class StockService {
     }
 
     public boolean picture(Date date){
-        ArrayList<Stock> stocks = read(Currency.RMB);
+        ArrayList<Stock> stocks = read(Currency.RMB, 0);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("date", date);
         map.put("type", AssetType.STOCK);

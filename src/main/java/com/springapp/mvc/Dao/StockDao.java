@@ -32,6 +32,16 @@ public class StockDao {
         return stockList;
     }
 
+    public List<Stock> getStockList(Map<String, Object> map){
+        List<Stock> stockList = new ArrayList<Stock>();
+        try{
+            stockList = sqlSession.selectList("Stocks.getStockList", map);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return stockList;
+    }
+
     public List<Stock> getHistoryStockList(){
         List<Stock> stockList = new ArrayList<Stock>();
         try{
