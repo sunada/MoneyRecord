@@ -25,7 +25,17 @@ public class MyFundDao {
     public List<MyFund> getMyFundList(){
         List<MyFund> myFundList = new ArrayList<MyFund>();
         try{
-            myFundList = sqlSession.selectList("MyFunds.getMyFundList");
+            myFundList = sqlSession.selectList("MyFunds.getMyFundList", -100);
+        }catch (Exception e){
+            log.debug(e.toString());
+        }
+        return myFundList;
+    }
+
+    public List<MyFund> getMyFundList(int flag){
+        List<MyFund> myFundList = new ArrayList<MyFund>();
+        try{
+            myFundList = sqlSession.selectList("MyFunds.getMyFundList", flag);
         }catch (Exception e){
             log.debug(e.toString());
         }
@@ -115,6 +125,18 @@ public class MyFundDao {
             e.printStackTrace();
         }
         return res != 1;
+    }
+
+    public boolean picture(ArrayList<MyFund> funds, Map<String, Object> map){
+        int res = -1;
+        try{
+            res = sqlSession.insert("MyFunds.picture", funds);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        res = sqlSession.update("MyFunds.updatePicture", map);
+        return res != -1;
     }
 
 //    public boolean updateFundDeal(Deal deal){

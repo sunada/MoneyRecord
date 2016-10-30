@@ -83,6 +83,19 @@
         </div>
         </nav>
 
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <form class="form-inline" role="form" action="/fund/picture" method="post" accept-charset="utf-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="date" placeholder="快照日期">
+                        </div>
+                        <input type="submit" value="保存快照"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
         <h4>持有基金记录：</h4>
         <table class="table table-striped" onclick="sortColumn(event)">
             <thead>

@@ -28,7 +28,7 @@
     </resultMap>
 
     <select id="getMyFundList" resultMap="MyFundResult">
-        select code, name,share, net, date_net,cost, purchase_rate, redemption_rate, risk, belong_to, charge_mode, dividend_mode from myfunds where share > 0 order by belong_to;
+        select code, name,share, net, date_net,cost, purchase_rate, redemption_rate, risk, belong_to, charge_mode, dividend_mode from myfunds where share > 0 and code > #{flag} order by belong_to;
     </select>
 
     <select id="getMyHistoryFundList" resultMap="MyFundResult">
@@ -61,6 +61,17 @@
 
     <select id="sumByRisk" resultMap="SumByRisk">
         select risk, sum(net*share) as amount from myfunds group by risk;
+    </select>
+
+    <select id="picture" parameterType="java.util.List">
+        insert into assets_every_month(code, name, share, net, risk) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.code,jdbcType=CHAR},#{item.name,jdbcType=CHAR},#{item.share,jdbcType=DECIMAL},#{item.net,jdbcType=DECIMAL},#{item.risk,jdbcType=CHAR})
+        </foreach>
+    </select>
+
+    <select id="updatePicture" parameterType="java.util.Map">
+        update assets_every_month set deal_date=#{date}, type=#{type} where type is null;
     </select>
 
 </mapper>

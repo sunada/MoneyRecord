@@ -89,6 +89,11 @@ public class MyFundService {
         return funds;
     }
 
+    public ArrayList<MyFund> readMyFund(int flag) {
+        ArrayList<MyFund> funds = (ArrayList)myFundDao.getMyFundList(flag);
+        return funds;
+    }
+
     public ArrayList<MyFund> readMyHistoryFund() {
         ArrayList<MyFund> funds = (ArrayList)myFundDao.getMyHistoryFundList();
         return funds;
@@ -277,7 +282,13 @@ public class MyFundService {
         return date;
     }
 
-
+    public boolean picture(Date date){
+        ArrayList<MyFund> funds = readMyFund(0);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("date", date);
+        map.put("type", AssetType.FUND);
+        return myFundDao.picture(funds, map);
+    }
 
 //    public boolean updateAipDeals(List<Fund> funds){
 //        Date nearDealDate;
