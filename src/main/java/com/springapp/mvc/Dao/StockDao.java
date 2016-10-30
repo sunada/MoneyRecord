@@ -1,5 +1,6 @@
 package com.springapp.mvc.Dao;
 
+import com.springapp.mvc.Model.AssetType;
 import com.springapp.mvc.Model.Currency;
 import com.springapp.mvc.Model.Loan;
 import com.springapp.mvc.Model.Stock;
@@ -129,5 +130,10 @@ public class StockDao {
         }
         res = sqlSession.update("Stocks.updatePicture", map);
         return res != -1;
+    }
+
+    public Date getLatestPictureDate(AssetType type){
+        Date date = sqlSession.selectOne("MyFunds.getLatestPictureDate", type);
+        return date;
     }
 }

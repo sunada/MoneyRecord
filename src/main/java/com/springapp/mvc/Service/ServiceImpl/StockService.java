@@ -429,4 +429,8 @@ public class StockService {
         map.put("type", AssetType.STOCK);
         return stockDao.picture(stocks, map);
     }
+
+    public Date getLatestPictureDate(){
+        return stockDao.getLatestPictureDate(AssetType.STOCK);
+    }
 }

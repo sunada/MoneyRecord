@@ -76,6 +76,9 @@ public class StockController {
 
         Map<String, List<BigDecimal>> historyProfit = historyAssetService.getHistoryProfit(AssetType.STOCK);
         view.addObject("historyProfit", historyProfit);
+
+        Date date = stockService.getLatestPictureDate();
+        view.addObject("latestDate", date);
         return view;
     }
 

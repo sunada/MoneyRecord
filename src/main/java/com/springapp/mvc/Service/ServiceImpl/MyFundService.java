@@ -291,7 +291,7 @@ public class MyFundService {
     }
 
     public Date getLatestPictureDate(){
-        return myFundDao.getLatestPictureDate(AssetType.STOCK);
+        return myFundDao.getLatestPictureDate(AssetType.FUND);
     }
 
 //    public boolean updateAipDeals(List<Fund> funds){

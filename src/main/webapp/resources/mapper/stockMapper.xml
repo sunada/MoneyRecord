@@ -86,4 +86,8 @@
     <select id="updatePicture" parameterType="java.util.Map">
         update assets_every_month set deal_date=#{date}, type=#{type} where type is null;
     </select>
+
+    <select id="getLatestPictureDate" resultType="java.util.Date">
+        SELECT deal_date FROM assets_every_month WHERE TYPE=#{type} ORDER BY deal_date DESC LIMIT 1;
+    </select>
 </mapper>
