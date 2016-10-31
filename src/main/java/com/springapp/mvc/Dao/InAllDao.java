@@ -1,5 +1,6 @@
 package com.springapp.mvc.Dao;
 
+import com.springapp.mvc.Model.Deal;
 import com.springapp.mvc.Model.Fund;
 import com.springapp.mvc.Model.InAll;
 import org.apache.ibatis.session.SqlSession;
@@ -9,10 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/4/25.
@@ -42,5 +40,13 @@ public class InAllDao {
             sum = map.get(key);
         }
         return sum;
+    }
+
+    public List<Deal> getFundDealList(Map<String, Object> map){
+        return sqlSession.selectList("Deals.getFundListStartEnd", map);
+    }
+
+    public List<Deal> getStockDealList(Map<String, Object> map){
+        return sqlSession.selectList("Deals.getStockListStartEnd", map);
     }
 }

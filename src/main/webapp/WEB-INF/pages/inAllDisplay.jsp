@@ -53,6 +53,31 @@
             </tbody>
         </table>
 
+        <table class="table table-bordered">
+            <caption>投资收益率计算：</caption>
+            <form class="form-inline" role="form" action="/inAll/calProfitRate" method="post" accept-charset="utf-8">
+                <tr>
+                    <td><input type="text" placeholder="开始日期" name="start"></td>
+                    <td><input type="text" placeholder="结束日期" name="end"></td>
+                    <td>
+                        <div> 资产类型：
+                        <input type="checkbox" value="fund" name="type">基金
+                        <input type="checkbox" value="stock" name="type">证券
+                        </div>
+                    </td>
+                    <%--<td>--%>
+                        <%--<div> 风险类型：--%>
+                        <%--<input type="checkbox" value="HIGH" name="risk">高--%>
+                        <%--<input type="checkbox" value="MID" name="risk">中--%>
+                        <%--<input type="checkbox" value="LOW" name="risk">低--%>
+                        <%--</div>--%>
+                    <%--</td>--%>
+                    <td><input type="submit" value="提取文件"/></td>
+                    </td>
+                </tr>
+            </form>
+        </table>
+
     <c:set var="exchangeRate" value="6.77"></c:set>
     <table class="table table-bordered">
         <caption>美元资产（汇率：${exchangeRate})</caption>
@@ -72,6 +97,8 @@
             </tr>
             </c:forEach>
     </table>
+
+
 
 
     </body>

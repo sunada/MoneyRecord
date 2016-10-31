@@ -1,9 +1,7 @@
 package com.springapp.mvc.Dao;
 
-import com.springapp.mvc.Model.AssetType;
+import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Model.Currency;
-import com.springapp.mvc.Model.Loan;
-import com.springapp.mvc.Model.Stock;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,4 +134,6 @@ public class StockDao {
         Date date = sqlSession.selectOne("MyFunds.getLatestPictureDate", type);
         return date;
     }
+
+
 }

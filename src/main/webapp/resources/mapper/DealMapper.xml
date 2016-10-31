@@ -74,4 +74,16 @@
         select belong_to belong_to, max(date_deal) date_deal from stock_deals group by belong_to;
     </select>
 
+    <select id="getFundListStartEnd" resultMap="DealResult">
+        <![CDATA[
+        select code, name, date_deal, amount from fund_deals where date_deal >= #{start} and date_deal <= #{end};
+        ]]>
+    </select>
+
+    <select id="getStockListStartEnd" resultMap="DealResult">
+        <![CDATA[
+        select code, name, date_deal, amount from stock_deals where date_deal >= #{start} and date_deal <= #{end};
+        ]]>
+    </select>
+
 </mapper>

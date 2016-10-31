@@ -11,9 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -119,5 +122,24 @@ public class InAllController {
         sumUSA.put("总计",stockService.sum(Currency.USA));
         view.addObject("sumUSA", sumUSA);
         return view;
+    }
+
+    @RequestMapping(value = "calProfitRate", method = RequestMethod.POST)
+    public String calProfitRate(HttpServletRequest request){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = new Date();
+        Date end = new Date();
+        try{
+            start = sdf.parse(request.getParameter("start"));
+            end = sdf.parse(request.getParameter("end"));
+        }catch (Exception e){
+            e.printStackTrace();
+            return "redirect:/";
+        }
+        String[] type = request.getParameterValues("type");
+//        String[] risk = request.getParameterValues("risk");
+
+        allService.calProfitRate(start, end, type);
+        return "redirect:/inAll";
     }
 }
