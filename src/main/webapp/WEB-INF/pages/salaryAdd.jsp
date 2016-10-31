@@ -36,7 +36,7 @@
                 $("#beforeTax").attr("value", 25480);
                 $("#insuranceBase").attr("value", 21258);
                 $("#fundBase").attr("value", 21258);
-                $("#date").attr("value", "2016-");
+                $("#date").attr("value", "2016-11");
                 $("#afterTax").attr("value", 0)
             });
 

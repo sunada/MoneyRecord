@@ -35,7 +35,7 @@
 
         <div>
             <label>日期：</label>
-            <input type="text" name="date" id="date" value="2016-">
+            <input type="text" name="date" id="date" value="2016-11">
         </div>
 
         <br/>
@@ -44,7 +44,7 @@
             <input type="text" name="dailyExpense" id="dailyExpense">
 
             <label>房贷支出：</label>
-            <input type="text" name="mortgage" id="mortgage ">
+            <input type="text" name="mortgage" id="mortgage" value="7795.79">
 
         </div>
         <br/>

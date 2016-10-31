@@ -104,7 +104,7 @@ public class BalanceService {
         }
         Collections.sort(balanceList, new Comparator<Balance>(){
             public int compare(Balance b1, Balance b2) {
-                return (b2.getDate()).compareTo(b1.getDate()); //升序
+                return (b2.getDate()).compareTo(b1.getDate()); //降序
             }
         });
         return balanceList;
