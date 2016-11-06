@@ -152,13 +152,13 @@ public class BalanceService {
         BigDecimal exp = expense.getDailyExpense();
         balance = balanceDao.getBalance(date);
         if(balance != null) {
-            balance.setLeft(balance.getLeft().add(exp));
+            balance.setLeft(balance.getLeft().add(exp).add(expense.getMortgage()));
             balance.setMonthBudgetLeft(balance.getMonthBudgetLeft().add(exp));
             return balanceDao.updateBalance(balance);
         }else{
             balance = new Balance();
             balance.setDate(date);
-            balance.setLeft(exp);
+            balance.setLeft(exp.add(expense.getMortgage()));
             balance.setMonthBudgetLeft(ConstantInterface.Budget.add(exp));
             return balanceDao.saveBalance(balance);
         }
