@@ -39,8 +39,11 @@ public class GetNet {
         BigDecimal net = new BigDecimal(0.00);
         if(!s.contains("暂无数据")) {
             String arr[] = s.split("<td class='tor bold'>");
+            if(arr.length < 2){
+                return net;
+            }
             String netStr = arr[1].substring(0, 6);
-            String accNetStr = arr[2].substring(0, 6);
+//            String accNetStr = arr[2].substring(0, 6);
             net = new BigDecimal(netStr);
         }
         return net;
