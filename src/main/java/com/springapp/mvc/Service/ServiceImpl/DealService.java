@@ -48,7 +48,7 @@ public class DealService {
         GetNet getNet = new GetNet();
         BigDecimal net = getNet.getFundNet(fund.getCode(), rdate);
         BigDecimal prate = fund.getPurchaseRate().divide(BigDecimal.valueOf(100));
-        BigDecimal clean = fund.getAmount().divide(prate.add(BigDecimal.valueOf(1)),2,BigDecimal.ROUND_HALF_EVEN);
+        BigDecimal clean = fund.getAmount().multiply(new BigDecimal(-1)).divide(prate.add(BigDecimal.valueOf(1)), 2, BigDecimal.ROUND_HALF_EVEN);
 
         if(net.equals(BigDecimal.ZERO)){
             return false;
@@ -60,7 +60,7 @@ public class DealService {
         deal.setDateReal(rdate);
         deal.setNet(net);
         deal.setShare(clean.divide(net,2, BigDecimal.ROUND_HALF_EVEN));
-        deal.setCost(fund.getAmount().subtract(clean));
+        deal.setCost(fund.getAmount().multiply(prate).multiply(new BigDecimal(-1)));
         deal.setAmount(fund.getAmount());
         deal.setDealType(DealType.FAIP);
         dealDao.updateDeal(deal, AssetType.FUND);
@@ -73,7 +73,7 @@ public class DealService {
             myFund.setName(fund.getName());
             myFund.setShare(deal.getShare());
             myFund.setNet(net);
-            myFund.setCost(deal.getAmount());
+            myFund.setCost(deal.getAmount().multiply(new BigDecimal(-1)));
             myFund.setDate(rdate);
             myFund.setBelongTo(deal.getBelongTo());
             myFund.setPurchaseRate(prate);
@@ -85,7 +85,7 @@ public class DealService {
         }else{
             //若有，则更新份额和成本
             myFundSql.setShare(deal.getShare().add(myFundSql.getShare()));
-            myFundSql.setCost(deal.getAmount().add(myFundSql.getCost()));
+            myFundSql.setCost(deal.getAmount().multiply(new BigDecimal(-1)).add(myFundSql.getCost()));
             myFundSql.setDate(rdate);
             myFundSql.setNet(net);
             return myFundService.updateMyFund(myFundSql);
