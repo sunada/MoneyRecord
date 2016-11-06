@@ -16,7 +16,7 @@
     </resultMap>
 
     <select id="display" resultMap="InsuranceResult">
-      SELECT id, belong_to, coverage, years, start, name, owner, type, age, amount FROM insurance order by owner;
+      SELECT id, belong_to, coverage, years, start, name, owner, type, age, amount FROM insurance order by owner,type;
     </select>
 
     <insert id="insert" parameterType="com.springapp.mvc.Model.Insurance">
