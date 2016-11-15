@@ -77,7 +77,6 @@
                 <li><a href="/stock">证券</a></li>
                 <li><a href="/insurance">保险</a></li>
                 <li><a href="/fund/myFundAdd">基金操作</a></li>
-                <li><a href="/loan/loanAdd">买入网贷</a></li>
                 <li><a href="/stock/stockAdd">证券操作</a></li>
             </ul>
         </div>
@@ -140,6 +139,8 @@
             </tbody>
         </table>
 
+        <a class="btn btn-primary" href="/loan/loanAdd" role="button">新增网贷</a>
+
         <table class="table table-bordered">
             <caption>合计</caption>
             <tbody>
@@ -151,6 +152,7 @@
                 </c:forEach>
             </tbody>
         </table>
+
 
         <table class="table table-bordered">
             <caption>分类统计（按风险）</caption>

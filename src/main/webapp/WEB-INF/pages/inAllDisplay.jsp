@@ -30,6 +30,7 @@
         </div>
         </nav>
 
+        低：中：高 = 20% : 45% : 35%
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -39,6 +40,8 @@
                 <th>网贷</th>
                 <th>各风险累计金额</th>
                 <th>占比(%)</th>
+                <th>合理目标</th>
+                <th>差距</th>
             </tr>
             </thead>
             <tbody>

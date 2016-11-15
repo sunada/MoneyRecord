@@ -54,6 +54,7 @@
             <input type="radio" name="type" value="意外">意外
             <input type="radio" name="type" value="防癌">防癌
             <input type="radio" name="type" value="医疗">医疗
+            <input type="radio" name="type" value="房屋">房屋
         </div>
 
         <div class="form-group">

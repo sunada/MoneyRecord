@@ -28,7 +28,7 @@
     </resultMap>
 
     <select id="getMyFundList" resultMap="MyFundResult">
-        select code, name,share, net, date_net,cost, purchase_rate, redemption_rate, risk, belong_to, charge_mode, dividend_mode from myfunds where share > 0 and code > #{flag} order by belong_to;
+        select code, name,share, net, date_net,cost, purchase_rate, redemption_rate, risk, belong_to, charge_mode, dividend_mode from myfunds where share > 0 and code > #{flag} order by belong_to, risk, share*net desc;
     </select>
 
     <select id="getMyHistoryFundList" resultMap="MyFundResult">

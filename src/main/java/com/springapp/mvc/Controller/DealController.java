@@ -100,12 +100,16 @@ public class DealController {
                 myFund.setShare(myFund.getShare().subtract(share));
             }else if(dealType == DealType.FREDEMP){
                 myFund.setShare(myFund.getShare().add(share));
-                myFund.setCost(myFund.getCost().subtract(amount));
+                myFund.setCost(myFund.getCost().add(amount));
+//                myFund.setCost(myFund.getCost().subtract(amount));
 //                myFund.setCost(myFund.getCost().add(amount).subtract(cost));
             }else if(dealType == DealType.FCASH){
                 myFund.setCost(myFund.getCost().subtract(amount));
             }
-            myFundService.updateMyFund(myFund);
+            if(myFund.getCost().compareTo(BigDecimal.ZERO) != 0){
+                myFundService.updateMyFund(myFund);
+            }
+
 
             if (dealService.delete(id, "fund")) {
                 return "redirect:/fund";    //belongTo为中文，放在url里传不过去，可能是chrome浏览器的原因？

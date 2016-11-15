@@ -6,6 +6,7 @@ import com.springapp.mvc.Service.ServiceImpl.InAllService;
 import com.springapp.mvc.Service.ServiceImpl.LoanService;
 import com.springapp.mvc.Service.ServiceImpl.MyFundService;
 import com.springapp.mvc.Service.ServiceImpl.StockService;
+import com.springapp.mvc.Util.ConstantInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,12 @@ public class InAllController {
 //        assetInAll.add(sumAll);
         riskValues.put("总计", assetInAll);
 
+        Map<String, BigDecimal> riskAim = new HashMap<String, BigDecimal>();
+        riskAim.put("LOW", ConstantInterface.LOW.multiply(sumAll));
+        riskAim.put("MID", ConstantInterface.MID.multiply(sumAll));
+        riskAim.put("HIGH", ConstantInterface.HIGH.multiply(sumAll));
+        riskAim.put("总计", sumAll);
+
         for(String key : riskValues.keySet()){
             riskInAll = BigDecimal.ZERO;
             for(BigDecimal b : riskValues.get(key)){
@@ -115,6 +122,8 @@ public class InAllController {
             }
             riskValues.get(key).add(riskInAll);
             riskValues.get(key).add(riskInAll.divide(sumAll, 4, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
+            riskValues.get(key).add(riskAim.get(key));
+            riskValues.get(key).add(riskInAll.subtract(riskAim.get(key)));
         }
         view.addObject("riskValues", riskValues);
 

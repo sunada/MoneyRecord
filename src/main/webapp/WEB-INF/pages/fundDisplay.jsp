@@ -185,7 +185,7 @@
         </table>
 
         <table class="table table-bordered">
-            <caption>分类统计（按风险）</caption>
+            <caption>持有基金分类统计（按风险）</caption>
             <thead>
             <tr>
                 <th>风险等级</th>
@@ -204,6 +204,29 @@
                         <td>
                             <fmt:formatNumber type="number" value="${ac}" pattern="0.00" maxFractionDigits="2"/><br/>
                             <%--<fmt:formatNumber type="number" value="${ac/sum * 100}" pattern="0.00" maxFractionDigits="2"/>--%>
+                        </td>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
+            <caption>持有基金分类统计（按平台）</caption>
+            <thead>
+                <tr>
+                    <th>平台名称</th>
+                    <th>总金额</th>
+                    <th>基金数量</th>
+                </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${belongTos}" var="b" varStatus="status">
+                <tr>
+                    <td>${b.key}</td>
+                    <c:forEach items="${b.value}" var="bv">
+                        <td>
+                            <fmt:formatNumber type="number" value="${bv}" pattern="0.00" maxFractionDigits="2"/><br/>
                         </td>
                     </c:forEach>
                 </tr>

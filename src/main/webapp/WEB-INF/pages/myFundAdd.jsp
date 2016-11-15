@@ -159,6 +159,7 @@
                 <input type="radio" name="belongTo" value="陆金所" <c:out value='${belong_to=="陆金所"? "checked":""}'/> id="lu"/>陆金所
                 <input type="radio" name="belongTo" value="蛋卷基金" <c:out value='${belong_to=="蛋卷基金"? "checked":""}'/> id="dan">蛋卷基金
                 <input type="radio" name="belongTo" value="支付宝" <c:out value='${belong_to=="支付宝"? "checked":""}'/> id="zhi">支付宝
+                <input type="radio" name="belongTo" value="基有帮" <c:out value='${belong_to=="基有帮"? "checked":""}'/> id="ji">基有帮
             </div>
 
             <c:set var="risk" value='<%=request.getParameter("risk")%>'/>
@@ -246,7 +247,7 @@
 
             <div class="form-group FREINVE" style="display:none">
                 <label for="amount">分红再投入份额：</label>
-                <input type="text" name="freinve_share">元
+                <input type="text" name="freinve_share">份
             </div>
 
             <div class="form-group FCASH" style="display:none">

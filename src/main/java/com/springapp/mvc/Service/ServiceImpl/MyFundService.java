@@ -80,6 +80,28 @@ public class MyFundService {
         return map;
     }
 
+    public Map<String, List<BigDecimal>> addUpByBelongTo(ArrayList<MyFund> myFunds){
+        Map<String, List<BigDecimal>> map = new HashMap<String, List<BigDecimal>>();
+        BigDecimal amount;
+
+        for(MyFund myfund : myFunds){
+            String bl = myfund.getBelongTo();
+            List<BigDecimal> list = new ArrayList<BigDecimal>();
+            amount = myfund.getShare().multiply(myfund.getNet());
+
+            if(map.containsKey(bl)){
+                list = map.get(bl);
+                list.set(0, list.get(0).add(amount));
+                list.set(1, list.get(1).add(BigDecimal.ONE));
+            }else{
+                list.add(amount);
+                list.add(BigDecimal.ONE);
+                map.put(bl, list);
+            }
+        }
+        return map;
+    }
+
     public boolean saveFund(MyFund fund){
         return myFundDao.save(fund);
     }

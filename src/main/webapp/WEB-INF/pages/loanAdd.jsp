@@ -15,12 +15,8 @@
                     $("#high").attr("checked", "checked");
                 } else if (risk == "LOW") {
                     $("#low").attr("checked", "checked");
-                } else if (risk == "MIDLOW") {
-                    $("#midlow").attr("checked", "checked");
-                } else if (risk == "MID") {
+                } else{
                     $("#mid").attr("checked", "checked");
-                } else {
-                    $("#midhigh").attr("checked", "checked");
                 }
             });
 
@@ -91,9 +87,7 @@
                 <label for="risk"> 风险类型：</label>
                 <%--LOW(0, "low"), MIDLOW(1, "midlow"), MID(2, "mid"), MIDHIGH(3, "midhigh"),HIGH(4, "high");--%>
                 <input type="radio" name="risk" value="LOW"/>低
-                <input type="radio" name="risk" value="MIDLOW"/>中低
-                <input type="radio" name="risk" value="MID"/>中等
-                <input type="radio" name="risk" value="MIDHIGH" checked/>中高
+                <input type="radio" name="risk" value="MID" checked/>中等
                 <input type="radio" name="risk" value="HIGH"/>高
             </div>
 
@@ -122,7 +116,7 @@
             <div class="form-group" id="approach">
                 <label for="approach">收益方式：</label>
                 <input type="radio" name="approach" value="EPI" id="epi">等额本息
-                <input type="radio" name="approach" value="PI" id="pi">一次还本付息
+                <input type="radio" name="approach" value="PI" id="pi" checked>一次还本付息
                 <input type="radio" name="approach" value="IF" id="if">先息后本
             </div>
 

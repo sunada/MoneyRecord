@@ -74,6 +74,9 @@ public class FundController {
         Map<String, List<BigDecimal>> map = myFundService.addUp(funds);
         view.addObject("group", map);
 
+        Map<String, List<BigDecimal>> belongTos = myFundService.addUpByBelongTo(funds);
+        view.addObject("belongTos", belongTos);
+
         Map<String, List<BigDecimal>> historyProfit = myFundService.getHistoryProfit();
         view.addObject("historyProfit", historyProfit);
 
@@ -118,6 +121,7 @@ public class FundController {
             cost = new BigDecimal(request.getParameter("cost"));
             net = new BigDecimal(request.getParameter("net"));
             amount = new BigDecimal(request.getParameter("amount"));
+            amount = BigDecimal.ZERO.subtract(amount);
         }else if(dealType == DealType.FREDEMP) {
             share = new BigDecimal(request.getParameter("fredemp_share"));
             cost = new BigDecimal(request.getParameter("fredemp_cost"));
@@ -179,7 +183,7 @@ public class FundController {
             myFund.setShare(share);
             myFund.setNet(net);
 //            myFund.setCost(cost);
-            myFund.setCost(amount); //此处的cost为持有成本，而非单次交易成本
+            myFund.setCost(amount.multiply(new BigDecimal(-1))); //此处的cost为持有成本，而非单次交易成本
             myFund.setDate(new Date());
             myFund.setBelongTo(belongTo);
             myFund.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
@@ -195,14 +199,15 @@ public class FundController {
         }else{
             if(dealType == DealType.FBUY){
                 myFundSql.setShare(share.add(myFundSql.getShare()));
-                myFundSql.setCost(amount.add(myFundSql.getCost()));
+                myFundSql.setCost(amount.multiply(new BigDecimal(-1)).add(myFundSql.getCost()));
                 myFundSql.setPurchaseRate(new BigDecimal(request.getParameter("prate")));
             }else if(dealType == DealType.FREINVE){
                 myFundSql.setShare(share.add(myFundSql.getShare()));
             }else if(dealType == DealType.FREDEMP){
                 myFundSql.setShare(myFundSql.getShare().subtract(share));
-//                myFundSql.setCost(myFundSql.getCost().subtract(amount).add(cost));
                 myFundSql.setCost(myFundSql.getCost().subtract(amount));
+//                myFundSql.setCost(myFundSql.getCost().subtract(amount).add(cost));
+//                myFundSql.setCost(myFundSql.getCost().add(amount));
             }else if(dealType == DealType.FCASH){
                 myFundSql.setCost(myFundSql.getCost().subtract(amount));
             }
