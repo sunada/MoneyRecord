@@ -5,6 +5,7 @@ import com.springapp.mvc.Model.Expense;
 import com.springapp.mvc.Model.Income;
 import com.springapp.mvc.Model.Salary;
 import com.springapp.mvc.Service.ServiceImpl.BalanceService;
+import net.sf.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +52,9 @@ public class BalanceController {
         BigDecimal leftSum = balanceService.getLeftSum();
         mv.addObject("budgetSum", budgetSum);
         mv.addObject("leftSum", leftSum);
+
+        String balanceListJson = JSONArray.fromObject(balanceList).toString();
+        mv.addObject("balanceListJson", balanceListJson);
         return mv;
     }
 
