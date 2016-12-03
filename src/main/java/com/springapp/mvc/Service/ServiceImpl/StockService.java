@@ -132,6 +132,99 @@ public class StockService {
     }
 
     public boolean saveStockByFile(File file){
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line = br.readLine();
+            String[] sep = line.split("\t");
+            if(sep.length < 1){
+                return false;
+            }
+            if(sep[1].equals("成交时间")){
+                return saveStockByFileGuojin(br);
+            }
+            return saveStockByFileHuatai(file);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean saveStockByFileGuojin(BufferedReader br){
+        String line = "";
+        try{
+            while((line = br.readLine()) != null) {
+                String[] sep = line.split("\t");
+                if (sep[3].equals("国金金腾通")) {
+                    continue;
+                }
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                Date dealDate = sdf.parse(sep[0]);
+                String time = sep[1];
+                int len = sep[2].length();
+                if(len >= 6) {
+                    deal.setCode(sep[2]);
+                }else{
+                    String tmp = "";
+                    len = 6 - len;
+                    while(len-- > 0){
+                        tmp += "0";
+                    }
+                    deal.setCode(tmp+sep[2]);
+                }
+                if (hasContract(time, dealDate, deal.getCode())) {
+                    continue;
+                }
+                deal.setBelongTo("国金39997769");
+                deal.setDate(dealDate);
+
+                deal.setName(sep[3]);
+                deal.setContract(time);
+                deal.setShare(new BigDecimal(sep[5]));
+
+                if (getStockType(deal.getCode()) == SecurityType.SHLOAN) {
+                    deal.setShare(deal.getShare().multiply(BigDecimal.TEN));
+                }
+                deal.setNet(new BigDecimal(sep[6]));
+                BigDecimal cost = new BigDecimal(sep[10]);
+                cost = cost.add(new BigDecimal(sep[11]));
+                cost = cost.add(new BigDecimal(sep[12]));
+                deal.setCost(cost);
+                deal.setAmount(new BigDecimal(sep[9]));
+
+                if (sep[4].equals("证券买入")) {
+                    deal.setDealType(DealType.SBUY);
+                } else if (sep[4].equals("证券卖出")) {
+                    deal.setDealType(DealType.SSELL);
+                } else if (sep[4].equals("股息入帐")) {
+                    deal.setDealType(DealType.INTEREST);
+                } else {
+                    deal.setDealType(DealType.OTHERS);
+                }
+
+                stock.setCode(deal.getCode());
+                stock.setName(deal.getName());
+                stock.setCost(deal.getNet());
+                stock.setCurrent(deal.getNet());
+                stock.setBelongTo(deal.getBelongTo());
+                stock.setShare(deal.getShare());
+                stock.setAmount(deal.getAmount());
+                stock.setCurrency(Currency.RMB);
+                if (saveStock(stock, deal.getDate(), deal.getDealType(), deal.getCost())) {
+                    if (!saveDeal(deal)) {
+                        return false;
+                    }
+                }
+            }
+            br.close();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean saveStockByFileHuatai(File file){
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line = br.readLine();
@@ -148,7 +241,7 @@ public class StockService {
                 String contract = segments[3];
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
                 Date dealDate = sdf.parse(segments[0]);
-                if(hasContract(contract, dealDate)){
+                if(hasContract(contract, dealDate, segments[14])){
                     continue;
                 }
                 deal.setCode(segments[14]);
@@ -415,8 +508,8 @@ public class StockService {
         }
     }
 
-    public boolean hasContract(String contract, Date date){
-        if(dealDao.hasContract(contract, date) > 0){
+    public boolean hasContract(String contract, Date date, String code){
+        if(dealDao.hasContract(contract, date, code) > 0){
             return true;
         }
         return false;

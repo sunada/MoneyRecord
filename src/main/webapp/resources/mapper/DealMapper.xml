@@ -47,7 +47,7 @@
     </select>
 
     <select id="hasContract" resultType="INTEGER">
-        select count(*) from stock_deals where contract=#{contract} and date_deal=#{date};
+        select count(*) from stock_deals where contract=#{contract} and date_deal=#{date} and code=#{code};
     </select>
 
     <insert id="updateStockDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">

@@ -4,6 +4,7 @@ import com.springapp.mvc.Dao.HistoryAssetDao;
 import com.springapp.mvc.Model.AssetType;
 import com.springapp.mvc.Model.HistoryAsset;
 import com.springapp.mvc.Model.MyFund;
+import com.springapp.mvc.Model.Risk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,12 @@ public class HistoryAssetService {
         BigDecimal profitInAll = BigDecimal.ZERO;
         for(HistoryAsset asset : assets){
             list = new ArrayList<BigDecimal>();
-            String risk = asset.getRisk().getName();
+            String risk = "";
+            if(asset.getRisk() != null) {
+                risk = asset.getRisk().getName();
+            }else{
+                risk = Risk.HIGH.getName();
+            }
 
             if(res.containsKey(risk)){
                 List<BigDecimal> newList = res.get(risk);
@@ -50,7 +56,7 @@ public class HistoryAssetService {
             }
             costInAll = costInAll.add(asset.getCost());
             profitInAll = profitInAll.add(asset.getProfit());
-            list.add(list.get(1).divide(list.get(0),2,BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
+            list.add(list.get(1).divide(list.get(0), 2, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
             res.put(risk, list);
         }
         list = new ArrayList<BigDecimal>();

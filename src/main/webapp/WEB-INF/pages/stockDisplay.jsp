@@ -176,7 +176,7 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="6.77"></c:set>
+        <c:set var="exchangeRate" value="6.88"></c:set>
         <table class="table table-striped">
             <caption>美元资产 (汇率：${exchangeRate})</caption>
             <thead>
