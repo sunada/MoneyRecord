@@ -48,6 +48,7 @@ public class InsuranceController {
         insurance.setName(request.getParameter("name"));
         insurance.setAge(new Integer(request.getParameter("age")));
         insurance.setAmount(new Integer(request.getParameter("amount")));
+        insurance.setCompany(request.getParameter("compnay"));
         insurance.setBelongTo(request.getParameter("belongTo"));
         insurance.setCoverage(new Integer(request.getParameter("coverage")));
         insurance.setOwner(request.getParameter("owner"));

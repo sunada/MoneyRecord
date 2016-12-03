@@ -39,12 +39,12 @@
         </div>
 
         <div class="form-group">
-            <label>平   台：</label>
-            <input type="radio" name="belongTo" value="泰康">泰康
-            <input type="radio" name="belongTo" value="阳光">阳光
-            <input type="radio" name="belongTo" value="国泰">国泰
-            <input type="radio" name="belongTo" value="弘康">弘康
-            <input type="radio" name="belongTo" value="平安">平安
+            <label>公   司：</label>
+            <input type="radio" name="company" value="泰康">泰康
+            <input type="radio" name="company" value="阳光">阳光
+            <input type="radio" name="company" value="国泰">国泰
+            <input type="radio" name="company" value="弘康">弘康
+            <input type="radio" name="company" value="平安">平安
         </div>
 
         <div class="form-group">
@@ -63,6 +63,11 @@
             <input type="radio" name="owner" value="老公">老公
             <input type="radio" name="owner" value="老婆的妈">老婆的妈
             <input type="radio" name="owner" value="老公的妈">老公的妈
+        </div>
+
+        <div class="form-group">
+            <label>购买平台：</label>
+            <input type="text" name="belongTo">
         </div>
 
         <div class="form-group">

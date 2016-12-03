@@ -5,6 +5,7 @@
     <resultMap id="InsuranceResult" type="com.springapp.mvc.Model.Insurance">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="company" jdbcType="CHAR" property="company"/>
         <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
         <result column="coverage" jdbcType="INTEGER" property="coverage"/>
         <result column="years" jdbcType="INTEGER" property="years"/>
@@ -16,10 +17,10 @@
     </resultMap>
 
     <select id="display" resultMap="InsuranceResult">
-      SELECT id, belong_to, coverage, years, start, name, owner, type, age, amount FROM insurance order by owner,type;
+      SELECT id, company, belong_to, coverage, years, start, name, owner, type, age, amount FROM insurance order by owner,type;
     </select>
 
     <insert id="insert" parameterType="com.springapp.mvc.Model.Insurance">
-        insert insurance(belong_to, coverage, years, start, name, owner, type, age, amount) values(#{belongTo}, #{coverage}, #{years}, #{start}, #{name}, #{owner}, #{type}, #{age}, #{amount});
+        insert insurance(company, belong_to, coverage, years, start, name, owner, type, age, amount) values(#{company}, #{belongTo}, #{coverage}, #{years}, #{start}, #{name}, #{owner}, #{type}, #{age}, #{amount});
     </insert>
 </mapper>

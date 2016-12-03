@@ -12,6 +12,7 @@ import java.util.Date;
 public class Insurance {
     public int id;
     public String belongTo;
+    public String company;
     public int coverage;
     public int years;
     public Date start;
@@ -28,6 +29,10 @@ public class Insurance {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getCompany(){ return company;}
+
+    public void setCompany(String company){ this.company = company;}
 
     public String getBelongTo() {
         return belongTo;

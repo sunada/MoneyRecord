@@ -42,7 +42,8 @@
         <thead>
         <tr>
             <th>产品名</th>
-            <th>平台</th>
+            <th>保险公司</th>
+            <th>购买平台</th>
             <th>保险类型</th>
             <th>被保险人</th>
             <th>保额(万)</th>
@@ -56,6 +57,7 @@
             <c:forEach items="${list}" var="i">
                 <tr>
                     <td>${i.name}</td>
+                    <th>${i.company}</th>
                     <td>${i.belongTo}</td>
                     <td>${i.type}</td>
                     <td>${i.owner}</td>
