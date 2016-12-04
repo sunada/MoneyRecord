@@ -58,4 +58,6 @@ public class BalanceDao {
 
     public BigDecimal getLeftSum(){ return sqlSession.selectOne("Balance.getLeftSum"); }
 
+    public List<Balance> getBalanceList(int n){ return sqlSession.selectList("Balance.getBalanceList", n);}
+
 }

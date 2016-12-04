@@ -12,12 +12,33 @@
         <result column="sum(amount)" jdbcType="DECIMAL" property="sum"/>
     </resultMap>
 
+    <resultMap id="monthAssets" type="com.springapp.mvc.Model.MonthAsset">
+        <id column="year_and_month" jdbcType="CHAR" property="month"/>
+        <id column="amount" jdbcType="DECIMAL" property="amount"/>
+    </resultMap>
+
     <select id="getAllList" resultMap="AllResult">
         select risk, attr, amount from alls;
     </select>
 
     <select id="getSum" resultMap="SumResult">
         select sum(amount) as amount from alls;
+    </select>
+
+    <insert id="savePicture" parameterType="com.springapp.mvc.Model.MonthAsset">
+        insert assets(year_and_month, amount) values(#{month}, #{amount});
+    </insert>
+
+    <update id="updatePicture" parameterType="com.springapp.mvc.Model.MonthAsset">
+        update assets set amount = #{amount} where year_and_month = #{month};
+    </update>
+
+    <select id="getPictureByMonth" resultType="INT">
+        select count(*) from assets where year_and_month = #{month};
+    </select>
+
+    <select id="monthAssets" resultMap="monthAssets">
+        select year_and_month, amount from assets order by year_and_month;
     </select>
 
 </mapper>

@@ -4,6 +4,7 @@ import com.springapp.mvc.Dao.InAllDao;
 import com.springapp.mvc.Model.AssetType;
 import com.springapp.mvc.Model.Deal;
 import com.springapp.mvc.Model.InAll;
+import com.springapp.mvc.Model.MonthAsset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +53,17 @@ public class InAllService {
         }
 
         return;
+    }
+
+    public void picture(MonthAsset monthAsset){
+        if(allDao.getPicture(monthAsset.getMonth())) {
+            allDao.updatePicture(monthAsset);
+        }else{
+            allDao.savePicture(monthAsset);
+        }
+    }
+
+    public List<MonthAsset> getMonthAssets(){
+        return allDao.getMonthAssets();
     }
 }

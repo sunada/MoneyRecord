@@ -2,11 +2,9 @@ package com.springapp.mvc.Controller;
 
 import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Model.Currency;
-import com.springapp.mvc.Service.ServiceImpl.InAllService;
-import com.springapp.mvc.Service.ServiceImpl.LoanService;
-import com.springapp.mvc.Service.ServiceImpl.MyFundService;
-import com.springapp.mvc.Service.ServiceImpl.StockService;
+import com.springapp.mvc.Service.ServiceImpl.*;
 import com.springapp.mvc.Util.ConstantInterface;
+import net.sf.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -34,6 +33,9 @@ public class InAllController {
     private MyFundService myFundService;
     private LoanService loanService;
     private StockService stockService;
+    private MonthAsset monthAsset;
+    @Resource
+    private BalanceService balanceService;
 
     @Autowired
     public void setAllService(InAllService allService){ this.allService = allService;}
@@ -50,9 +52,20 @@ public class InAllController {
     @Autowired
     public void setStockService(StockService stockService){this.stockService = stockService;}
 
+    @Autowired
+    public void setMonthAsset(MonthAsset monthAsset){ this.monthAsset = monthAsset;}
+
     @RequestMapping
     public ModelAndView view(){
         ModelAndView view = new ModelAndView("inAllDisplay");
+
+        List<MonthAsset> monthAssets = allService.getMonthAssets();
+        String monthAssetsJson = JSONArray.fromObject(monthAssets).toString();
+        view.addObject("monthAssets", monthAssetsJson);
+
+        List<Balance> monthLeft = balanceService.getBalanceList(monthAssets.size());
+        String monthLeftJson = JSONArray.fromObject(monthLeft).toString();
+        view.addObject("monthLeft", monthLeftJson);
 
         Map<String, BigDecimal> sumFund = myFundService.sumByRisk();
         Map<String, BigDecimal> sumStock = stockService.sumByRisk(Currency.RMB);
@@ -149,6 +162,17 @@ public class InAllController {
 //        String[] risk = request.getParameterValues("risk");
 
         allService.calProfitRate(start, end, type);
+        return "redirect:/inAll";
+    }
+
+    @RequestMapping(value="picture", method = RequestMethod.POST)
+    public String picture(HttpServletRequest request){
+        String month = request.getParameter("date");
+        BigDecimal cnyAsset = new BigDecimal(request.getParameter("cnyAsset"));
+        BigDecimal usdAsset = new BigDecimal(request.getParameter("usdAsset"));
+        monthAsset.setAmount(cnyAsset.add(usdAsset));
+        monthAsset.setMonth(month);
+        allService.picture(monthAsset);
         return "redirect:/inAll";
     }
 }

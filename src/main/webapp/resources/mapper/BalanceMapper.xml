@@ -83,6 +83,10 @@
         select date, month_left, month_budget, month_budget_left from balance where date=#{date};
     </select>
 
+    <select id="getBalanceList" resultMap="BalanceResult">
+        select date, month_left, month_budget, month_budget_left from balance order by date desc limit #{n};
+    </select>
+
     <insert id="insertBalance" parameterType="com.springapp.mvc.Model.Balance">
         insert balance (date, month_left, month_budget, month_budget_left) values(#{date},#{left},#{monthBudgetLeft}, #{budget});
     </insert>
@@ -94,4 +98,5 @@
     <select id="getLeftSum" resultMap="leftSum">
         select sum(month_left) as leftSum from balance;
     </select>
+
 </mapper>

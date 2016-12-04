@@ -3,6 +3,7 @@ package com.springapp.mvc.Dao;
 import com.springapp.mvc.Model.Deal;
 import com.springapp.mvc.Model.Fund;
 import com.springapp.mvc.Model.InAll;
+import com.springapp.mvc.Model.MonthAsset;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,5 +49,23 @@ public class InAllDao {
 
     public List<Deal> getStockDealList(Map<String, Object> map){
         return sqlSession.selectList("Deals.getStockListStartEnd", map);
+    }
+
+    public void savePicture(MonthAsset monthAsset){
+        sqlSession.insert("InAlls.savePicture", monthAsset);
+    }
+
+    public void updatePicture(MonthAsset monthAsset){
+        sqlSession.update("InAlls.updatePicture", monthAsset);
+    }
+
+    public boolean getPicture(String month){
+        if((Integer)sqlSession.selectOne("InAlls.getPictureByMonth", month) == 0){
+            return false;
+        }
+        return true;
+    }
+    public List<MonthAsset> getMonthAssets(){
+        return sqlSession.selectList("InAlls.monthAssets");
     }
 }

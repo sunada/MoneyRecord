@@ -84,7 +84,7 @@
                             trigger: 'axis'
                         },
                         legend: {
-                            data:['当月日常支出(k)','当月结余(k)','当月结余占收入比(%)']
+                            data:['当月结余占收入比(%)','当月结余(k)','当月日常支出(k)']
                         },
                         toolbox: {
                             show: true,
@@ -103,10 +103,10 @@
                         },
                         series: [
                             {
-                                name: '当月日常支出(k)',
+                                name: '当月结余占收入比(%)',
                                 type: 'line',
                                 smooth: true,
-                                data: expenseList
+                                data: leftRateList
                             },
                             {
                                 name: '当月结余(k)',
@@ -115,11 +115,12 @@
                                 data: leftList
                             },
                             {
-                                name: '当月结余占收入比(%)',
+                                name: '当月日常支出(k)',
                                 type: 'line',
                                 smooth: true,
-                                data: leftRateList
-                            }]
+                                data: expenseList
+                            }
+                            ]
                     };
                     myChart.setOption(option);
                 </script>

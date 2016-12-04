@@ -110,6 +110,10 @@ public class BalanceService {
         return balanceList;
     }
 
+    public List<Balance> getBalanceList(int n){
+        return balanceDao.getBalanceList(n);
+    }
+
     public BigDecimal incomeSum(List<Income> incomeList){
         if(incomeList == null){
             return BigDecimal.ZERO;

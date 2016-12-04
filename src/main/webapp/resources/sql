@@ -171,3 +171,11 @@ drop table if exists 'accounts';
           `fund_base` decimal(9,2) DEFAULT NULL,
           `unemploy_insurance_company` decimal(9,2) DEFAULT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+每月总资产
+|assets|CREATE TABLE `assets` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `year_and_month` char(7) DEFAULT NULL,
+  `amount` decimal(9,2) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8
