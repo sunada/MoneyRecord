@@ -132,7 +132,6 @@
                     var myChart = echarts.init(document.getElementById('leftAcc'));
                     var balanceListJson = ${balanceListJson};
                     var leftList = new Array();
-                    var leftRateList = new Array();
                     var dateList = new Array();
                     for(b in balanceListJson){
                         left = balanceListJson[b]["left"];
@@ -145,8 +144,8 @@
                     var leftAccList = new Array();
                     var amount = 0;
                     for(b in leftList){
-                        amount += leftList[b];
                         leftAccList.push(amount);
+                        amount += leftList[b];
                     }
 
                     option = {
@@ -219,9 +218,49 @@
                         ],
                         series : [
                             {
-                                name: '结余累积',
-                                type: 'bar',
-                                data: leftAccList
+                                "name": "上月结余",
+                                "type": "bar",
+                                "stack": "总量",
+                                "barMaxWidth": 50,
+                                "barGap": "10%",
+                                "itemStyle": {
+                                    "normal": {
+                                        "barBorderRadius": 0,
+                                        "color": "rgba(60,169,196,0.5)",
+                                        "label": {
+                                            "show": true,
+                                            "textStyle": {
+                                                "color": "rgba(0,0,0,1)"
+                                            },
+                                            "position": "insideTop",
+                                            formatter : function(p) {
+                                                return p.value > 0 ? (p.value ): '';
+                                            }
+                                        }
+                                    }
+                                },
+                                "data": leftAccList
+                            },
+                            {
+                                "name": "当月结余",
+                                "type": "bar",
+                                "stack": "总量",
+                                "itemStyle": {
+                                    "normal": {
+                                        "color": "rgba(193,35,43,1)",
+                                        "barBorderRadius": 0,
+                                        "label": {
+                                            "show": true,
+                                            "position": "top",
+                                            formatter : function(p) {
+                                                return p.value > 0 ? ('▲'
+                                                        + p.value + '')
+                                                        : '';
+                                            }
+                                        }
+                                    }
+                                },
+                                "data": leftList
                             }
                         ]
                     };

@@ -90,6 +90,7 @@
                         <div class="form-group">
                             <input type="text" class="form-control" name="date" placeholder="最新快照日期 <fmt:formatDate value="${latestDate}"/>"/>
                         </div>
+
                         <input type="submit" value="保存快照"/>
                     </form>
                 </td>
@@ -226,7 +227,7 @@
                     <td>${b.key}</td>
                     <c:forEach items="${b.value}" var="bv">
                         <td>
-                            <fmt:formatNumber type="number" value="${bv}" pattern="0.00" maxFractionDigits="2"/><br/>
+                            <fmt:formatNumber type="number" value="${bv}" pattern="0.00" maxFractionDigits="0"/><br/>
                         </td>
                     </c:forEach>
                 </tr>
