@@ -372,7 +372,7 @@
             </form>
         </table>
 
-    <c:set var="exchangeRate" value="6.88"></c:set>
+    <c:set var="exchangeRate" value="6.94"></c:set>
     <table class="table table-bordered">
         <caption>美元资产（汇率：${exchangeRate})</caption>
         <thead>
@@ -392,7 +392,25 @@
             </c:forEach>
     </table>
 
-
+        <c:set var="exchangeRate" value="0.8949"></c:set>
+        <table class="table table-bordered">
+            <caption>港币资产（汇率：${exchangeRate})</caption>
+            <thead>
+            <tr>
+                <th>风险</th>
+                <th>金额(港币)</th>
+                <th>金额(人民币)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${sumHKD}" var="u">
+            <tr>
+                <td>${u.key}</td>
+                <td><fmt:formatNumber type="number" value="${u.value}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${u.value * exchangeRate}" pattern="0.00" maxFractionDigits="2"/></td>
+            </tr>
+            </c:forEach>
+        </table>
 
     </body>
 </html>

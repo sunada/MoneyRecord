@@ -143,6 +143,11 @@ public class InAllController {
         Map<String, BigDecimal> sumUSA = stockService.sumByRisk(Currency.USA);
         sumUSA.put("总计",stockService.sum(Currency.USA));
         view.addObject("sumUSA", sumUSA);
+
+        Map<String, BigDecimal> sumHKD = stockService.sumByRisk(Currency.HKD);
+        sumHKD.put("总计",stockService.sum(Currency.HKD));
+        view.addObject("sumHKD", sumHKD);
+
         return view;
     }
 
