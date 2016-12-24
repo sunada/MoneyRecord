@@ -94,7 +94,7 @@ public class StockService {
                 historyAsset.setBelongTo(stockSql.getBelongTo());
                 historyAsset.setRisk(stockSql.getRisk());
                 historyAsset.setCost(stockSql.getCost().multiply(stockSql.getShare()).add(cost));
-                historyAsset.setProfit(BigDecimal.ZERO.subtract(stockSql.getCost().multiply(stockSql.getShare())).add(amount));
+                historyAsset.setProfit(amount.subtract(stockSql.getCost().multiply(stockSql.getShare())));
                 historyAsset.setAssetType(AssetType.STOCK);
                 historyAsset.setEnd(date);
                 historyAssetDao.save(historyAsset);

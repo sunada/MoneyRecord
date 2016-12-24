@@ -72,6 +72,7 @@
                 <label for="belongTo">所属账户：</label>
                 <input type="radio" name="belongTo" value="华666600196751" checked/>华666600196751
                 <input type="radio" name="belongTo" value="华010600052829"/>华010600052829
+                <input type="radio" name="belongTo" value="国金39997769"/>国金39997769
                 <input type="radio" name="belongTo" value="积7XJ11330"/>积7XJ11330
             </div>
 

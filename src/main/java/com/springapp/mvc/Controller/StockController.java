@@ -58,6 +58,9 @@ public class StockController {
         ArrayList<Stock> useStocks = stockService.read(Currency.USA);
         view.addObject("useStocks", useStocks);
 
+        ArrayList<Stock> hkdStocks = stockService.read(Currency.HKD);
+        view.addObject("hkdStocks", hkdStocks);
+
         Map<String, Date> accountNewDealDate = dealService.getAccountNewDealDate(AssetType.STOCK);
         view.addObject("accDate", accountNewDealDate);
 
