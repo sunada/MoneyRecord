@@ -198,7 +198,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${group}" var="g" varStatus="status">
+            <c:forEach items="${groupByRisk}" var="g" varStatus="status">
                 <tr>
                     <td>${g.key}</td>
                     <c:forEach items="${g.value}" var="ac" varStatus="status">

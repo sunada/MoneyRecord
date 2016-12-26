@@ -37,8 +37,9 @@
                     <form class="form-inline" role="form" action="/inAll/picture" method="post" accept-charset="utf-8">
                         <div class="form-group">
                             <input type="text" class="form-control" name="date" placeholder="日期（yyyy-MM）"/>
-                            <input type="text" class="form-control" name="cnyAsset" placeholder="人民币总资产金额"/>
-                            <input type="text" class="form-control" name="usdAsset" placeholder="美元总资产金额"/>
+                            <input type="text" class="form-control" name="cnyAsset" placeholder="人民币总资产金额（元）"/>
+                            <input type="text" class="form-control" name="usdAsset" placeholder="美元总资产金额（元）"/>
+                            <input type="text" class="form-control" name="hkdAsset" placeholder="港币总资产金额（元）"/>
                         </div>
                         <input type="submit" value="保存总资产"/>
                     </form>

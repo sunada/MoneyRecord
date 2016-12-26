@@ -175,7 +175,8 @@ public class InAllController {
         String month = request.getParameter("date");
         BigDecimal cnyAsset = new BigDecimal(request.getParameter("cnyAsset"));
         BigDecimal usdAsset = new BigDecimal(request.getParameter("usdAsset"));
-        monthAsset.setAmount(cnyAsset.add(usdAsset));
+        BigDecimal hkdAsset = new BigDecimal(request.getParameter("hkdAsset"));
+        monthAsset.setAmount(cnyAsset.add(usdAsset).add(hkdAsset));
         monthAsset.setMonth(month);
         allService.picture(monthAsset);
         return "redirect:/inAll";

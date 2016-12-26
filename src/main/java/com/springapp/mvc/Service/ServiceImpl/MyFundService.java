@@ -48,9 +48,11 @@ public class MyFundService {
             List<BigDecimal> list = new ArrayList<BigDecimal>();
             str = fund.getRisk().getName();
             tmp = fund.getNet().multiply(fund.getShare());
+//            log.debug(str + " " + tmp.toString());
             if(map.containsKey(str)) {
                 list = map.get(str);
                 amount = list.get(0).add(tmp);
+//                log.debug(str + " hehe:" + amount.toString());
                 cost = list.get(2).add(fund.getCost());
                 list.set(0, amount);
                 list.set(1, amount.divide(sum, 2, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));

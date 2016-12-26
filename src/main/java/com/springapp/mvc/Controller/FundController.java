@@ -72,7 +72,7 @@ public class FundController {
         view.addObject("sum", sum);
 
         Map<String, List<BigDecimal>> map = myFundService.addUp(funds);
-        view.addObject("group", map);
+        view.addObject("groupByRisk", map);
 
         Map<String, List<BigDecimal>> belongTos = myFundService.addUpByBelongTo(funds);
         view.addObject("belongTos", belongTos);
