@@ -1,13 +1,9 @@
 package com.springapp.mvc.Controller;
 
-import com.springapp.mvc.Model.Balance;
-import com.springapp.mvc.Model.Expense;
-import com.springapp.mvc.Model.Income;
-import com.springapp.mvc.Model.Salary;
+import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Service.ServiceImpl.BalanceService;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,11 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2016/10/10.
@@ -37,6 +29,8 @@ public class BalanceController {
     private Expense expense;
     @Resource
     private Balance balance;
+    @Resource
+    private SocialFunds socialFunds;
 
     @RequestMapping
     public ModelAndView balanceSheet(){
@@ -55,7 +49,24 @@ public class BalanceController {
 
         String balanceListJson = JSONArray.fromObject(balanceList).toString();
         mv.addObject("balanceListJson", balanceListJson);
+
+        SocialFunds socialFunds = balanceService.getSocialFunds();
+        mv.addObject("socialFunds", socialFunds);
         return mv;
+    }
+
+    @RequestMapping(value = "/addSocialFunds",method = RequestMethod.POST)
+    public String addSocialFunds(HttpServletRequest request){
+        BigDecimal hHouseFund = new BigDecimal(request.getParameter("hHouseFund"));
+        BigDecimal hMediFund = new BigDecimal(request.getParameter("hMediFund"));
+        BigDecimal wHouseFund = new BigDecimal(request.getParameter("wHouseFund"));
+        BigDecimal wMediFund = new BigDecimal(request.getParameter("wMediFund"));
+        socialFunds.sethHouseFund(hHouseFund);
+        socialFunds.sethMediFund(hMediFund);
+        socialFunds.setwHouseFund(wHouseFund);
+        socialFunds.setwMediFund(wMediFund);
+        balanceService.saveSocialFunds(socialFunds);
+        return "redirect:/balance";
     }
 
     @RequestMapping("/addSalary")

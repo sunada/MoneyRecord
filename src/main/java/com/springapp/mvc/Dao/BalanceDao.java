@@ -3,6 +3,7 @@ package com.springapp.mvc.Dao;
 import com.springapp.mvc.Model.Balance;
 import com.springapp.mvc.Model.Expense;
 import com.springapp.mvc.Model.Salary;
+import com.springapp.mvc.Model.SocialFunds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -59,5 +60,18 @@ public class BalanceDao {
     public BigDecimal getLeftSum(){ return sqlSession.selectOne("Balance.getLeftSum"); }
 
     public List<Balance> getBalanceList(int n){ return sqlSession.selectList("Balance.getBalanceList", n);}
+
+    public void saveSocialFunds(SocialFunds socialFunds){
+        if (getSocialFunds() == null) {
+            sqlSession.insert("Balance.insertSocialFunds", socialFunds);
+        }else{
+            sqlSession.update("Balance.updateSocialFunds",socialFunds);
+        }
+        return;
+    }
+
+    public SocialFunds getSocialFunds(){
+        return sqlSession.selectOne("Balance.getSocialFunds");
+    }
 
 }

@@ -272,6 +272,22 @@
     </tr>
 </table>
 
+<table class="table table-bordered">
+    <tr>
+        <td>
+            <form class="form-inline" role="form" action="/balance/addSocialFunds" method="post" accept-charset="utf-8">
+                <div class="form-group">
+                    老公公积金：<input type="text" class="form-control" name="hHouseFund" value=${socialFunds.hHouseFund}>
+                    老公医保：<input type="text" class="form-control" name="hMediFund" value=${socialFunds.hMediFund}>
+                    老婆公积金：<input type="text" class="form-control" name="wHouseFund" value=${socialFunds.wHouseFund}>
+                    老婆医保：<input type="text" class="form-control" name="wMediFund" value=${socialFunds.wMediFund}>
+                </div>
+                <input type="submit" value="保存"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
 
 <table class="table table-bordered">
     <caption>
@@ -325,9 +341,7 @@
                         </c:forEach>
                     <c:out value="${all}"/>
                     </tbody>
-
                 </table>
-
             </td>
             <td>
                 <table class="table table-bordered">

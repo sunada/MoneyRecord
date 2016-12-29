@@ -1,10 +1,7 @@
 package com.springapp.mvc.Service.ServiceImpl;
 
 import com.springapp.mvc.Dao.BalanceDao;
-import com.springapp.mvc.Model.Balance;
-import com.springapp.mvc.Model.Expense;
-import com.springapp.mvc.Model.Income;
-import com.springapp.mvc.Model.Salary;
+import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Util.ConstantInterface;
 import org.springframework.stereotype.Service;
 import sun.security.krb5.Config;
@@ -112,6 +109,15 @@ public class BalanceService {
 
     public List<Balance> getBalanceList(int n){
         return balanceDao.getBalanceList(n);
+    }
+
+    public void saveSocialFunds(SocialFunds socialFunds){
+        balanceDao.saveSocialFunds(socialFunds);
+        return;
+    }
+
+    public SocialFunds getSocialFunds(){
+        return balanceDao.getSocialFunds();
     }
 
     public BigDecimal incomeSum(List<Income> incomeList){

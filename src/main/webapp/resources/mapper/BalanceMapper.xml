@@ -35,6 +35,13 @@
         <result column="month_budget_left" jdbcType="DECIMAL" property="monthBudgetLeft"/>
     </resultMap>
 
+    <resultMap id="SocialFundsResult" type="com.springapp.mvc.Model.SocialFunds">
+        <result column="h_house_fund" jdbcType="DECIMAL" property="hHouseFund"/>
+        <result column="h_medi_fund" jdbcType="DECIMAL" property="hMediFund"/>
+        <result column="w_house_fund" jdbcType="DECIMAL" property="wHouseFund"/>
+        <result column="w_medi_fund" jdbcType="DECIMAL" property="wMediFund"/>
+    </resultMap>
+
     <resultMap id="BugdgetSum" type="java.math.BigDecimal">
         <result column="budgetSum" jdbcType="DECIMAL" property="bugetSum"/>
     </resultMap>
@@ -91,6 +98,18 @@
         insert balance (date, month_left, month_budget, month_budget_left) values(#{date},#{left},#{monthBudgetLeft}, #{budget});
     </insert>
 
+    <insert id="insertSocialFunds" parameterType="com.springapp.mvc.Model.SocialFunds">
+        insert social_funds(h_house_fund,h_medi_fund,w_house_fund,w_medi_fund) values(#{hHouseFund},#{hMediFund},#{wHouseFund},#{wMediFund});
+    </insert>
+
+    <update id="updateSocialFunds" parameterType="com.springapp.mvc.Model.SocialFunds">
+        update social_funds set h_house_fund=#{hHouseFund},h_medi_fund=#{hMediFund},w_house_fund=#{wHouseFund},w_medi_fund=#{wMediFund};
+    </update>
+
+    <select id="getSocialFunds" resultMap="SocialFundsResult">
+        select h_house_fund,h_medi_fund,w_house_fund,w_medi_fund from social_funds;
+    </select>
+
     <select id="getBudgetSum" resultMap="BugdgetSum">
       select sum(month_budget_left) as budgetSum from balance;
     </select>
@@ -98,5 +117,7 @@
     <select id="getLeftSum" resultMap="leftSum">
         select sum(month_left) as leftSum from balance;
     </select>
+
+
 
 </mapper>
