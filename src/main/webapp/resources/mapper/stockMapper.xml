@@ -53,7 +53,7 @@
     </insert>
 
     <insert id="updateStock" parameterType="com.springapp.mvc.Model.Stock">
-        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost} where code=#{code} and belong_to=#{belongTo};
+        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost},current=#{current} where code=#{code} and belong_to=#{belongTo};
     </insert>
 
     <select id="getSum" resultMap="SumResult">
@@ -73,7 +73,7 @@
     </insert>
 
     <delete id="delete" parameterType="String">
-        delete from stocks where code = #{code};
+        delete from stocks where code = #{code} and belong_to=#{belongTo};
     </delete>
 
     <select id="picture" parameterType="java.util.List">

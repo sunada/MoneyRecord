@@ -67,6 +67,11 @@ public class InAllController {
         String monthLeftJson = JSONArray.fromObject(monthLeft).toString();
         view.addObject("monthLeft", monthLeftJson);
 
+        SocialFunds socialFunds = balanceService.getSocialFunds();
+        BigDecimal socialFundsAmount = socialFunds.gethHouseFund().add(socialFunds.gethMediFund());
+        socialFundsAmount = socialFundsAmount.add(socialFunds.getwHouseFund()).add(socialFunds.getwMediFund());
+        view.addObject("socialFundsAmount", socialFundsAmount);
+
         Map<String, BigDecimal> sumFund = myFundService.sumByRisk();
         Map<String, BigDecimal> sumStock = stockService.sumByRisk(Currency.RMB);
         Map<String, BigDecimal> sumLoan = loanService.sumByRisk();
@@ -147,7 +152,6 @@ public class InAllController {
         Map<String, BigDecimal> sumHKD = stockService.sumByRisk(Currency.HKD);
         sumHKD.put("总计",stockService.sum(Currency.HKD));
         view.addObject("sumHKD", sumHKD);
-
         return view;
     }
 

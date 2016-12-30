@@ -264,7 +264,6 @@
                             }
                         ]
                     };
-
                     myChart.setOption(option);
                 </script>
             </div>

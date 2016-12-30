@@ -40,6 +40,7 @@
                             <input type="text" class="form-control" name="cnyAsset" placeholder="人民币总资产金额（元）"/>
                             <input type="text" class="form-control" name="usdAsset" placeholder="美元总资产金额（元）"/>
                             <input type="text" class="form-control" name="hkdAsset" placeholder="港币总资产金额（元）"/>
+                            社保账户总金额：<input type="text" class="form-control" name="socialFundsAmount" value=${socialFundsAmount}>
                         </div>
                         <input type="submit" value="保存总资产"/>
                     </form>
@@ -60,6 +61,7 @@
                             var monthes = new Array();
                             var assetsBesidesLeft = new Array();
                             var assets = new Array();
+                            var len = monthAssets.length;
                             for(m in monthAssets){
                                 month = monthAssets[m]["month"];
                                 monthes.push(month);
@@ -69,7 +71,6 @@
                                 assets.push(asset);
                             }
                             assetsBesidesLeft[0] = monthAssets[0]["amount"] - leftList[0];
-
                             option = {
                                 "title": {
                                     "text": "总资产",

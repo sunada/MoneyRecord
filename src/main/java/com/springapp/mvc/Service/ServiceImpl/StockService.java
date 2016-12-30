@@ -231,7 +231,7 @@ public class StockService {
             while ((line = br.readLine()) != null) { //循环读取行
                 String[] segments = line.split("\t"); //按tab分割
 
-                if(segments[11].equals("0156915917") || segments[11].equals("A447655138")){
+                if(segments[11].equals("0156915917") || segments[11].equals("A447655138")||segments[11].equals("156915917") ){
                     deal.setBelongTo("华010600052829");
                 }else if(segments[11].equals("A473653724") || segments[11].equals("0157570856")){
                     deal.setBelongTo("华666600196751");
