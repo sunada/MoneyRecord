@@ -24,7 +24,7 @@
     </select>
 
     <select id="getFundList" resultMap="FundResult">
-        select code, name, purchase_rate, redemption_rate, charge_mode, dividend_mode, belong_to, risk, valid, amount, start_time, inter, week_aip, date_aip from funds order by risk;
+        select code, name, purchase_rate, redemption_rate, charge_mode, dividend_mode, belong_to, risk, valid, amount, start_time, inter, week_aip, date_aip from funds order by code;
     </select>
 
     <insert id="insertFund" parameterType="com.springapp.mvc.Model.Fund">
