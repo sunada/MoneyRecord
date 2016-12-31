@@ -97,6 +97,9 @@ public class DealService {
         Date nearDealDate;
         NetDay netDay = new NetDay();
         for(Fund fund : funds){
+            if(fund.getCode().startsWith("-")){
+                continue;
+            }
 //            log.debug("updateAipDeals: " + fund.getCode());
             //先为每个code灌一条定投数据到表中，保证nearDealDate是上次定投的日期
             nearDealDate = dealDao.getNearDealDate(fund.getCode(),fund.getBelongTo(),fund.getStartTime(),fund.getAmount());
@@ -125,6 +128,7 @@ public class DealService {
 
             Date date = new Date();
             Calendar cal = Calendar.getInstance();
+            int todayYear = cal.get(Calendar.YEAR);
             cal.setTime(date);
             long todayDay = cal.get(Calendar.DAY_OF_YEAR);
             long nextDealDay;
@@ -134,7 +138,13 @@ public class DealService {
             cal.setTime(nearDealDate);
             cal.add(inter, mul);
             nextDealDay = cal.get(Calendar.DAY_OF_YEAR);
+            int nextDealYear = cal.get(Calendar.YEAR);
+
+            if(todayYear != nextDealYear){
+                continue;
+            }
             nextDealDate = cal.getTime();
+
             while(todayDay - nextDealDay >= 0){
                 realNextDealDate = myFundService.calRealAipDate(nextDealDate);
                 updateOneAipDeal(fund, nextDealDate,realNextDealDate);

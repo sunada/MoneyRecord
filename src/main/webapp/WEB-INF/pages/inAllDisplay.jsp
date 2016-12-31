@@ -67,10 +67,10 @@
                                 monthes.push(month);
                                 asset = monthAssets[m]["amount"];
                                 leftList.push(monthLeft[m]["left"]);
-                                assetsBesidesLeft.push(asset - leftList[m]);
-                                assets.push(asset);
+                                assetsBesidesLeft.push((asset - leftList[m]).toFixed(2));
+                                assets.push(asset.toFixed(2));
                             }
-                            assetsBesidesLeft[0] = monthAssets[0]["amount"] - leftList[0];
+                            assetsBesidesLeft[0] = (monthAssets[0]["amount"] - leftList[0]).toFixed(2);
                             option = {
                                 "title": {
                                     "text": "总资产",
@@ -250,7 +250,7 @@
                                 monthes.push(month);
                                 asset = monthAssets[m]["amount"];
                                 left = monthLeft[m]["left"];
-                                investProfit.push(asset - left - last);
+                                investProfit.push((asset - left - last).toFixed(2));
                                 last = asset;
                             }
                             investProfit[0] = 0;
@@ -349,18 +349,18 @@
             </tbody>
         </table>
 
-        <table class="table table-bordered">
-            <caption>投资收益率计算：</caption>
-            <form class="form-inline" role="form" action="/inAll/calProfitRate" method="post" accept-charset="utf-8">
-                <tr>
-                    <td><input type="text" placeholder="开始日期" name="start"></td>
-                    <td><input type="text" placeholder="结束日期" name="end"></td>
-                    <td>
-                        <div> 资产类型：
-                        <input type="checkbox" value="fund" name="type">基金
-                        <input type="checkbox" value="stock" name="type">证券
-                        </div>
-                    </td>
+        <%--<table class="table table-bordered">--%>
+            <%--<caption>投资收益率计算：</caption>--%>
+            <%--<form class="form-inline" role="form" action="/inAll/calProfitRate" method="post" accept-charset="utf-8">--%>
+                <%--<tr>--%>
+                    <%--<td><input type="text" placeholder="开始日期" name="start"></td>--%>
+                    <%--<td><input type="text" placeholder="结束日期" name="end"></td>--%>
+                    <%--<td>--%>
+                        <%--<div> 资产类型：--%>
+                        <%--<input type="checkbox" value="fund" name="type">基金--%>
+                        <%--<input type="checkbox" value="stock" name="type">证券--%>
+                        <%--</div>--%>
+                    <%--</td>--%>
                     <%--<td>--%>
                         <%--<div> 风险类型：--%>
                         <%--<input type="checkbox" value="HIGH" name="risk">高--%>
@@ -368,11 +368,11 @@
                         <%--<input type="checkbox" value="LOW" name="risk">低--%>
                         <%--</div>--%>
                     <%--</td>--%>
-                    <td><input type="submit" value="提取文件"/></td>
-                    </td>
-                </tr>
-            </form>
-        </table>
+                    <%--<td><input type="submit" value="提取文件"/></td>--%>
+                    <%--</td>--%>
+                <%--</tr>--%>
+            <%--</form>--%>
+        <%--</table>--%>
 
     <c:set var="exchangeRate" value="6.94"></c:set>
     <table class="table table-bordered">

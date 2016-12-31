@@ -293,8 +293,7 @@
         <a class="btn btn-primary" onclick="window.location='/balance/addSalary'">新增月工资记录</a></button>
         <a class="btn btn-primary" onclick="window.location='/balance/addExpense'">新增月支出记录</a></button>
         <br/><br/>
-        月收支状态
-        月结余总计：${leftSum}
+        9月至今结余总计：${leftSum}
         月消费支出预算结余总计：${budgetSum}
     </caption>
 
