@@ -119,6 +119,26 @@ public class BalanceController {
 
         balanceService.saveSalary(salary);
         balanceService.updateBalance(date, salary);
+
+        socialFunds = balanceService.getSocialFunds();
+        if(owner == "wifi"){
+            if(socialFunds != null){
+                socialFunds.setwMediFund(socialFunds.getwMediFund().add(mediaCash));
+                socialFunds.setwHouseFund(socialFunds.getwHouseFund().add(houseFunds).add(houseFundsCompany));
+            }else{
+                socialFunds.setwHouseFund(houseFunds.add(houseFundsCompany));
+                socialFunds.setwMediFund(mediaCash);
+            }
+        }else{
+            if(socialFunds != null){
+                socialFunds.sethMediFund(socialFunds.gethMediFund().add(mediaCash));
+                socialFunds.sethHouseFund(socialFunds.gethHouseFund().add(houseFunds).add(houseFundsCompany));
+            }else{
+                socialFunds.sethHouseFund(houseFunds.add(houseFundsCompany));
+                socialFunds.sethMediFund(mediaCash);
+            }
+        }
+        balanceService.saveSocialFunds(socialFunds);
         return "redirect:/balance";
     }
 
