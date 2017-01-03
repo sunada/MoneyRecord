@@ -36,8 +36,8 @@
                     $(this).hide();
                     $(this).siblings().show();
 
-                    var str = "code=" + para[0] + "&name=" + para[1] + "&belongTo=" + para[2] + "&cost=" + para[3]
-                            + "&current=" + para[4] + "&share=" + para[5] + "&amount=" + para[6] + "&risk=" + para[9];
+                    var str = "code=" + para[0] + "&name=" + para[1] + "&belongTo=" + para[2] + "&cost=" + para[4]
+                            + "&current=" + para[5] + "&share=" + para[6] + "&amount=" + para[7] + "&risk=" + para[9];
 
 //                    alert(str);
                     //ajax提交表单
@@ -140,10 +140,10 @@
                     <th>股票代码</th>
                     <th>股票名称</th>
                     <th>账号</th>
+                    <th>市值</th>
                     <th>成本</th>
                     <th>现价</th>
                     <th>份额</th>
-                    <th>市值</th>
                     <th>盈亏</th>
                     <th>盈亏率(%)</th>
                     <th>风险</th>
@@ -156,10 +156,10 @@
                         <td>${stock.code}</td>
                         <td>${stock.name}</td>
                         <td>${stock.belongTo}</td>
+                        <td><fmt:formatNumber type="number" value="${stock.current * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td>${stock.cost}</td>
                         <td>${stock.current}</td>
                         <td>${stock.share}</td>
-                        <td><fmt:formatNumber type="number" value="${stock.current * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td>${stock.risk}</td>
