@@ -31,6 +31,11 @@
         <result column="amount" property="amount" jdbcType="DECIMAL"/>
     </resultMap>
 
+    <resultMap id="SumByType" type="java.util.HashMap">
+        <result column="type" property="key" jdbcType="CHAR"/>
+        <result column="amount" property="value" jdbcType="DECIMAL"/>
+    </resultMap>
+
     <select id="getStockList" resultMap="StockResult">
         select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} order by belong_to,risk,current*share desc;
     </select>
@@ -67,6 +72,10 @@
 
     <select id="sumByBelongTo" resultMap="SumByBelongTo">
         select belong_to, sum(current*share) as amount from stocks where currency=#{currency} group by belong_to;
+    </select>
+
+    <select id="sumByType" resultMap="SumByType">
+        select type, sum(current*share) as amount from stocks WHERE SHARE > 0 AND currency='rmb' GROUP BY TYPE;
     </select>
 
     <insert id="updateCurrent" parameterType="java.util.Map">

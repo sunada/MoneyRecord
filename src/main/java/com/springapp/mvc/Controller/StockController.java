@@ -65,7 +65,10 @@ public class StockController {
         view.addObject("accDate", accountNewDealDate);
 
         Map<String, List<BigDecimal>> map = stockService.addUp(stocks);
-        view.addObject("group", map);
+        view.addObject("groupByRisk", map);
+
+        Map mapByType = stockService.addUpByType();
+        view.addObject("groupByType", mapByType);
 
         BigDecimal rmbSum = stockService.sum(Currency.RMB);
         view.addObject("rmbSum", rmbSum);

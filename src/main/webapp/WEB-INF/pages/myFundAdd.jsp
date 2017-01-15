@@ -160,6 +160,7 @@
                 <input type="radio" name="belongTo" value="蛋卷基金" <c:out value='${belong_to=="蛋卷基金"? "checked":""}'/> id="dan">蛋卷基金
                 <input type="radio" name="belongTo" value="支付宝" <c:out value='${belong_to=="支付宝"? "checked":""}'/> id="zhi">支付宝
                 <input type="radio" name="belongTo" value="基有帮" <c:out value='${belong_to=="基有帮"? "checked":""}'/> id="ji">基有帮
+                <input type="radio" name="belongTo" value="招商银行" <c:out value='${belong_to=="招商银行"? "checked":""}'/> id="zhaoshang">招商银行
             </div>
 
             <c:set var="risk" value='<%=request.getParameter("risk")%>'/>

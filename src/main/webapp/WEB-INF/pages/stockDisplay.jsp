@@ -287,7 +287,7 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${group}" var="g" varStatus="status">
+            <c:forEach items="${groupByRisk}" var="g" varStatus="status">
                 <tr>
                     <td>${g.key}</td>
                     <c:forEach items="${g.value}" var="ac" varStatus="status">
@@ -302,11 +302,32 @@
         </table>
 
         <table class="table table-bordered">
+            <caption>人民币资产分类统计（按类型）</caption>
+            <thead>
+            <tr>
+                <th>类型</th>
+                <th>资金</th>
+                <th>资金占比(%)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${groupByType}" var="g" varStatus="status">
+                <tr>
+                    <td>${g.key}</td>
+                    <td><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${g.value / rmbSum * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+
+        <table class="table table-bordered">
             <caption>人民币资产分类统计（按帐户）</caption>
             <thead>
             <tr>
                 <th>账户</th>
                 <th>资金</th>
+                <th>资金占比(%)</th>
             </tr>
             </thead>
             <tbody>
@@ -314,6 +335,7 @@
                 <tr>
                     <td>${g.key}</td>
                     <td></t><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/><br/></td>
+                    <td><fmt:formatNumber type="number" value="${g.value / rmbSum * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                 </tr>
             </c:forEach>
             </tbody>

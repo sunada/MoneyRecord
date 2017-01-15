@@ -93,6 +93,14 @@ public class StockDao {
         return map;
     }
 
+    public Map sumByType(){
+        FblMapResultHandler fbl = new FblMapResultHandler();
+        sqlSession.select("Stocks.sumByType",fbl);
+        @SuppressWarnings("rawtypes")
+        Map map =fbl.getMappedResults();
+        return map;
+    }
+
     public List<Map<String, Object>> sumByRisk(Currency currency){
         List<Map<String, Object>> map = sqlSession.selectList("Stocks.sumByRisk", currency);
         return map;

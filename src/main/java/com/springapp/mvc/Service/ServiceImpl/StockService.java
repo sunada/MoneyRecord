@@ -412,6 +412,16 @@ public class StockService {
         return map;
     }
 
+    public Map addUpByType() {
+        Map map = stockDao.sumByType();
+        BigDecimal amount = new BigDecimal(0);
+        for(Object key : map.keySet()){
+            amount = amount.add((BigDecimal)map.get(key));
+        }
+        map.put("总计",amount);
+        return map;
+    }
+
     public Stock readStockByCB(String code, String belongTo){
         return stockDao.getStockByCB(code, belongTo);
     }
