@@ -37,7 +37,7 @@
                     $(this).siblings().show();
 
                     var str = "code=" + para[0] + "&name=" + para[1] + "&belongTo=" + para[2] + "&cost=" + para[4]
-                            + "&current=" + para[5] + "&share=" + para[6] + "&amount=" + para[7] + "&risk=" + para[9];
+                            + "&current=" + para[5] + "&share=" + para[6] + "&amount=" + para[7] + "&risk=" + para[9] + "&type=" + para[10];
 
 //                    alert(str);
                     //ajax提交表单
@@ -71,7 +71,6 @@
                     var str = "code=" + para[0] + "&name=" + para[1] + "&rmb_cost=" + para[2] + "&usd_cost=" + para[4]
                             + "&current=" + para[5] + "&share=" + para[6] + "&risk=" + para[10] + "&belongTo=" + para[11];
 
-//                    alert(str);
                     //ajax提交表单
                     $.ajax({
                         type: "post",
@@ -147,6 +146,7 @@
                     <th>盈亏</th>
                     <th>盈亏率(%)</th>
                     <th>风险</th>
+                    <th>类型</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -163,6 +163,7 @@
                         <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td>${stock.risk}</td>
+                        <td>${stock.type}</td>
                         <td>
                             <a class="btn btn-primary edit">编辑</button>
                             <a class="btn btn-primary update">更新</button>

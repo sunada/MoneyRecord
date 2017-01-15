@@ -13,6 +13,7 @@
         <result column="rate" jdbcType="DECIMAL" property="rate"/>
         <result column="risk" jdbcType="CHAR" property="risk"/>
         <result column="currency" jdbcType="CHAR" property="currency"/>
+        <result column="type" jdbcType="CHAR" property="type"/>
         <result column="rmb_cost" jdbcType="DECIMAL" property="rmbCost"/>
     </resultMap>
 
@@ -31,11 +32,11 @@
     </resultMap>
 
     <select id="getStockList" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk, rmb_cost from stocks where share > 0 and currency=#{currency} order by belong_to,risk,current*share desc;
+        select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} order by belong_to,risk,current*share desc;
     </select>
 
     <select id="getStockListMap" resultMap="StockResult" parameterType="java.util.Map">
-        select code, name, belong_to, cost, current, share, risk, rmb_cost from stocks where share > 0 and currency=#{currency} and code > ${flag} order by belong_to,risk,current*share desc;
+        select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} and code > ${flag} order by belong_to,risk,current*share desc;
     </select>
 
     <select id="getHistoryStockList" resultMap="StockResult">
@@ -45,7 +46,7 @@
     </select>
 
     <select id="getStockByCB" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk from stocks where code=#{code} and belong_to=#{belongTo} and currency="RMB";
+        select code, name, belong_to, cost, current, share, risk,type from stocks where code=#{code} and belong_to=#{belongTo} and currency="RMB";
     </select>
 
     <insert id="insertStock" parameterType="com.springapp.mvc.Model.Stock">
@@ -53,7 +54,7 @@
     </insert>
 
     <insert id="updateStock" parameterType="com.springapp.mvc.Model.Stock">
-        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost},current=#{current} where code=#{code} and belong_to=#{belongTo};
+        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost},current=#{current},type=#{type} where code=#{code} and belong_to=#{belongTo};
     </insert>
 
     <select id="getSum" resultMap="SumResult">

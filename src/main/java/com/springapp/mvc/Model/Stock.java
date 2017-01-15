@@ -21,6 +21,15 @@ public class Stock {
     private Risk risk;
     private Currency currency;
     private BigDecimal rmbCost;
+    private AssetType type;
+
+    public AssetType getType() {
+        return type;
+    }
+
+    public void setType(AssetType type) {
+        this.type = type;
+    }
 
     public BigDecimal getRmbCost() {
         return rmbCost;

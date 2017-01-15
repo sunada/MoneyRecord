@@ -184,6 +184,7 @@ public class StockController {
         BigDecimal share = new BigDecimal(request.getParameter("share"));
         BigDecimal amount = new BigDecimal(request.getParameter("amount"));
         BigDecimal current = new BigDecimal(request.getParameter("current"));
+        String type = request.getParameter("type");
 
         stock.setCode(code);
         stock.setName(name);
@@ -193,6 +194,7 @@ public class StockController {
         stock.setShare(share);
         stock.setAmount(amount);
         stock.setRisk(Risk.valueOf(request.getParameter("risk")));
+        stock.setType(AssetType.valueOf(type));
 
         log.debug("In LoansController.save, {}", stock.toString());
         if (stockService.update(stock)) {
