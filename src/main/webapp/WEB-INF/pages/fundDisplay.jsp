@@ -195,79 +195,103 @@
             </tbody>
         </table>
 
-        <table class="table table-bordered">
-            <caption>持有基金分类统计（按风险）</caption>
-            <thead>
-            <tr>
-                <th>风险等级</th>
-                <th>资金</th>
-                <th>资金占比(%)</th>
-                <th>成本</th>
-                <th>盈亏</th>
-                <th>收益率(%)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${groupByRisk}" var="g" varStatus="status">
-                <tr>
-                    <td>${g.key}</td>
-                    <c:forEach items="${g.value}" var="ac" varStatus="status">
-                        <td>
-                            <fmt:formatNumber type="number" value="${ac}" pattern="0.00" maxFractionDigits="2"/><br/>
-                            <%--<fmt:formatNumber type="number" value="${ac/sum * 100}" pattern="0.00" maxFractionDigits="2"/>--%>
-                        </td>
-                    </c:forEach>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+        <ul id="statisticTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#groupByRisk" data-toggle="tab">人民币资产按风险统计</a>
+            </li>
+            <li>
+                <a href="#groupByBelongTo" data-toggle="tab">人民币资产按账户统计</a>
+            </li>
+            <li>
+                <a href="#historyGroupByRisk" data-toggle="tab">历史持仓盈亏统计（按风险）</a>
+            </li>
+        </ul>
 
-        <table class="table table-bordered">
-            <caption>持有基金分类统计（按平台）</caption>
-            <thead>
-                <tr>
-                    <th>平台名称</th>
-                    <th>总金额</th>
-                    <th>基金数量</th>
-                </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${belongTos}" var="b" varStatus="status">
-                <tr>
-                    <td>${b.key}</td>
-                    <c:forEach items="${b.value}" var="bv">
-                        <td>
-                            <fmt:formatNumber type="number" value="${bv}" pattern="0.00" maxFractionDigits="0"/><br/>
-                        </td>
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="groupByRisk">
+                <table class="table table-bordered">
+                    <caption>持有基金分类统计（按风险）</caption>
+                    <thead>
+                    <tr>
+                        <th>风险等级</th>
+                        <th>资金</th>
+                        <th>资金占比(%)</th>
+                        <th>成本</th>
+                        <th>盈亏</th>
+                        <th>收益率(%)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${groupByRisk}" var="g" varStatus="status">
+                        <tr>
+                            <td>${g.key}</td>
+                            <c:forEach items="${g.value}" var="ac" varStatus="status">
+                                <td>
+                                    <fmt:formatNumber type="number" value="${ac}" pattern="0.00" maxFractionDigits="2"/><br/>
+                                        <%--<fmt:formatNumber type="number" value="${ac/sum * 100}" pattern="0.00" maxFractionDigits="2"/>--%>
+                                </td>
+                            </c:forEach>
+                        </tr>
                     </c:forEach>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade in active" id="groupByBelongTo">
+                <table class="table table-bordered">
+                    <caption>持有基金分类统计（按平台）</caption>
+                    <thead>
+                    <tr>
+                        <th>平台名称</th>
+                        <th>总金额</th>
+                        <th>基金数量</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${belongTos}" var="b" varStatus="status">
+                        <tr>
+                            <td>${b.key}</td>
+                            <c:forEach items="${b.value}" var="bv">
+                                <td>
+                                    <fmt:formatNumber type="number" value="${bv}" pattern="0.00" maxFractionDigits="0"/><br/>
+                                </td>
+                            </c:forEach>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade in active" id="historyGroupByRisk">
+                <table class="table table-bordered">
+                    <caption>历史收益统计（按风险）</caption>
+                    <thead>
+                    <tr>
+                        <th>风险等级</th>
+                        <th>成本</th>
+                        <th>盈亏</th>
+                        <th>收益率(%)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${historyProfit}" var="g">
+                        <tr>
+                            <td>${g.key}</td>
+                            <c:forEach items="${g.value}" var="gc">
+                                <td>
+                                    <fmt:formatNumber type="number" value="${gc}" pattern="0.00" maxFractionDigits="2"/>
+                                </td>
+                            </c:forEach>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <table class="table table-bordered">
-            <caption>历史收益统计（按风险）</caption>
-            <thead>
-            <tr>
-                <th>风险等级</th>
-                <th>成本</th>
-                <th>盈亏</th>
-                <th>收益率(%)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${historyProfit}" var="g">
-                <tr>
-                    <td>${g.key}</td>
-                    <c:forEach items="${g.value}" var="gc">
-                        <td>
-                            <fmt:formatNumber type="number" value="${gc}" pattern="0.00" maxFractionDigits="2"/>
-                        </td>
-                    </c:forEach>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+
+
+
+
+
 
         <h4>历史基金记录：</h4>
 
