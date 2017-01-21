@@ -100,9 +100,9 @@
                 <li class="active"><a href="/stock">证券</a></li>
                 <li><a href="/insurance">保险</a></li>
                 <li><a href="/fund/myFundAdd">基金操作</a></li>
-                <li><a href="/loan/loanAdd">买入网贷</a></li>
-                <li><a href="/stock/stockAdd">证券操作</a></li>
-                <li><a href="/stock/updateCurrent">更新证券现价</a></li>
+                <%--<li><a href="/loan/loanAdd">买入网贷</a></li>--%>
+                <%--<li><a href="/stock/stockAdd">证券操作</a></li>--%>
+                <%--<li><a href="/stock/updateCurrent">更新证券现价</a></li>--%>
             </ul>
         </div>
         </nav>
@@ -125,11 +125,14 @@
                 <td>
                     <%--<form class="form-inline" role="form" action="/stock/picture" method="post" accept-charset="utf-8">--%>
                         <%--<div class="form-group">--%>
+                        <a href="/stock/stockAdd">证券操作</a>
                             <%--<input type="text" class="form-control" name="date" placeholder="最新快照日期 <fmt:formatDate value="${latestDate}"/>">--%>
                         <%--</div>--%>
                         <%--<input type="submit" value="保存快照"/>--%>
                     <%--</form>--%>
-                    <a href="/stock/stockAdd">证券操作</a>
+                </td>
+                <td>
+                    <a href="/stock/updateCurrent">更新证券现价</a>
                 </td>
             </tr>
         </table>
