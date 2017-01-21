@@ -278,72 +278,90 @@
             </tbody>
         </table>
 
-        <table class="table table-bordered">
-            <caption>人民币资产分类统计（按风险）</caption>
-            <thead>
-            <tr>
-                <th>风险等级</th>
-                <th>资金</th>
-                <th>资金占比(%)</th>
-                <th>成本</th>
-                <th>盈亏</th>
-                <th>收益率(%)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${groupByRisk}" var="g" varStatus="status">
-                <tr>
-                    <td>${g.key}</td>
-                    <c:forEach items="${g.value}" var="ac" varStatus="status">
-                        <td>
-                            <fmt:formatNumber type="number" value="${ac}" pattern="0.00" maxFractionDigits="2"/><br/>
-                                <%--<fmt:formatNumber type="number" value="${ac/sum * 100}" pattern="0.00" maxFractionDigits="2"/>--%>
-                        </td>
-                    </c:forEach>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+        <ul id="statisticTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#groupByRisk" data-toggle="tab">人民币资产按风险统计</a>
+            </li>
+            <li>
+                <a href="#groupByType" data-toggle="tab">人民币资产按类型统计</a>
+            </li>
+            <li>
+                <a href="#groupByBelongTo" data-toggle="tab">人民币资产按账户统计</a>
+            </li>
+        </ul>
 
-        <table class="table table-bordered">
-            <caption>人民币资产分类统计（按类型）</caption>
-            <thead>
-            <tr>
-                <th>类型</th>
-                <th>资金</th>
-                <th>资金占比(%)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${groupByType}" var="g" varStatus="status">
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="groupByRisk">
+                <table class="table table-bordered">
+                <caption>人民币资产分类统计（按风险）</caption>
+                <thead>
                 <tr>
-                    <td>${g.key}</td>
-                    <td><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${g.value / rmbSum * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <th>风险等级</th>
+                    <th>资金</th>
+                    <th>资金占比(%)</th>
+                    <th>成本</th>
+                    <th>盈亏</th>
+                    <th>收益率(%)</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-
-        <table class="table table-bordered">
-            <caption>人民币资产分类统计（按帐户）</caption>
-            <thead>
-            <tr>
-                <th>账户</th>
-                <th>资金</th>
-                <th>资金占比(%)</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${belongToSum}" var="g" varStatus="status">
+                </thead>
+                <tbody>
+                <c:forEach items="${groupByRisk}" var="g" varStatus="status">
+                    <tr>
+                        <td>${g.key}</td>
+                        <c:forEach items="${g.value}" var="ac" varStatus="status">
+                            <td>
+                                <fmt:formatNumber type="number" value="${ac}" pattern="0.00" maxFractionDigits="2"/><br/>
+                                    <%--<fmt:formatNumber type="number" value="${ac/sum * 100}" pattern="0.00" maxFractionDigits="2"/>--%>
+                            </td>
+                        </c:forEach>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            </div>
+            <div class="tab-pane fade in active" id="groupByType">
+                <table class="table table-bordered">
+                <caption>人民币资产分类统计（按类型）</caption>
+                <thead>
                 <tr>
-                    <td>${g.key}</td>
-                    <td></t><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/><br/></td>
-                    <td><fmt:formatNumber type="number" value="${g.value / rmbSum * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <th>类型</th>
+                    <th>资金</th>
+                    <th>资金占比(%)</th>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                <c:forEach items="${groupByType}" var="g" varStatus="status">
+                    <tr>
+                        <td>${g.key}</td>
+                        <td><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/></td>
+                        <td><fmt:formatNumber type="number" value="${g.value / rmbSum * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            </div>
+            <div class="tab-pane fade in active" id="groupByBelongTo">
+                <table class="table table-bordered">
+                <caption>人民币资产分类统计（按帐户）</caption>
+                <thead>
+                <tr>
+                    <th>账户</th>
+                    <th>资金</th>
+                    <th>资金占比(%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${belongToSum}" var="g" varStatus="status">
+                    <tr>
+                        <td>${g.key}</td>
+                        <td></t><fmt:formatNumber type="number" value="${g.value}" pattern="0.00" maxFractionDigits="2"/><br/></td>
+                        <td><fmt:formatNumber type="number" value="${g.value / rmbSum * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            </div>
+        </div>
 
         <table class="table table-bordered">
             <caption>历史持仓盈亏统计（按风险）</caption>
