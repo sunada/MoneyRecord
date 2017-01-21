@@ -98,8 +98,15 @@
             </div>
 
             <div class="form-group">
+                <label for="currency">币种：</label>
+                <input type="radio" name="currency" value="CNY" checked>人民币
+                <input type="radio" name="currency" value="USD">美元
+                <input type="radio" name="currency" value="HKD">港币
+            </div>
+
+            <div class="form-group">
                 <label for="cost">交易价：</label>
-                <input type="text" name="cost" id="cost">元/美元
+                <input type="text" name="cost" id="cost">元/美元/港币
             </div>
 
             <%--<div class="form-group">--%>
@@ -110,6 +117,11 @@
             <div class="form-group">
                 <label for="share">份额：</label>
                 <input type="text" name="share" id="share">
+            </div>
+
+            <div class="form-group">
+                <label for="rmbCost">人民币成本：</label>
+                <input type="text" name="rmbCost" id="cnyCost">
             </div>
 
             <div class="form-group">

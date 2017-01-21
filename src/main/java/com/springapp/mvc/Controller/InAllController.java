@@ -73,7 +73,7 @@ public class InAllController {
         view.addObject("socialFundsAmount", socialFundsAmount);
 
         Map<String, BigDecimal> sumFund = myFundService.sumByRisk();
-        Map<String, BigDecimal> sumStock = stockService.sumByRisk(Currency.RMB);
+        Map<String, BigDecimal> sumStock = stockService.sumByRisk(Currency.CNY);
         Map<String, BigDecimal> sumLoan = loanService.sumByRisk();
 
         Map<AssetType, Map<String, BigDecimal>> typeRisk = new HashMap<AssetType, Map<String, BigDecimal>>();
@@ -145,8 +145,8 @@ public class InAllController {
         }
         view.addObject("riskValues", riskValues);
 
-        Map<String, BigDecimal> sumUSA = stockService.sumByRisk(Currency.USA);
-        sumUSA.put("总计",stockService.sum(Currency.USA));
+        Map<String, BigDecimal> sumUSA = stockService.sumByRisk(Currency.USD);
+        sumUSA.put("总计",stockService.sum(Currency.USD));
         view.addObject("sumUSA", sumUSA);
 
         Map<String, BigDecimal> sumHKD = stockService.sumByRisk(Currency.HKD);

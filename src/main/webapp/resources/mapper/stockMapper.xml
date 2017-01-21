@@ -37,7 +37,7 @@
     </resultMap>
 
     <select id="getStockList" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} order by belong_to,risk,current*share desc;
+        select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} order by belong_to,current*share desc;
     </select>
 
     <select id="getStockListMap" resultMap="StockResult" parameterType="java.util.Map">
@@ -55,7 +55,7 @@
     </select>
 
     <insert id="insertStock" parameterType="com.springapp.mvc.Model.Stock">
-        insert into stocks(code, name, belong_to, cost, share, risk, currency) values (#{code}, #{name}, #{belongTo}, #{cost},#{share}, #{risk}, #{currency});
+        insert into stocks(code, name, belong_to, cost, share, risk, currency, rmb_cost) values (#{code}, #{name}, #{belongTo}, #{cost},#{share}, #{risk}, #{currency}, #{rmbCost});
     </insert>
 
     <insert id="updateStock" parameterType="com.springapp.mvc.Model.Stock">

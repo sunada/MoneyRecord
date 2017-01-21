@@ -4,7 +4,7 @@ package com.springapp.mvc.Model;
  * Created by Administrator on 2015/11/7.
  */
 public enum Currency implements IntEnum<Currency>{
-    RMB(0, "rmb"), USA(1, "usa"), HKD(2, "hkd");
+    CNY(0, "cny"), USD(1, "usd"), HKD(2, "hkd");
     private int index;
     private String name;
 

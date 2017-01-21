@@ -123,12 +123,13 @@
                     </form>
                 </td>
                 <td>
-                    <form class="form-inline" role="form" action="/stock/picture" method="post" accept-charset="utf-8">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="date" placeholder="最新快照日期 <fmt:formatDate value="${latestDate}"/>">
-                        </div>
-                        <input type="submit" value="保存快照"/>
-                    </form>
+                    <%--<form class="form-inline" role="form" action="/stock/picture" method="post" accept-charset="utf-8">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<input type="text" class="form-control" name="date" placeholder="最新快照日期 <fmt:formatDate value="${latestDate}"/>">--%>
+                        <%--</div>--%>
+                        <%--<input type="submit" value="保存快照"/>--%>
+                    <%--</form>--%>
+                    <a href="/stock/stockAdd">证券操作</a>
                 </td>
             </tr>
         </table>

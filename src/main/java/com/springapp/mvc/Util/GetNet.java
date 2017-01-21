@@ -118,7 +118,7 @@ public class GetNet {
 //        String res = "<TD HEIGHT=28 valign=\"middle\" bgcolor=\"#FFFFFF\">       <div align=\"center\"><!--?hbmc=美元&topic=\"><u--><a href=\"http://www.usd-cny.com/usd-rmb.htm\">美元 USD</u></a></div></TD>    <TD HEIGHT=15 align=\"center\" valign=\"middle\"><div align=\"right\">675.47&nbsp;</div></TD>    <TD HEIGHT=15 align=\"center\" valign=\"middle\"><div align=\"right\">669.93&nbsp;</div></TD>    <TD align=\"center\" valign=\"middle\"><div align=\"right\">678.04&nbsp;</div></TD>    <TD align=\"center\" valign=\"middle\"><div align=\"right\">678.04&nbsp;</div></TD> ";
         String seq[] = null;
         String tmp[] = null;
-        if(currency.equals(Currency.USA)){
+        if(currency.equals(Currency.USD)){
             seq = res.split("美元 USD");
         }
         if(seq.length == 0){

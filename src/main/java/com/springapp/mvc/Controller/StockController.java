@@ -49,13 +49,13 @@ public class StockController {
     @RequestMapping
     public ModelAndView stockDisplay(){
         ModelAndView view = new ModelAndView("stockDisplay");
-        ArrayList<Stock> stocks = stockService.read(Currency.RMB);
+        ArrayList<Stock> stocks = stockService.read(Currency.CNY);
         view.addObject("stocks", stocks);
 
 //        GetNet getNet = new GetNet();
 //        view.addObject("exchangeRate", getNet.getExchangeRate(Currency.USA));
 
-        ArrayList<Stock> useStocks = stockService.read(Currency.USA);
+        ArrayList<Stock> useStocks = stockService.read(Currency.USD);
         view.addObject("useStocks", useStocks);
 
         ArrayList<Stock> hkdStocks = stockService.read(Currency.HKD);
@@ -70,10 +70,10 @@ public class StockController {
         Map mapByType = stockService.addUpByType();
         view.addObject("groupByType", mapByType);
 
-        BigDecimal rmbSum = stockService.sum(Currency.RMB);
+        BigDecimal rmbSum = stockService.sum(Currency.CNY);
         view.addObject("rmbSum", rmbSum);
 
-        Map<String, BigDecimal> belongToSum = stockService.sumByBelongTo(Currency.RMB);
+        Map<String, BigDecimal> belongToSum = stockService.sumByBelongTo(Currency.CNY);
         view.addObject("belongToSum", belongToSum);
 
         List<HistoryAsset> historyAssets = historyAssetService.readHistory(AssetType.STOCK);
@@ -90,8 +90,8 @@ public class StockController {
 
     @RequestMapping("updateCurrent")
     public String updateStockNet(){
-        ArrayList<Stock> stocks = stockService.read(Currency.RMB);
-        stocks.addAll(stockService.read(Currency.USA));
+        ArrayList<Stock> stocks = stockService.read(Currency.CNY);
+        stocks.addAll(stockService.read(Currency.USD));
         GetNet getNet = new GetNet();
         BigDecimal net;
         Map<String, Object> netMap = new HashMap<String, Object>();
@@ -127,6 +127,8 @@ public class StockController {
         BigDecimal cost = new BigDecimal(request.getParameter("cost"));  //买入或卖出价
         BigDecimal share = new BigDecimal(request.getParameter("share"));
         DealType dealType = DealType.valueOf(request.getParameter("dealType"));
+        Currency currency = Currency.valueOf(request.getParameter("currency"));
+        BigDecimal rmbCost = new BigDecimal(request.getParameter("rmbCost"));
 
         BigDecimal current = BigDecimal.valueOf(0.00);
 
@@ -135,6 +137,8 @@ public class StockController {
         stock.setBelongTo(belongTo);
         stock.setCost(cost);
         stock.setCurrent(current);
+        stock.setRmbCost(rmbCost);
+
         if(dealType == DealType.SSELL){
             share = BigDecimal.ZERO.subtract(share);
         }
@@ -142,11 +146,13 @@ public class StockController {
 //        stock.setAmount(amount);
         stock.setRisk(Risk.valueOf(request.getParameter("risk")));
 
-        if(belongTo.equals("积7XJ11330")){
-            stock.setCurrency(Currency.USA);
-        }else{
-            stock.setCurrency(Currency.RMB);
-        }
+        stock.setCurrency(currency);
+
+//        if(belongTo.equals("积7XJ11330")){
+//            stock.setCurrency(Currency.USD);
+//        }else{
+//            stock.setCurrency(Currency.CNY);
+//        }
 
         log.debug("In StockController.save, {}", stock.toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

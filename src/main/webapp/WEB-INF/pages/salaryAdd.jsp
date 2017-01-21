@@ -36,12 +36,12 @@
                 $("#beforeTax").attr("value", 25480);
                 $("#insuranceBase").attr("value", 21258);
                 $("#fundBase").attr("value", 21258);
-                $("#date").attr("value", "2016-11");
+                $("#date").attr("value", "2017-0");
                 $("#afterTax").attr("value", 0)
             });
 
             $("#wife").focus(function () {
-                $("#date").attr("value", "2016-");
+                $("#date").attr("value", "2017-0");
                 $("#beforeTax").attr("value", 17219);
                 $("#insuranceBase").attr("value", 20237);
                 $("#fundBase").attr("value", 20237);

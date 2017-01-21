@@ -209,7 +209,7 @@ public class StockService {
                 stock.setBelongTo(deal.getBelongTo());
                 stock.setShare(deal.getShare());
                 stock.setAmount(deal.getAmount());
-                stock.setCurrency(Currency.RMB);
+                stock.setCurrency(Currency.CNY);
                 if (saveStock(stock, deal.getDate(), deal.getDealType(), deal.getCost())) {
                     if (!saveDeal(deal)) {
                         return false;
@@ -276,7 +276,7 @@ public class StockService {
                 stock.setBelongTo(deal.getBelongTo());
                 stock.setShare(deal.getShare());
                 stock.setAmount(deal.getAmount());
-                stock.setCurrency(Currency.RMB);
+                stock.setCurrency(Currency.CNY);
                 if(saveStock(stock, deal.getDate(), deal.getDealType(), deal.getCost())){
                     if(!saveDeal(deal)){
                         return false;
@@ -359,7 +359,7 @@ public class StockService {
 
     //stock统计用的数据
     public Map<String, List<BigDecimal>> addUp(ArrayList<Stock> stocks){
-        BigDecimal sum = sum(Currency.RMB);
+        BigDecimal sum = sum(Currency.CNY);
         Map<String, List<BigDecimal>> map = new HashMap<String, List<BigDecimal>>();
         String str;
         BigDecimal amount;
@@ -526,7 +526,7 @@ public class StockService {
     }
 
     public boolean picture(Date date){
-        ArrayList<Stock> stocks = read(Currency.RMB, 0);
+        ArrayList<Stock> stocks = read(Currency.CNY, 0);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("date", date);
         map.put("type", AssetType.STOCK);
