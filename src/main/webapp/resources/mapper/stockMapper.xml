@@ -51,7 +51,8 @@
     </select>
 
     <select id="getStockByCB" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk,type from stocks where code=#{code} and belong_to=#{belongTo} and currency="RMB";
+        select code, name, belong_to, cost, current, share, risk,type from stocks where code=#{code} and belong_to=#{belongTo};
+--         select code, name, belong_to, cost, current, share, risk,type from stocks where code=#{code} and belong_to=#{belongTo} and currency="RMB";
     </select>
 
     <insert id="insertStock" parameterType="com.springapp.mvc.Model.Stock">

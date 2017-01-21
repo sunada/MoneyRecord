@@ -129,6 +129,12 @@ public class StockController {
         DealType dealType = DealType.valueOf(request.getParameter("dealType"));
         Currency currency = Currency.valueOf(request.getParameter("currency"));
         BigDecimal rmbCost = new BigDecimal(request.getParameter("rmbCost"));
+        AssetType type = null;
+        try {
+            type = AssetType.valueOf(request.getParameter("type"));
+        }catch (Exception e){
+            type = AssetType.STOCK;
+        }
 
         BigDecimal current = BigDecimal.valueOf(0.00);
 
@@ -138,6 +144,7 @@ public class StockController {
         stock.setCost(cost);
         stock.setCurrent(current);
         stock.setRmbCost(rmbCost);
+        stock.setType(type);
 
         if(dealType == DealType.SSELL){
             share = BigDecimal.ZERO.subtract(share);

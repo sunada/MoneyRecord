@@ -114,6 +114,13 @@
             </div>
 
             <div class="form-group">
+                <label for="type">证券类型：</label>
+                <input type="radio" name="type" value="STOCK" checked>股票
+                <input type="radio" name="type" value="FUND">基金
+                <input type="radio" name="type" value="LOAN">债券
+            </div>
+
+            <div class="form-group">
                 <label for="cost">交易价：</label>
                 <input type="text" name="cost" id="cost">元/美元/港币
             </div>
