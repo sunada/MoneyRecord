@@ -22,6 +22,13 @@
                 } else {
                     $("#midhigh").attr("checked", "checked");
                 }
+
+                $("#rmbCost").focus(function(){
+                var cost = $("#cost").val();
+                var share = $("#share").val();
+                var rmbCost = cost * share;
+                $("#rmbCost").attr("value", rmbCost);
+                });
             });
 
             function getUrlParam(name) {
@@ -123,7 +130,7 @@
 
             <div class="form-group">
                 <label for="rmbCost">人民币成本：</label>
-                <input type="text" name="rmbCost" id="cnyCost">
+                <input type="text" name="rmbCost" id="rmbCost">
             </div>
 
             <div class="form-group">
