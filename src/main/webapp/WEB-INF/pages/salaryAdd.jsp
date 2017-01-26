@@ -44,7 +44,7 @@
 
             $("#wife").focus(function () {
                 $("#date").attr("value", "2017-0");
-                $("#beforeTax").attr("value", 17219);
+                $("#beforeTax").attr("value", 18500);
                 $("#insuranceBase").attr("value", 20237);
                 $("#fundBase").attr("value", 20237);
 
@@ -164,6 +164,13 @@
             <label>计算得到医保个人账户金额：</label>
             <input type="text" name="mediaCash" id="mediaCash"/>
         </div>
+        <br/>
+
+        <div>
+            <label>备注：</label>
+            <input type="text" name="note" id="note"/>
+        </div>
+        <br/>
 
         <input type="submit" value="保存" />
     </form>

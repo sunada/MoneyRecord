@@ -74,4 +74,12 @@ public class BalanceDao {
         return sqlSession.selectOne("Balance.getSocialFunds");
     }
 
+    public Salary getSalaryById(int id){
+        return sqlSession.selectOne("Balance.getSalaryById", id);
+    }
+
+    public int deleteSalaryById(int id){
+        return sqlSession.delete("Balance.deleteSalaryById", id);
+    }
+
 }

@@ -378,6 +378,8 @@
         <th>失业保险<br/>(个人)</th>
         <th>失业保险<br/>(公司)</th>
         <th>个人所得税</th>
+        <th>备注</th>
+        <th>操作</th>
     </tr>
     </thead>
     <tbody>
@@ -396,6 +398,8 @@
                 <td>${s.unemployInsurance}</td>
                 <td>${s.unemployInsuranceCompany}</td>
                 <td>${s.tax}</td>
+                <td>${s.note}</td>
+                <td><a class="btn" href="/balance/deleteSalary?id=${s.id}" role="button"/>删除</td>
             </tr>
         </c:forEach>
     </tbody>

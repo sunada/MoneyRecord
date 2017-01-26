@@ -27,6 +27,15 @@ public class Salary {
     private BigDecimal insuranceBase;
     private BigDecimal fundBase;
     private BigDecimal mediaCash;
+    private String note;
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     public BigDecimal getMediaCash() {
         return mediaCash;

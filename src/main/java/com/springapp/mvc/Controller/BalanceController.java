@@ -75,6 +75,8 @@ public class BalanceController {
         return mv;
     }
 
+
+
     @RequestMapping("/addExpense")
     public ModelAndView addExpense(){
         ModelAndView mv = new ModelAndView("expenseAdd");
@@ -99,6 +101,7 @@ public class BalanceController {
         BigDecimal unemployInsuranceCompany = new BigDecimal(request.getParameter("unemployInsuranceCompany"));
         BigDecimal tax = new BigDecimal(request.getParameter("tax"));
         BigDecimal mediaCash = new BigDecimal(request.getParameter("mediaCash"));
+        String note = request.getParameter("note");
 
         salary.setDate(date);
         salary.setOwner(owner);
@@ -116,18 +119,19 @@ public class BalanceController {
         salary.setUnemployInsuranceCompany(unemployInsuranceCompany);
         salary.setTax(tax);
         salary.setMediaCash(mediaCash);
+        salary.setNote(note);
 
         balanceService.saveSalary(salary);
         balanceService.updateBalance(date, salary);
 
         socialFunds = balanceService.getSocialFunds();
-        if(owner == "wifi"){
+        if(owner == "wife"){
             if(socialFunds != null){
-                socialFunds.setwMediFund(socialFunds.getwMediFund().add(mediaCash));
+//                socialFunds.setwMediFund(socialFunds.getwMediFund().add(mediaCash));
                 socialFunds.setwHouseFund(socialFunds.getwHouseFund().add(houseFunds).add(houseFundsCompany));
             }else{
                 socialFunds.setwHouseFund(houseFunds.add(houseFundsCompany));
-                socialFunds.setwMediFund(mediaCash);
+//                socialFunds.setwMediFund(mediaCash);
             }
         }else{
             if(socialFunds != null){
@@ -139,6 +143,29 @@ public class BalanceController {
             }
         }
         balanceService.saveSocialFunds(socialFunds);
+        return "redirect:/balance";
+    }
+
+    @RequestMapping("/deleteSalary")
+    public String deleteSalary(HttpServletRequest request){
+        int id = Integer.valueOf(request.getParameter("id"));
+        Salary salary = balanceService.getSalaryById(id);
+
+        salary.setAfterTax(BigDecimal.ZERO.subtract(salary.getAfterTax()));
+        salary.setHouseFundsCompany(BigDecimal.ZERO.subtract(salary.getHouseFundsCompany()));
+        salary.setHouseFunds(BigDecimal.ZERO.subtract(salary.getHouseFunds()));
+        salary.setMediaCash(BigDecimal.ZERO.subtract(salary.getMediaCash()));
+
+        balanceService.updateBalance(salary.getDate(), salary);
+        socialFunds = balanceService.getSocialFunds();
+        if(salary.getOwner() == "wife"){
+            socialFunds.setwHouseFund(socialFunds.getwHouseFund().add(salary.getHouseFunds()));
+        }else{
+            socialFunds.sethMediFund(socialFunds.gethMediFund().add(salary.getMediaCash()));
+            socialFunds.sethHouseFund(socialFunds.gethHouseFund().add(salary.getHouseFunds()));
+        }
+        balanceService.saveSocialFunds(socialFunds);
+        balanceService.deleteSalary(id);
         return "redirect:/balance";
     }
 
@@ -154,5 +181,7 @@ public class BalanceController {
         balanceService.updateBalance(date, expense);
         return "redirect:/balance";
     }
+
+
 
 }

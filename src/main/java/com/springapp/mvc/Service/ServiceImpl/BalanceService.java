@@ -181,4 +181,13 @@ public class BalanceService {
     public BigDecimal getLeftSum(){
         return balanceDao.getLeftSum();
     }
+
+    public Salary getSalaryById(int id){
+        return balanceDao.getSalaryById(id);
+    }
+    public boolean deleteSalary(int id){
+        Salary salary = balanceDao.getSalaryById(id);
+        balanceDao.deleteSalaryById(id);
+        return true;
+    }
 }

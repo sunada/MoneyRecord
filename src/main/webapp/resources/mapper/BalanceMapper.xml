@@ -20,6 +20,7 @@
         <result column="insurance_base" jdbcType="DECIMAL" property="insuranceBase"/>
         <result column="fund_base" jdbcType="DECIMAL" property="fundBase"/>
         <result column="media_cash" jdbcType="DECIMAL" property="mediaCash"/>
+        <result column="note" jdbcType="CHAR" property="note"/>
     </resultMap>
 
     <resultMap id="ExpenseResult" type="com.springapp.mvc.Model.Expense">
@@ -50,25 +51,35 @@
         <result column="leftSum" jdbcType="DECIMAL" property="leftSum"/>
     </resultMap>
 
+    <select id="getSalaryById" resultMap="SalaryResult">
+        select id,date, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
+        medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
+        insurance_base, fund_base,media_cash,note from salary where id=#{id}
+    </select>
+
     <select id="getSalaryList" resultMap="SalaryResult">
         select id,date, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
         medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
-        insurance_base, fund_base,media_cash from salary order by date desc limit 24;
+        insurance_base, fund_base,media_cash,note from salary order by date desc limit 24;
     </select>
 
     <select id="getSalaryListByDate" resultMap="SalaryResult">
         select id,date, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
         medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
-        insurance_base, fund_base from salary where date=#{date};
+        insurance_base, fund_base,note from salary where date=#{date};
     </select>
 
     <insert id="saveSalary" parameterType="com.springapp.mvc.Model.Salary" useGeneratedKeys="true" keyProperty="id">
         insert into salary (date,owner,before_tax,after_tax,house_funds_company,house_funds,medicare_company,
         medicare,pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
-        insurance_base,fund_base,media_cash) value(#{date},#{owner},#{beforeTax},#{afterTax},#{houseFundsCompany},#{houseFunds},
+        insurance_base,fund_base,media_cash,note) value(#{date},#{owner},#{beforeTax},#{afterTax},#{houseFundsCompany},#{houseFunds},
         #{medicareCompany},#{medicare},#{pensionInsuranceCompany},#{pensionInsurance},#{unemployInsurance},
-        #{unemployInsuranceCompany},#{tax},#{insuranceBase},#{fundBase},#{mediaCash});
+        #{unemployInsuranceCompany},#{tax},#{insuranceBase},#{fundBase},#{mediaCash},#{note});
     </insert>
+
+    <delete id="deleteSalaryById">
+        delete from salary where id=#{id};
+    </delete>
 
     <insert id="saveExpense" parameterType="com.springapp.mvc.Model.Expense">
         insert into expense (date_expense, daily_expense, mortgage) value(#{date}, #{dailyExpense}, #{mortgage});
