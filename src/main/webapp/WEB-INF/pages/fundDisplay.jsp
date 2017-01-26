@@ -71,7 +71,7 @@
                 <li><a href="/balance">收支表</a> </li>
                 <li class="active"><a href="/fund">基金</a></li>
                 <li><a href="/stock">证券</a></li>
-                <%--<li><a href="/fund/aipDisplay">定投</a></li>--%>
+                <%--<li><a href="/fund/aipDisplay">定投计划</a></li>--%>
                 <li><a href="/loan">网贷</a></li>
                 <li><a href="/insurance">保险</a></li>
                 <%--<li><a href="/fund/myFundAdd">基金操作</a></li>--%>
@@ -102,7 +102,7 @@
                     <a href="/fund/myFundAdd">基金操作</a>
                 </td>
                 <td>
-                    <a href="/fund/aipDisplay">定投</a>
+                    <a href="/fund/aipDisplay">定投计划</a>
                 </td>
             </tr>
         </table>
@@ -236,7 +236,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="tab-pane fade in active" id="groupByBelongTo">
+            <div class="tab-pane fade in" id="groupByBelongTo">
                 <table class="table table-bordered">
                     <caption>持有基金分类统计（按平台）</caption>
                     <thead>
@@ -260,7 +260,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="tab-pane fade in active" id="historyGroupByRisk">
+            <div class="tab-pane fade in" id="historyGroupByRisk">
                 <table class="table table-bordered">
                     <caption>历史收益统计（按风险）</caption>
                     <thead>

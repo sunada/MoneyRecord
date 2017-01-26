@@ -21,7 +21,7 @@
                     $(this).hide();
                     $(this).siblings().show();
                 })
-            })
+            });
 
             $(function(){
                 $('.update').click(function(){
@@ -133,6 +133,9 @@
                 </td>
                 <td>
                     <a href="/stock/updateCurrent">更新证券现价</a>
+                </td>
+                <td>
+                    <a href="/stock/strategy">策略收益</a>
                 </td>
             </tr>
         </table>
@@ -322,7 +325,7 @@
                 </tbody>
             </table>
             </div>
-            <div class="tab-pane fade in active" id="groupByType">
+            <div class="tab-pane fade in" id="groupByType">
                 <table class="table table-bordered">
                 <caption>人民币资产分类统计（按类型）</caption>
                 <thead>
@@ -343,7 +346,7 @@
                 </tbody>
             </table>
             </div>
-            <div class="tab-pane fade in active" id="groupByBelongTo">
+            <div class="tab-pane fade in" id="groupByBelongTo">
                 <table class="table table-bordered">
                 <caption>人民币资产分类统计（按帐户）</caption>
                 <thead>
@@ -364,7 +367,7 @@
                 </tbody>
             </table>
             </div>
-            <div class="tab-pane fade in active" id="historyGroupByRisk">
+            <div class="tab-pane fade in" id="historyGroupByRisk">
                 <table class="table table-bordered">
                     <caption>历史持仓盈亏统计（按风险）</caption>
                     <thead>

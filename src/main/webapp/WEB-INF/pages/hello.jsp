@@ -14,6 +14,7 @@
             <link href="/resources/css/bootstrap.min.css" rel="stylesheet" type="text/css">
             <script src="/resources/js/jquery-2.2.3.min.js" type="text/javascript"></script>
             <script src="/resources/js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="/resources/js/echarts.js" type="text/javascript"></script>
 
         <script>
             $(function(){
@@ -98,6 +99,62 @@
             </ul>
         </div>
     </nav>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '某楼盘销售情况',
+                subtext: '纯属虚构'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['意向','预购','成交']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    magicType: {show: true, type: ['stack', 'tiled']},
+                    saveAsImage: {show: true}
+                }
+            },
+            xAxis: {
+                type: 'category',
+                boundaryGap: false,
+                data: ['周一','周二','周三','周四','周五','周六','周日']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: '成交',
+                type: 'line',
+                smooth: true,
+                data: [10, 12, 21, 54, 260, 830, 710]
+            },
+                {
+                    name: '预购',
+                    type: 'line',
+                    smooth: true,
+                    data: [30, 182, 434, 791, 390, 30, 10]
+                },
+                {
+                    name: '意向',
+                    type: 'line',
+                    smooth: true,
+                    data: [1320, 1132, 601, 234, 120, 90, 20]
+                }]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
 
     <table width="200">
         <tr>

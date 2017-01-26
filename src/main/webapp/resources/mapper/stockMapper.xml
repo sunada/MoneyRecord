@@ -17,6 +17,14 @@
         <result column="rmb_cost" jdbcType="DECIMAL" property="rmbCost"/>
     </resultMap>
 
+    <resultMap id="StragetyResult" type="com.springapp.mvc.Model.Strategy">
+        <id column="code" jdbcType="CHAR" property="code"/>
+        <result column="name" jdbcType="CHAR" property="name"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="used_amount" jdbcType="DECIMAL" property="usedAmount"/>
+        <result column="profit" jdbcType="DECIMAL" property="profit"/>
+    </resultMap>
+
     <resultMap id="SumResult" type="java.util.HashMap">
         <result column="sum(amount)" jdbcType="DECIMAL" property="sum"/>
     </resultMap>
@@ -75,7 +83,7 @@
     </select>
 
     <select id="sumByType" resultMap="SumByType">
-        select type, sum(current*share) as amount from stocks WHERE SHARE > 0 AND currency='rmb' GROUP BY TYPE;
+        select type, sum(current*share) as amount from stocks WHERE SHARE > 0 AND currency='cny' GROUP BY TYPE;
     </select>
 
     <insert id="updateCurrent" parameterType="java.util.Map">
@@ -100,4 +108,19 @@
     <select id="getLatestPictureDate" resultType="java.util.Date">
         SELECT deal_date FROM assets_every_month WHERE TYPE=#{type} ORDER BY deal_date DESC LIMIT 1;
     </select>
+
+    <select id="getStrategyStocks" resultMap="StockResult">
+        select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and strategy_code=#{strategyCode} order by belong_to,current*share desc;
+    </select>
+
+    <select id="getStrategys" resultMap="StragetyResult">
+      SELECT strategy.`code`, strategy.`name`, strategy.`amount`, (SELECT SUM(stocks.`cost` * stocks.`share`)) AS used_amount,
+      (SELECT SUM((stocks.`current` - stocks.`cost`) * stocks.`share`))
+       AS profit FROM strategy LEFT JOIN stocks ON strategy.`code`=stocks.`strategy_code`;
+    </select>
+
+    <insert id="strategyAdd" parameterType="com.springapp.mvc.Model.Strategy">
+        insert strategy(code, name, amount) values (#{code}, #{name}, #{amount});
+    </insert>
+
 </mapper>

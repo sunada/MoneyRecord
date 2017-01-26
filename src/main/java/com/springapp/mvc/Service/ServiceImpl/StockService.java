@@ -3,6 +3,7 @@ package com.springapp.mvc.Service.ServiceImpl;
 import com.springapp.mvc.Dao.DealDao;
 import com.springapp.mvc.Dao.HistoryAssetDao;
 import com.springapp.mvc.Dao.StockDao;
+import com.springapp.mvc.Model.Strategy;
 import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Model.Currency;
 import org.apache.ibatis.session.SqlSession;
@@ -536,4 +537,17 @@ public class StockService {
     public Date getLatestPictureDate(){
         return stockDao.getLatestPictureDate(AssetType.STOCK);
     }
+
+    public List<Stock> getStrategyStocks(String strategyCode){
+        return stockDao.getStrategyStocks(strategyCode);
+    }
+
+    public List<Strategy> getStrategys(){
+        return stockDao.getStrategys();
+    }
+
+    public int strategyAdd(Strategy strategy){
+        return stockDao.strategyAdd(strategy);
+    }
+
 }

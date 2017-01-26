@@ -1,13 +1,12 @@
 package com.springapp.mvc.Controller;
 
+import com.springapp.mvc.Model.Strategy;
 import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Model.Currency;
 import com.springapp.mvc.Service.ServiceImpl.DealService;
 import com.springapp.mvc.Service.ServiceImpl.HistoryAssetService;
-import com.springapp.mvc.Service.ServiceImpl.LoanService;
 import com.springapp.mvc.Service.ServiceImpl.StockService;
 import com.springapp.mvc.Util.GetNet;
-import com.springapp.mvc.Util.NetDay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,8 @@ public class StockController {
     private StockService stockService;
     private Stock stock;
     private HistoryAssetService historyAssetService;
+    @Resource
+    private Strategy strategy;
     @Resource
     private DealService dealService;
 
@@ -262,5 +263,31 @@ public class StockController {
             e.printStackTrace();
             return "redirect:/";
         }
+    }
+
+    @RequestMapping("strategy")
+    public ModelAndView strategyDisplay(){
+        List<Strategy> strategys = stockService.getStrategys();
+        ModelAndView mv = new ModelAndView("strategy");
+        mv.addObject("strategys", strategys);
+        for(Strategy strategy : strategys){
+            String code = strategy.getCode();
+            List<Stock> stocks = stockService.getStrategyStocks(code);
+            mv.addObject("stocks", stocks);
+        }
+        return mv;
+    }
+
+    @RequestMapping(value = "strategyAdd",method = RequestMethod.POST)
+    public String strategyAdd(HttpServletRequest request){
+        String code = request.getParameter("code");
+        String name = request.getParameter("name");
+        BigDecimal amount = new BigDecimal(request.getParameter("amount"));
+        strategy.setCode(code);
+        strategy.setName(name);
+        strategy.setAmount(amount);
+
+        stockService.strategyAdd(strategy);
+        return "redirect:/stock";
     }
 }
