@@ -12,7 +12,7 @@ public interface ConstantInterface {
     BigDecimal Budget = new BigDecimal(7000);
 
     BigDecimal LOW = new BigDecimal(0.20);
-    BigDecimal MID = new BigDecimal(0.45);
-    BigDecimal HIGH = new BigDecimal(0.35);
+    BigDecimal MID = new BigDecimal(0.4);
+    BigDecimal HIGH = new BigDecimal(0.4);
 
 }

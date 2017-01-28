@@ -184,7 +184,7 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="6.94"></c:set>
+        <c:set var="exchangeRate" value="6.8768"></c:set>
         <table class="table table-striped">
             <caption>美元资产 (汇率：${exchangeRate})</caption>
             <thead>
@@ -233,7 +233,7 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="0.8949"></c:set>
+        <c:set var="exchangeRate" value="0.8863"></c:set>
         <table class="table table-striped">
             <caption>港币资产 (汇率：${exchangeRate})</caption>
             <thead>
@@ -404,10 +404,10 @@
                 <th>代码</th>
                 <th>名称</th>
                 <th>平台</th>
-                <th>成本</th>
-                <th>利润</th>
+                <%--<th>成本</th>--%>
+                <th>收益</th>
                 <%--<th>开始时间</th>--%>
-                <th>结束时间</th>
+                <%--<th>结束时间</th>--%>
                 <th>风险</th>
                 <th>交易记录</th>
             </tr>
@@ -418,10 +418,10 @@
                     <td>${asset.code}</td>
                     <td>${asset.name}</td>
                     <td>${asset.belongTo}</td>
-                    <td>${asset.cost}</td>
+                    <%--<td>${asset.cost}</td>--%>
                     <td>${asset.profit}</td>
                     <%--<td><fmt:formatDate value="${asset.start}"/></td>--%>
-                    <td><fmt:formatDate value="${asset.end}"/></td>
+                    <%--<td><fmt:formatDate value="${asset.end}"/></td>--%>
                     <td>${asset.risk}</td>
                     <td>
                         <a class="btn btn-primary" href="/stock/stockAdd?code=${asset.code}&name=${asset.name}&belongTo=${asset.belongTo}&cost=${asset.cost}&dealType=SBUY" role="button">买入</a>

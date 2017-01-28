@@ -323,7 +323,7 @@
             </tr>
         </table>
 
-        低：中：高 = 20% : 45% : 35%
+        低：中：高 = 20% : 40% : 40%
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -374,7 +374,7 @@
             <%--</form>--%>
         <%--</table>--%>
 
-    <c:set var="exchangeRate" value="6.94"></c:set>
+    <c:set var="exchangeRate" value="6.8768"></c:set>
     <table class="table table-bordered">
         <caption>美元资产（汇率：${exchangeRate})</caption>
         <thead>
