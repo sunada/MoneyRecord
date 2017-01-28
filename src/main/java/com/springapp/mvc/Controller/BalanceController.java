@@ -174,9 +174,11 @@ public class BalanceController {
         String date = request.getParameter("date");
         BigDecimal dailyExpense = new BigDecimal(request.getParameter("dailyExpense"));
         BigDecimal mortgage = new BigDecimal(request.getParameter("mortgage"));
+        String note = request.getParameter("note");
         expense.setDailyExpense(BigDecimal.ZERO.subtract(dailyExpense));
         expense.setDate(date);
         expense.setMortgage(BigDecimal.ZERO.subtract(mortgage));
+        expense.setNote(note);
         balanceService.saveExpense(expense);
         balanceService.updateBalance(date, expense);
         return "redirect:/balance";

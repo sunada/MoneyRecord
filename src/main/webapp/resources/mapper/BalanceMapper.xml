@@ -27,6 +27,7 @@
         <result column="date_expense" jdbcType="CHAR" property="date"/>
         <result column="daily_expense" jdbcType="CHAR" property="dailyExpense"/>
         <result column="mortgage" jdbcType="DECIMAL" property="mortgage"/>
+        <result column="note" jdbcType="CHAR" property="note"/>
     </resultMap>
 
     <resultMap id="BalanceResult" type="com.springapp.mvc.Model.Balance">
@@ -82,11 +83,11 @@
     </delete>
 
     <insert id="saveExpense" parameterType="com.springapp.mvc.Model.Expense">
-        insert into expense (date_expense, daily_expense, mortgage) value(#{date}, #{dailyExpense}, #{mortgage});
+        insert into expense (date_expense, daily_expense, mortgage, note) value(#{date}, #{dailyExpense}, #{mortgage}, #{note});
     </insert>
 
     <select id="getExpenseList" resultMap="ExpenseResult">
-        select date_expense, daily_expense, mortgage from expense order by date_expense desc limit 12;
+        select date_expense, daily_expense, mortgage,note from expense order by date_expense desc limit 12;
     </select>
 
     <select id="getExpenseListByDate" resultMap="ExpenseResult">

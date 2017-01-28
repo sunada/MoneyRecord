@@ -49,6 +49,12 @@
         </div>
         <br/>
 
+        <div>
+            <label>备注：</label>
+            <input type="text" name="note" id="note">
+        </div>
+        <br/>
+
         <input type="submit" value="保存" />
     </form>
 </body>

@@ -347,10 +347,12 @@
                     <thead>
                         <th>日常支出</th>
                         <th>房贷</th>
+                        <th>备注</th>
                     </thead>
                     <tbody>
                         <td>${b.expense.dailyExpense}</td>
                         <td>${b.expense.mortgage}</td>
+                        <td>${b.expense.note}</td>
                     </tbody>
                 </table>
             </td>
