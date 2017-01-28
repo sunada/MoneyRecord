@@ -268,13 +268,15 @@ public class StockController {
     @RequestMapping("strategy")
     public ModelAndView strategyDisplay(){
         List<Strategy> strategys = stockService.getStrategys();
-        ModelAndView mv = new ModelAndView("strategy");
-        mv.addObject("strategys", strategys);
+        Map<Strategy, List<Stock>> map = new HashMap<Strategy, List<Stock>>();
         for(Strategy strategy : strategys){
             String code = strategy.getCode();
             List<Stock> stocks = stockService.getStrategyStocks(code);
-            mv.addObject("stocks", stocks);
+            map.put(strategy, stocks);
         }
+
+        ModelAndView mv = new ModelAndView("strategy");
+        mv.addObject("strategysAndStocks", map);
         return mv;
     }
 

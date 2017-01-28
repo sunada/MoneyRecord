@@ -39,6 +39,19 @@
         </script>
     </head>
     <body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="/inAll">总览</a></li>
+                <li><a href="/balance">收支表</a> </li>
+                <li><a href="/fund">基金</a></li>
+                <li><a href="/stock">证券</a></li>
+                <li><a href="/loan">网贷</a></li>
+                <li><a href="/insurance">保险</a></li>
+            </ul>
+        </div>
+    </nav>
+
         <table class="table table-bordered">
             <tr>
                 <td>策略代码：<input type="text" name="code" id="code"> </td>
@@ -48,14 +61,15 @@
             </tr>
         </table>
 
-        <c:forEach items="${strategys}" var="stragety">
-            <table class="table table-stiped">
+        <c:forEach items="${strategysAndStocks}" var="ss">
+            <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th>策略代码</th>
                     <th>策略名称</th>
                     <th>策略预算</th>
-                    <th>已使用预算额度</th>
+                    <th>策略现值</th>
+                    <th>仓位成本</th>
                     <th>占比(%)</th>
                     <th>盈亏</th>
                     <th>盈亏比例(% 占已使用额度)</th>
@@ -64,14 +78,15 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>${stragety.code}</td>
-                    <td>${stragety.name}</td>
-                    <td>${stragety.amount}</td>
-                    <td><fmt:formatNumber type="number" value="${stragety.usedAmount}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${stragety.usedAmount / stragety.amount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${stragety.profit}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${stragety.profit / stragety.usedAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${stragety.profit / stragety.amount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td>${ss.key.code}</td>
+                    <td>${ss.key.name}</td>
+                    <td>${ss.key.amount}</td>
+                    <td>${ss.key.currentAmount}</td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount / ss.key.currentAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.profit}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.usedAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.currentAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                 </tr>
                 </tbody>
             </table>
@@ -92,7 +107,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${stocks}" var="stock" varStatus="status">
+                <c:forEach items="${ss.value}" var="stock" varStatus="status">
                     <tr>
                         <td>${stock.code}</td>
                         <td>${stock.name}</td>
@@ -103,12 +118,13 @@
                         <td>${stock.share}</td>
                         <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>
-                        <td><fmt:formatNumber type="number" value="${stock.cost * stock.share / stragety.amount * 100}" pattern="0.00" maxFractionDigits="2"/> </td>
+                        <td><fmt:formatNumber type="number" value="${stock.cost * stock.share / ss.key.amount * 100}" pattern="0.00" maxFractionDigits="2"/> </td>
                         <td><a class="btn" href="/deal/stockList?code=${stock.code}&belongTo=${stock.belongTo}" role="button">交易记录</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
+            <br/><br/>
         </c:forEach>
 </body>
 </html>

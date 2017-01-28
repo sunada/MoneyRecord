@@ -12,8 +12,17 @@ public class Strategy {
     String code;
     String name;
     BigDecimal amount;
+    BigDecimal currentAmount;
     BigDecimal usedAmount;
     BigDecimal profit;
+
+    public BigDecimal getCurrentAmount() {
+        return currentAmount;
+    }
+
+    public void setCurrentAmount(BigDecimal currentAmount) {
+        this.currentAmount = currentAmount;
+    }
 
     public BigDecimal getProfit() {
         return profit;

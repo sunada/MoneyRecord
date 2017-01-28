@@ -21,6 +21,7 @@
         <id column="code" jdbcType="CHAR" property="code"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="current_amount" jdbcType="DECIMAL" property="currentAmount"/>
         <result column="used_amount" jdbcType="DECIMAL" property="usedAmount"/>
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
     </resultMap>
@@ -114,13 +115,14 @@
     </select>
 
     <select id="getStrategys" resultMap="StragetyResult">
-      SELECT strategy.`code`, strategy.`name`, strategy.`amount`, (SELECT SUM(stocks.`cost` * stocks.`share`)) AS used_amount,
+      SELECT strategy.`code`, strategy.`name`, strategy.`amount`, strategy.`current_amount` ,(SELECT SUM(stocks.`cost` * stocks.`share`)) AS used_amount,
       (SELECT SUM((stocks.`current` - stocks.`cost`) * stocks.`share`))
-       AS profit FROM strategy LEFT JOIN stocks ON strategy.`code`=stocks.`strategy_code`;
+       AS profit FROM strategy LEFT JOIN stocks ON strategy.`code`=stocks.`strategy_code` group by stocks.`strategy_code`;
     </select>
 
+
     <insert id="strategyAdd" parameterType="com.springapp.mvc.Model.Strategy">
-        insert strategy(code, name, amount) values (#{code}, #{name}, #{amount});
+        insert strategy(code, name, amount, current_amount) values (#{code}, #{name}, #{amount}, #{current_amount});
     </insert>
 
 </mapper>

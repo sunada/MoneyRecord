@@ -173,7 +173,7 @@ public class StockService {
                     }
                     deal.setCode(tmp+sep[2]);
                 }
-                if (hasContract(time, dealDate, deal.getCode())) {
+                if (hasContract(deal.getBelongTo(),time, dealDate, deal.getCode())) {
                     continue;
                 }
                 deal.setBelongTo("国金39997769");
@@ -242,7 +242,7 @@ public class StockService {
                 String contract = segments[3];
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
                 Date dealDate = sdf.parse(segments[0]);
-                if(hasContract(contract, dealDate, segments[14])){
+                if(hasContract(deal.getBelongTo(), contract, dealDate, segments[14])){
                     continue;
                 }
                 deal.setCode(segments[14]);
@@ -519,8 +519,8 @@ public class StockService {
         }
     }
 
-    public boolean hasContract(String contract, Date date, String code){
-        if(dealDao.hasContract(contract, date, code) > 0){
+    public boolean hasContract(String belongTo, String contract, Date date, String code){
+        if(dealDao.hasContract(belongTo, contract, date, code) > 0){
             return true;
         }
         return false;
