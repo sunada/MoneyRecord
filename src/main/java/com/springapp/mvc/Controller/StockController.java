@@ -290,6 +290,18 @@ public class StockController {
         strategy.setAmount(amount);
 
         stockService.strategyAdd(strategy);
-        return "redirect:/stock";
+        return "redirect:/stock/strategy";
+    }
+
+    @RequestMapping(value = "strategyUpdate", method = RequestMethod.POST)
+    public String strategyUpdate(HttpServletRequest request){
+        strategy.setCode(request.getParameter("code"));
+        strategy.setName(request.getParameter("name"));
+        strategy.setAmount(new BigDecimal(request.getParameter("amount")));
+        strategy.setCurrentAmount(new BigDecimal(request.getParameter("currentAmount")));
+        strategy.setUsedAmount(new BigDecimal(request.getParameter("usedAmount")));
+        strategy.setProfit(new BigDecimal(request.getParameter("profit")));
+        stockService.strategyUpgrade(strategy);
+        return "redirect:/stock/strategy";
     }
 }

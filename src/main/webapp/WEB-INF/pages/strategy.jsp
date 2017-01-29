@@ -15,6 +15,42 @@
         <script src="/resources/js/bootstrap.min.js" type="text/javascript"></script>
         <script>
             $(document).ready(function() {
+                $(".update").hide();
+                $(".edit").click(function(){
+                    $(this).closest('td').siblings().html(function(i,html){
+                        return "<input type=\"text\" style=\"width:80px;\" value=" + html + ">";
+                    });
+                    $(this).hide();
+                    $(this).siblings().show();
+                });
+
+                $('.update').click(function(){
+                    var list = $(this).parent().parent().find("td :input[type='text']");
+                    var para = new Array();
+                    $.each(list, function (i, obj) {
+                        $(obj).parent().html($(obj).val());
+                        para.push($(obj).val());
+                    });
+                    $(this).hide();
+                    $(this).siblings().show();
+
+                    var str = "code=" + para[0] + "&name=" + para[1] + "&amount=" + para[2] +
+                            "&currentAmount=" + para[3] + "&usedAmount=" + para[4] + "&profit=" + para[6];
+//                    alert(str);
+                    //ajax提交表单
+                    $.ajax({
+                        type: "post",
+                        url: "/stock/strategyUpdate",
+                        data: str,
+                        success: function() {
+                            alert("保存成功！");
+                        },
+                        error: function() {
+                            alert("出错啦");
+                        }
+                    })
+                });
+
                 $("#strategyAdd").click(function(){
                     var code = $("#code").val();
                     var name = $("#name").val();
@@ -70,10 +106,11 @@
                     <th>策略预算</th>
                     <th>策略现值</th>
                     <th>仓位成本</th>
-                    <th>占比(%)</th>
+                    <th>仓位成本占比(%)</th>
                     <th>盈亏</th>
                     <th>盈亏比例(% 占已使用额度)</th>
                     <th>盈亏比例(% 占预算额度)</th>
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,6 +124,10 @@
                     <td><fmt:formatNumber type="number" value="${ss.key.profit}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.usedAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.currentAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td>
+                        <a class="btn btn-primary edit" role="button">编辑</a>
+                        <a class="btn btn-primary update" role="button">更新</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

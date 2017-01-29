@@ -155,4 +155,5 @@ public class StockDao {
         return sqlSession.insert("Stocks.strategyAdd", strategy);
     }
 
+    public int strategyUpgrade(Strategy strategy) { return sqlSession.update("Stocks.strategyUpgrade", strategy);}
 }

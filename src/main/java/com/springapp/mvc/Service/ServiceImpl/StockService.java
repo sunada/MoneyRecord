@@ -550,4 +550,6 @@ public class StockService {
         return stockDao.strategyAdd(strategy);
     }
 
+    public int strategyUpgrade(Strategy strategy){ return stockDao.strategyUpgrade(strategy);}
+
 }
