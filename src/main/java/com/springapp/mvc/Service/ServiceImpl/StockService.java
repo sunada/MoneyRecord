@@ -579,6 +579,10 @@ public class StockService {
         return stockDao.getStrategyStocks(strategyCode);
     }
 
+    public List<Stock> getAllStrategyStocks(String strategyCode){
+        return stockDao.getAllStrategyStocks(strategyCode);
+    }
+
     public List<Strategy> getStrategys(){
         return stockDao.getStrategys();
     }

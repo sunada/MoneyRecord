@@ -137,6 +137,10 @@ public class StockDao {
         return sqlSession.selectList("Stocks.getStrategyStocks", strategyCode);
     }
 
+    public List<Stock> getAllStrategyStocks(String strategyCode){
+        return sqlSession.selectList("Stocks.getAllStrategyStocks", strategyCode);
+    }
+
     public List<Strategy> getStrategys(){
         return sqlSession.selectList("Stocks.getStrategys");
     }

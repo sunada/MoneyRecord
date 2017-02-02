@@ -117,6 +117,10 @@
         select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and strategy_code=#{strategyCode} order by belong_to,current*share desc;
     </select>
 
+    <select id= "getAllStrategyStocks" resultMap="StockResult">
+      select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where strategy_code=#{strategyCode} order by belong_to,current*share desc;
+    </select>
+
     <select id="getStrategys" resultMap="StragetyResult">
       SELECT strategy.`code`, strategy.`name`, strategy.`amount`, strategy.`cash` ,(SELECT SUM(stocks.`cost` * stocks.`share`)) AS used_amount,
       (SELECT SUM((stocks.`current` - stocks.`cost`) * stocks.`share`))
