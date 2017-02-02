@@ -66,10 +66,6 @@ public class StockService {
         return (ArrayList<Stock>)stockDao.getStockList(map);
     }
 
-//    public ArrayList<Stock> readHistory(){ return (ArrayList<Stock>)stockDao.getHistoryStockList(); }
-
-    public ArrayList<Stock> readHistory(String strategyCode) { return (ArrayList<Stock>)stockDao.getHistoryStockList(strategyCode);}
-
     //costFromfile < 0时，表示不是从文件导入的交易记录
     public boolean saveStock(Stock stock, Date date, DealType dealType, BigDecimal costFromfile){
         BigDecimal cost;  //单次交易的费用
