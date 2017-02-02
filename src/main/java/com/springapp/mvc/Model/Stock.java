@@ -22,14 +22,14 @@ public class Stock {
     private Currency currency;
     private BigDecimal rmbCost;
     private AssetType type;
-    private String stragetyCode;
+    private String strategyCode;
 
     public String getStragetyCode() {
-        return stragetyCode;
+        return strategyCode;
     }
 
-    public void setStragetyCode(String stragetyCode) {
-        this.stragetyCode = stragetyCode;
+    public void setStrategyCode(String strategyCode) {
+        this.strategyCode = strategyCode;
     }
 
     public AssetType getType() {

@@ -268,9 +268,17 @@ public class StockController {
     @RequestMapping("strategy")
     public ModelAndView strategyDisplay(){
         List<Strategy> strategys = stockService.getStrategys();
+        Map<String, BigDecimal> strategyValue = stockService.getStrategyValue();
         Map<Strategy, List<Stock>> map = new HashMap<Strategy, List<Stock>>();
         for(Strategy strategy : strategys){
             String code = strategy.getCode();
+            if(strategyValue.containsKey(code)) {
+                strategy.setCurrentValue(strategy.getCash().add(strategyValue.get(code)));
+            }else{
+                strategy.setCurrentValue(strategy.getAmount());
+                strategy.setUsedAmount(BigDecimal.ZERO);
+                strategy.setProfit(BigDecimal.ZERO);
+            }
             List<Stock> stocks = stockService.getStrategyStocks(code);
             map.put(strategy, stocks);
         }
@@ -285,9 +293,13 @@ public class StockController {
         String code = request.getParameter("code");
         String name = request.getParameter("name");
         BigDecimal amount = new BigDecimal(request.getParameter("amount"));
+        BigDecimal cash = new BigDecimal(request.getParameter("cash"));
+
         strategy.setCode(code);
         strategy.setName(name);
         strategy.setAmount(amount);
+        strategy.setCash(cash);
+        strategy.setProfit(BigDecimal.ZERO);
 
         stockService.strategyAdd(strategy);
         return "redirect:/stock/strategy";
@@ -298,10 +310,28 @@ public class StockController {
         strategy.setCode(request.getParameter("code"));
         strategy.setName(request.getParameter("name"));
         strategy.setAmount(new BigDecimal(request.getParameter("amount")));
-        strategy.setCurrentAmount(new BigDecimal(request.getParameter("currentAmount")));
-        strategy.setUsedAmount(new BigDecimal(request.getParameter("usedAmount")));
+        strategy.setCash(new BigDecimal(request.getParameter("cash")));
         strategy.setProfit(new BigDecimal(request.getParameter("profit")));
-        stockService.strategyUpgrade(strategy);
+        stockService.strategyUpdate(strategy);
+        return "redirect:/stock/strategy";
+    }
+
+    @RequestMapping(value = "strategyAddStocks")
+    public ModelAndView strategyAddStocks(){
+        List<Stock> stocksWithoutStrategy = stockService.getStocksWithoutStrategy();
+        ModelAndView mv = new ModelAndView("strategyAddStocks");
+        mv.addObject("stocksWithoutStrategy", stocksWithoutStrategy);
+        return mv;
+    }
+
+    @RequestMapping(value="saveStrategyStocks", method = RequestMethod.POST)
+    public String saveStrategyStocks(HttpServletRequest request){
+        String[] stockBelongTos = request.getParameterValues("stockBelongTos");
+        String strategyCode = request.getParameter("strategyCode");
+        for(String s : stockBelongTos){
+            String[] tmp = s.split("&");
+            stockService.updateStrategy(tmp[0], tmp[1], strategyCode);
+        }
         return "redirect:/stock/strategy";
     }
 }

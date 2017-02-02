@@ -287,12 +287,6 @@
             </div>
         </div>
 
-
-
-
-
-
-
         <h4>历史基金记录：</h4>
 
         <table class="table table-striped">

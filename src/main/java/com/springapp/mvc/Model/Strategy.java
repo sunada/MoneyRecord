@@ -12,16 +12,33 @@ public class Strategy {
     String code;
     String name;
     BigDecimal amount;
-    BigDecimal currentAmount;
-    BigDecimal usedAmount;
     BigDecimal profit;
+    BigDecimal cash;
+    BigDecimal currentValue;
+    BigDecimal usedAmount;
 
-    public BigDecimal getCurrentAmount() {
-        return currentAmount;
+    public BigDecimal getUsedAmount() {
+        return usedAmount;
     }
 
-    public void setCurrentAmount(BigDecimal currentAmount) {
-        this.currentAmount = currentAmount;
+    public void setUsedAmount(BigDecimal usedAmount) {
+        this.usedAmount = usedAmount;
+    }
+
+    public BigDecimal getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(BigDecimal currentValue) {
+        this.currentValue = currentValue;
+    }
+
+    public BigDecimal getCash() {
+        return cash;
+    }
+
+    public void setCash(BigDecimal cash) {
+        this.cash = cash;
     }
 
     public BigDecimal getProfit() {
@@ -30,14 +47,6 @@ public class Strategy {
 
     public void setProfit(BigDecimal profit) {
         this.profit = profit;
-    }
-
-    public BigDecimal getUsedAmount() {
-        return usedAmount;
-    }
-
-    public void setUsedAmount(BigDecimal usedAmount) {
-        this.usedAmount = usedAmount;
     }
 
     public BigDecimal getAmount() {

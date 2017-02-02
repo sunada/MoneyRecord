@@ -55,8 +55,9 @@
                     var code = $("#code").val();
                     var name = $("#name").val();
                     var amount = $("#amount").val();
+                    var cash = $("#cash").val();
 
-                    var str = "code=" + code + "&name=" + name + "&amount=" + amount;
+                    var str = "code=" + code + "&name=" + name + "&amount=" + amount + "&cash=" + cash;
 //                    alert(str);
 
                     $.ajax({
@@ -93,6 +94,7 @@
                 <td>策略代码：<input type="text" name="code" id="code"> </td>
                 <td>策略名称：<input type="text" name="name" id="name"></td>
                 <td>策略预算：<input type="text" name="amount" id="amount"></td>
+                <td>策略可用现金：<input type="text" name="cash" id="cash"></td>
                 <td><a class="btn btn-primary" id="strategyAdd">新增</a></td>
             </tr>
         </table>
@@ -104,12 +106,14 @@
                     <th>策略代码</th>
                     <th>策略名称</th>
                     <th>策略预算</th>
+                    <th>策略现金</th>
                     <th>策略现值</th>
                     <th>仓位成本</th>
                     <th>仓位成本占比(%)</th>
-                    <th>盈亏</th>
-                    <th>盈亏比例(% 占已使用额度)</th>
-                    <th>盈亏比例(% 占预算额度)</th>
+                    <th>策略盈亏</th>
+                    <th>策略盈亏比例<br/>(占策略预算)</th>
+                    <th>仓位盈亏</th>
+                    <th>仓位盈亏比例<br/>(占仓位成本)</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -118,15 +122,19 @@
                     <td>${ss.key.code}</td>
                     <td>${ss.key.name}</td>
                     <td>${ss.key.amount}</td>
-                    <td>${ss.key.currentAmount}</td>
+                    <td>${ss.key.cash}</td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.currentValue}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${ss.key.usedAmount}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount / ss.key.currentAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount / ss.key.currentValue * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.currentValue - ss.key.amount}" pattern="0.00" maxFractionDigits="2"/> </td>
+                    <td><fmt:formatNumber type="number" value="${(ss.key.currentValue - ss.key.amount) / ss.key.amount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${ss.key.profit}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.usedAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.currentAmount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.currentValue * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td>
                         <a class="btn btn-primary edit" role="button">编辑</a>
                         <a class="btn btn-primary update" role="button">更新</a>
+                        <a class="btn btn-primary" href="/stock/strategyAddStocks?strategyCode=${ss.key.code}" role="button">添加证券</a>
+                        <a class="btn btn-primary" href="/deal/strategyDeals?strategyCode=${ss.key.code}" role="button">交易记录</a>
                     </td>
                 </tr>
                 </tbody>
