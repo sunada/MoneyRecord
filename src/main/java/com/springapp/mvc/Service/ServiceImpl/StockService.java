@@ -37,6 +37,8 @@ public class StockService {
 
     @Resource
     private Stock stock;
+    @Resource
+    private Strategy strategy;
 
     private List<String> etfs = new ArrayList<String>(){{add("510500");add("510300");}};
     private List<String> debts = new ArrayList<String>(){{add("122811");add("124977");}};
@@ -64,7 +66,9 @@ public class StockService {
         return (ArrayList<Stock>)stockDao.getStockList(map);
     }
 
-    public ArrayList<Stock> readHistory(){ return (ArrayList<Stock>)stockDao.getHistoryStockList(); }
+//    public ArrayList<Stock> readHistory(){ return (ArrayList<Stock>)stockDao.getHistoryStockList(); }
+
+    public ArrayList<Stock> readHistory(String strategyCode) { return (ArrayList<Stock>)stockDao.getHistoryStockList(strategyCode);}
 
     //costFromfile < 0时，表示不是从文件导入的交易记录
     public boolean saveStock(Stock stock, Date date, DealType dealType, BigDecimal costFromfile){
@@ -82,7 +86,7 @@ public class StockService {
         //买入之前持有这支证券
         if(stockSql != null) {
             share = share.add(stockSql.getShare());
-            if(costFromfile.compareTo(BigDecimal.ZERO) < 0){
+            if(costFromfile.compareTo(BigDecimal.ZERO) <= 0){
                 amount = BigDecimal.ZERO.subtract(stock.getCost().multiply(stock.getShare()).add(cost));
             }else{
                 amount = stock.getAmount();
@@ -111,7 +115,9 @@ public class StockService {
                 stockSql.setCost(costAll);
                 stockSql.setShare(share);
                 stockDao.updateStock(stockSql);
+                updateStrategy(stock,amount);
             }
+
         }else{ //买入时该证券的数量为0
             if(dealType == DealType.SBUY){
                 BigDecimal tmp = stock.getCost();
@@ -309,6 +315,41 @@ public class StockService {
         deal.setBelongTo(stock.getBelongTo());
         deal.setDealType(dealType);
         return dealDao.updateDeal(deal, AssetType.STOCK);
+    }
+
+    public boolean updateStrategy(Stock stock, BigDecimal amount){
+        String strategyCode = getStrategyCode(stock.getCode(), stock.getBelongTo());
+        return updateStrategy(amount, strategyCode);
+    }
+
+    public boolean updateStrategy(String stockCode, String belongTo, String strategyCode){
+        stock = stockDao.getStockByCB(stockCode, belongTo);
+        strategyAdd(stockCode, belongTo, strategyCode);
+        BigDecimal amount = stock.getCost().multiply(stock.getShare());
+        amount = BigDecimal.ZERO.subtract(amount);
+        return updateStrategy(amount, strategyCode);
+    }
+
+    public boolean updateStrategy(BigDecimal amount, String strategyCode){
+        strategy = getStrategyByCode(strategyCode);
+        if(strategy == null){
+            return true;
+        }
+        strategy.setCash(strategy.getCash().add(amount));
+        stockDao.strategyUpdate(strategy);
+        return true;
+    }
+
+    public Strategy getStrategyByCode(String code){
+        return stockDao.getStrategyByCode(code);
+    }
+
+    public String getStrategyCode(String code, String belongTo){
+        return stockDao.getStockByCB(code, belongTo).getStragetyCode();
+    }
+
+    public List<Stock> getStocksWithoutStrategy(){
+        return stockDao.getStocksWithoutStrategy();
     }
 
     public BigDecimal sum(Currency currency){ return stockDao.sum(currency);}
@@ -550,6 +591,15 @@ public class StockService {
         return stockDao.strategyAdd(strategy);
     }
 
-    public int strategyUpgrade(Strategy strategy){ return stockDao.strategyUpgrade(strategy);}
+    public int strategyAdd(String code, String belongTo, String strategyCode){
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("code", code);
+        map.put("belongTo", belongTo);
+        map.put("strategyCode", strategyCode);
+        return stockDao.strategyAdd(map);
+    }
 
+    public int strategyUpdate(Strategy strategy){ return stockDao.strategyUpdate(strategy);}
+
+    public Map<String, BigDecimal> getStrategyValue() {return stockDao.getStrategyValue();}
 }

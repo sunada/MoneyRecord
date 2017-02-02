@@ -41,10 +41,20 @@ public class StockDao {
         return stockList;
     }
 
-    public List<Stock> getHistoryStockList(){
+//    public List<Stock> getHistoryStockList(){
+//        List<Stock> stockList = new ArrayList<Stock>();
+//        try{
+//            stockList = sqlSession.selectList("Stocks.getHistoryStockList");
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return stockList;
+//    }
+
+    public List<Stock> getHistoryStockList(String strategyCode){
         List<Stock> stockList = new ArrayList<Stock>();
         try{
-            stockList = sqlSession.selectList("Stocks.getHistoryStockList");
+            stockList = sqlSession.selectList("Stocks.getHistoryStockListByStrategy",strategyCode);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -151,9 +161,25 @@ public class StockDao {
         return sqlSession.selectList("Stocks.getStrategys");
     }
 
+    public Strategy getStrategyByCode(String code) { return sqlSession.selectOne("Stocks.getStrategyByCode", code);}
+
     public int strategyAdd(Strategy strategy){
         return sqlSession.insert("Stocks.strategyAdd", strategy);
     }
 
-    public int strategyUpgrade(Strategy strategy) { return sqlSession.update("Stocks.strategyUpgrade", strategy);}
+    public int strategyAdd(Map<String, String> map){ return sqlSession.update("Stocks.addStrategyCodeToStock", map);}
+
+    public List<Stock> getStocksWithoutStrategy(){
+        return sqlSession.selectList("Stocks.getStocksWithoutStrategy");
+    }
+
+    public int strategyUpdate(Strategy strategy) { return sqlSession.update("Stocks.strategyUpdate", strategy);}
+
+    public Map getStrategyValue() {
+        FblMapResultHandler fbl = new FblMapResultHandler();
+        sqlSession.select("Stocks.getStrategyValue",fbl);
+        @SuppressWarnings("rawtypes")
+        Map map =fbl.getMappedResults();
+        return map;
+    }
 }

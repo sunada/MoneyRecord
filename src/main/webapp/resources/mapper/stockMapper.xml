@@ -15,15 +15,15 @@
         <result column="currency" jdbcType="CHAR" property="currency"/>
         <result column="type" jdbcType="CHAR" property="type"/>
         <result column="rmb_cost" jdbcType="DECIMAL" property="rmbCost"/>
+        <result column="strategy_code" jdbcType="DECIMAL" property="strategyCode"/>
     </resultMap>
 
     <resultMap id="StragetyResult" type="com.springapp.mvc.Model.Strategy">
         <id column="code" jdbcType="CHAR" property="code"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="amount" jdbcType="DECIMAL" property="amount"/>
-        <result column="current_amount" jdbcType="DECIMAL" property="currentAmount"/>
+        <result column="cash" jdbcType="DECIMAL" property="cash"/>
         <result column="used_amount" jdbcType="DECIMAL" property="usedAmount"/>
-        <result column="profit" jdbcType="DECIMAL" property="profit"/>
     </resultMap>
 
     <resultMap id="SumResult" type="java.util.HashMap">
@@ -45,6 +45,11 @@
         <result column="amount" property="value" jdbcType="DECIMAL"/>
     </resultMap>
 
+    <resultMap id="SumByStrategyCode" type="java.util.HashMap">
+        <result column="strategy_code" property="key" jdbcType="CHAR"/>
+        <result column="value" property="value" jdbcType="DECIMAL"/>
+    </resultMap>
+
     <select id="getStockList" resultMap="StockResult">
         select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} order by belong_to,current*share desc;
     </select>
@@ -53,14 +58,20 @@
         select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} and code > ${flag} order by belong_to,risk,current*share desc;
     </select>
 
-    <select id="getHistoryStockList" resultMap="StockResult">
+    <!--<select id="getHistoryStockList" resultMap="StockResult">-->
+        <!--<![CDATA[-->
+          <!--select code, name, belong_to, cost, current, share, risk from stocks where share <= 0 and currency="RMB" order by risk.belong_to;-->
+        <!--]]>-->
+    <!--</select>-->
+
+    <select id="getHistoryStockListByStrategy" resultMap="StockResult">
         <![CDATA[
-          select code, name, belong_to, cost, current, share, risk from stocks where share <= 0 and currency="RMB" order by risk.belong_to;
+          select code, name, belong_to, cost, current, share, type, risk from stocks where share <= 0 and strategy_code=#{strategyCode} order by code;
         ]]>
     </select>
 
     <select id="getStockByCB" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk,type from stocks where code=#{code} and belong_to=#{belongTo};
+        select code, name, belong_to, cost, current, share, risk,type,strategy_code from stocks where code=#{code} and belong_to=#{belongTo};
     </select>
 
     <insert id="insertStock" parameterType="com.springapp.mvc.Model.Stock">
@@ -69,6 +80,10 @@
 
     <insert id="updateStock" parameterType="com.springapp.mvc.Model.Stock">
         update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost},current=#{current},type=#{type} where code=#{code} and belong_to=#{belongTo};
+    </insert>
+
+    <insert id="addStrategyCodeToStock" parameterType="java.util.Map">
+        update stocks set strategy_code=#{strategyCode} where code=#{code} and belong_to=#{belongTo};
     </insert>
 
     <select id="getSum" resultMap="SumResult">
@@ -115,17 +130,29 @@
     </select>
 
     <select id="getStrategys" resultMap="StragetyResult">
-      SELECT strategy.`code`, strategy.`name`, strategy.`amount`, strategy.`current_amount` ,(SELECT SUM(stocks.`cost` * stocks.`share`)) AS used_amount,
+      SELECT strategy.`code`, strategy.`name`, strategy.`amount`, strategy.`cash` ,(SELECT SUM(stocks.`cost` * stocks.`share`)) AS used_amount,
       (SELECT SUM((stocks.`current` - stocks.`cost`) * stocks.`share`))
-       AS profit FROM strategy LEFT JOIN stocks ON strategy.`code`=stocks.`strategy_code` group by stocks.`strategy_code`;
+       AS profit FROM strategy LEFT JOIN stocks ON strategy.`code`=stocks.`strategy_code` group by stocks.`strategy_code` order by strategy.`code`;
+    </select>
+
+    <select id="getStocksWithoutStrategy" resultMap="StockResult">
+        select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and code > 0 and strategy_code is null order by current*share desc;
+    </select>
+
+    <select id="getStrategyByCode" resultMap="StragetyResult">
+        select code, name, amount, cash from strategy where code=#{code};
     </select>
 
     <insert id="strategyAdd" parameterType="com.springapp.mvc.Model.Strategy">
-        insert strategy(code, name, amount, current_amount) values (#{code}, #{name}, #{amount}, #{currentAmount});
+        insert strategy(code, name, amount, cash) values (#{code}, #{name}, #{amount}, #{cash});
     </insert>
 
-    <update id="strategyUpgrade" parameterType="com.springapp.mvc.Model.Strategy">
-        update strategy set name=#{name}, amount=#{amount}, current_amount=#{currentAmount} where code=#{code};
+    <update id="strategyUpdate" parameterType="com.springapp.mvc.Model.Strategy">
+        update strategy set name=#{name}, amount=#{amount}, cash=#{cash} where code=#{code};
     </update>
+
+    <select id="getStrategyValue" resultMap="SumByStrategyCode">
+        SELECT strategy_code, SUM(SHARE * current) as value FROM stocks WHERE strategy_code IS NOT NULL GROUP BY strategy_code;
+    </select>
 
 </mapper>

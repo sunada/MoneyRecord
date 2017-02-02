@@ -24,6 +24,8 @@ public class DealService {
     private DealDao dealDao;
     private MyFund myFund;
     private MyFundService myFundService;
+    @Resource
+    private StockService stockService;
 
     @Autowired
     public void setDeal(Deal deal){ this.deal = deal;}
@@ -39,6 +41,16 @@ public class DealService {
         map.put("code", code);
         map.put("belongTo", belongTo);
         ArrayList<Deal> deals = (ArrayList)dealDao.getDeals(map, fundOrStock);
+        return deals;
+    }
+
+    public List<Deal> getStrategyDeals(String strategyCode){
+        List<Stock> stocks = stockService.getStrategyStocks(strategyCode);
+        stocks.addAll(stockService.readHistory(strategyCode));
+        List<Deal> deals = new ArrayList<Deal>();
+        for(Stock stock : stocks){
+            deals.addAll(readDeals(stock.getCode(), stock.getBelongTo(), stock.getType().getName()));
+        }
         return deals;
     }
 

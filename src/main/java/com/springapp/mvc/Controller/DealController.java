@@ -149,4 +149,12 @@ public class DealController {
         }
         return "redirect:/";
     }
+
+    @RequestMapping(value = "strategyDeals")
+    public ModelAndView strategyDeals(HttpServletRequest request){
+        ModelAndView view = new ModelAndView("deals");
+        List<Deal> deals = dealService.getStrategyDeals(request.getParameter("strategyCode"));
+        view.addObject("deals", deals);
+        return view;
+    }
 }
