@@ -41,26 +41,6 @@ public class StockDao {
         return stockList;
     }
 
-//    public List<Stock> getHistoryStockList(){
-//        List<Stock> stockList = new ArrayList<Stock>();
-//        try{
-//            stockList = sqlSession.selectList("Stocks.getHistoryStockList");
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return stockList;
-//    }
-
-    public List<Stock> getHistoryStockList(String strategyCode){
-        List<Stock> stockList = new ArrayList<Stock>();
-        try{
-            stockList = sqlSession.selectList("Stocks.getHistoryStockListByStrategy",strategyCode);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return stockList;
-    }
-
     public Stock getStockByCB(String code, String belongTo){
         Map<String, String> map = new HashMap<String, String>();
         map.put("code", code);

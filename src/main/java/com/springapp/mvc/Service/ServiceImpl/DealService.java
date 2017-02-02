@@ -46,7 +46,6 @@ public class DealService {
 
     public List<Deal> getStrategyDeals(String strategyCode){
         List<Stock> stocks = stockService.getStrategyStocks(strategyCode);
-        stocks.addAll(stockService.readHistory(strategyCode));
         List<Deal> deals = new ArrayList<Deal>();
         for(Stock stock : stocks){
             deals.addAll(readDeals(stock.getCode(), stock.getBelongTo(), stock.getType().getName()));

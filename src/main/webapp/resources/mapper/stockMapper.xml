@@ -58,18 +58,6 @@
         select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} and code > ${flag} order by belong_to,risk,current*share desc;
     </select>
 
-    <!--<select id="getHistoryStockList" resultMap="StockResult">-->
-        <!--<![CDATA[-->
-          <!--select code, name, belong_to, cost, current, share, risk from stocks where share <= 0 and currency="RMB" order by risk.belong_to;-->
-        <!--]]>-->
-    <!--</select>-->
-
-    <select id="getHistoryStockListByStrategy" resultMap="StockResult">
-        <![CDATA[
-          select code, name, belong_to, cost, current, share, type, risk from stocks where share <= 0 and strategy_code=#{strategyCode} order by code;
-        ]]>
-    </select>
-
     <select id="getStockByCB" resultMap="StockResult">
         select code, name, belong_to, cost, current, share, risk,type,strategy_code from stocks where code=#{code} and belong_to=#{belongTo};
     </select>
