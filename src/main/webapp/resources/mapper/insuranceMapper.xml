@@ -11,16 +11,21 @@
         <result column="years" jdbcType="INTEGER" property="years"/>
         <result column="owner" jdbcType="CHAR" property="owner"/>
         <result column="start" jdbcType="DATE" property="start"/>
+        <result column="end" jdbcType="DATE" property="end"/>
         <result column="type" jdbcType="CHAR" property="type"/>
         <result column="amount" jdbcType="INTEGER" property="amount"/>
         <result column="age" jdbcType="INTEGER" property="age"/>
     </resultMap>
 
-    <select id="display" resultMap="InsuranceResult">
-      SELECT id, company, belong_to, coverage, years, start, name, owner, type, age, amount FROM insurance order by owner,type;
+    <select id="displayValid" resultMap="InsuranceResult">
+      SELECT id, company, belong_to, coverage, years, start, name, owner, type, age, amount,end FROM insurance where end >= Now() order by owner,type;
+    </select>
+
+    <select id="displayPast" resultMap="InsuranceResult">
+        SELECT id, company, belong_to, coverage, years, start, name, owner, type, age, amount,end FROM insurance where end &lt; Now() order by owner,type;
     </select>
 
     <insert id="insert" parameterType="com.springapp.mvc.Model.Insurance">
-        insert insurance(company, belong_to, coverage, years, start, name, owner, type, age, amount) values(#{company}, #{belongTo}, #{coverage}, #{years}, #{start}, #{name}, #{owner}, #{type}, #{age}, #{amount});
+        insert insurance(company, belong_to, coverage, years, start, name, owner, type, age, amount,end) values(#{company}, #{belongTo}, #{coverage}, #{years}, #{start}, #{name}, #{owner}, #{type}, #{age}, #{amount},#{end});
     </insert>
 </mapper>

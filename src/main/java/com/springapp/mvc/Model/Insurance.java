@@ -16,6 +16,7 @@ public class Insurance {
     public int coverage;
     public int years;
     public Date start;
+    public Date end;
     public String name;
     public String owner;
     public String Type;
@@ -56,6 +57,14 @@ public class Insurance {
 
     public void setYears(int years) {
         this.years = years;
+    }
+
+    public Date getEnd() {
+        return end;
+    }
+
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public Date getStart() {

@@ -16,8 +16,12 @@ public class InsuranceDao {
     @Resource
     private SqlSession sqlSession;
 
-    public ArrayList<Insurance> display(){
-        return (ArrayList)sqlSession.selectList("Insurance.display");
+    public ArrayList<Insurance> display(boolean valid ){
+        if(valid) {
+            return (ArrayList) sqlSession.selectList("Insurance.displayValid");
+        }else{
+            return (ArrayList) sqlSession.selectList("Insurance.displayPast");
+        }
     }
 
     public boolean save(Insurance insurance){

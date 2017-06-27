@@ -19,8 +19,8 @@ public class InsuranceService {
     @Resource
     public InsuranceDao insuranceDao;
 
-    public ArrayList<Insurance> display(){
-        ArrayList<Insurance> res = insuranceDao.display();
+    public ArrayList<Insurance> display(boolean valid){
+        ArrayList<Insurance> res = insuranceDao.display(valid);
         return res;
     }
 

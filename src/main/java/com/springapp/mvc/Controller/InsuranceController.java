@@ -29,11 +29,14 @@ public class InsuranceController {
 
     @RequestMapping("")
     public ModelAndView display(){
-        ArrayList<Insurance> arr = insuranceService.display();
+        ArrayList<Insurance> arrValid = insuranceService.display(true);
         ModelAndView view = new ModelAndView("insurance");
-        view.addObject("list", arr);
+        view.addObject("list", arrValid);
 
-        Map<String, Integer> map = insuranceService.addUpByOwner(arr);
+        ArrayList<Insurance> arrPast = insuranceService.display(false);
+        view.addObject("pastList", arrPast);
+
+        Map<String, Integer> map = insuranceService.addUpByOwner(arrValid);
         view.addObject("addUpByOwner", map);
         return view;
     }
@@ -48,13 +51,14 @@ public class InsuranceController {
         insurance.setName(request.getParameter("name"));
         insurance.setAge(new Integer(request.getParameter("age")));
         insurance.setAmount(new Integer(request.getParameter("amount")));
-        insurance.setCompany(request.getParameter("compnay"));
+        insurance.setCompany(request.getParameter("company"));
         insurance.setBelongTo(request.getParameter("belongTo"));
         insurance.setCoverage(new Integer(request.getParameter("coverage")));
         insurance.setOwner(request.getParameter("owner"));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try{
             insurance.setStart(sdf.parse(request.getParameter("start")));
+            insurance.setEnd(sdf.parse(request.getParameter("end")));
         }catch (Exception e){
             e.printStackTrace();
         }

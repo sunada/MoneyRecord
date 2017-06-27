@@ -25,17 +25,17 @@
             <li><a href="/balance">收支表</a> </li>
             <li><a href="/fund">基金</a></li>
             <li><a href="/stock">证券</a></li>
-            <%--<li><a href="/fund/aipDisplay">定投</a></li>--%>
             <li><a href="/loan">网贷</a></li>
             <li class="active"><a href="/insurance">保险</a></li>
-            <%--<li><a href="/fund/myFundAdd">基金操作</a></li>--%>
-            <%--<li><a href="/loan/loanAdd">买入网贷</a></li>--%>
-            <%--<li><a href="/stock/stockAdd">证券操作</a></li>--%>
-            <%--<li><a href="/fund/updateFundNet">更新基金净值</a></li>--%>
-            <%--<li><a href="/deal/updateAipDeal">更新定投交易</a></li>--%>
         </ul>
     </div>
 </nav>
+
+    <% Calendar calendar=Calendar.getInstance();
+        int month=calendar.get(Calendar.MONTH)+1;
+    %>
+
+<jsp:useBean id="now" class="java.util.Date" scope="page"/>
 
     <table class="table table-bordered">
         <caption>保险列表</caption>
@@ -51,22 +51,31 @@
             <th>保障期限(岁)</th>
             <th>年交保费(元)</th>
             <th>保单生效时间</th>
+            <th>保单过期时间</th>
         </tr>
         </thead>
         <tbody>
             <c:forEach items="${list}" var="i">
-                <tr>
-                    <td>${i.name}</td>
-                    <th>${i.company}</th>
-                    <td>${i.belongTo}</td>
-                    <td>${i.type}</td>
-                    <td>${i.owner}</td>
-                    <td>${i.coverage}</td>
-                    <td>${i.years}</td>
-                    <td>${i.age}</td>
-                    <td>${i.amount}</td>
-                    <td><fmt:formatDate value="${i.start}"/></td>
-                </tr>
+                <c:choose>
+                    <c:when test="${i.start.getMonth()==now.getMonth()&&i.start.getDate() >= now.getDate()}">
+                        <tr style='color: red'>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                    </c:otherwise>
+                </c:choose>
+                            <td>${i.name}</td>
+                            <th>${i.company}</th>
+                            <td>${i.belongTo}</td>
+                            <td>${i.type}</td>
+                            <td>${i.owner}</td>
+                            <td>${i.coverage}</td>
+                            <td>${i.years}</td>
+                            <td>${i.age}</td>
+                            <td>${i.amount}</td>
+                            <td><fmt:formatDate value="${i.start}"/></td>
+                            <td><fmt:formatDate value="${i.end}"/></td>
+                        </tr>
             </c:forEach>
         </tbody>
     </table>
@@ -91,5 +100,43 @@
     </table>
 
     <a class="btn btn-primary" onclick="window.location='/insurance/add'">买入保险</a></button>
+
+<br/>
+<br/>
+<table class="table table-bordered">
+    <caption>过期保险列表</caption>
+    <thead>
+    <tr>
+        <th>产品名</th>
+        <th>保险公司</th>
+        <th>购买平台</th>
+        <th>保险类型</th>
+        <th>被保险人</th>
+        <th>保额(万)</th>
+        <th>交费年限(年)</th>
+        <th>保障期限(岁)</th>
+        <th>年交保费(元)</th>
+        <th>保单生效时间</th>
+        <th>保单过期时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${pastList}" var="i">
+        <tr>
+            <td>${i.name}</td>
+            <th>${i.company}</th>
+            <td>${i.belongTo}</td>
+            <td>${i.type}</td>
+            <td>${i.owner}</td>
+            <td>${i.coverage}</td>
+            <td>${i.years}</td>
+            <td>${i.age}</td>
+            <td>${i.amount}</td>
+            <td><fmt:formatDate value="${i.start}"/></td>
+            <td><fmt:formatDate value="${i.end}"/></td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 </body>
 </html>

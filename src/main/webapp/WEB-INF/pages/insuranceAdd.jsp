@@ -22,14 +22,9 @@
                 <li><a href="/balance">收支表</a> </li>
                 <li><a href="/fund">基金</a></li>
                 <li><a href="/stock">证券</a></li>
-                <%--<li><a href="/fund/aipDisplay">定投</a></li>--%>
                 <li><a href="/loan">网贷</a></li>
                 <li class="active"><a href="/insurance">保险</a></li>
-                <%--<li><a href="/fund/myFundAdd">基金操作</a></li>--%>
-                <%--<li><a href="/loan/loanAdd">买入网贷</a></li>--%>
-                <%--<li><a href="/stock/stockAdd">证券操作</a></li>--%>
-                <%--<li><a href="/fund/updateFundNet">更新基金净值</a></li>--%>
-                <%--<li><a href="/deal/updateAipDeal">更新定投交易</a></li>--%>
+
             </ul>
         </div>
     </nav>
@@ -47,6 +42,8 @@
             <input type="radio" name="company" value="国泰">国泰
             <input type="radio" name="company" value="弘康">弘康
             <input type="radio" name="company" value="平安">平安
+            <input type="radio" name="company" value="安心">安心
+            <input type="radio" name="company" value="中民">中民
         </div>
 
         <div class="form-group">
@@ -54,6 +51,7 @@
             <input type="radio" name="type" value="重疾">重疾
             <input type="radio" name="type" value="人寿">人寿
             <input type="radio" name="type" value="意外">意外
+            <input type="radio" name="type" value="航空">航空
             <input type="radio" name="type" value="防癌">防癌
             <input type="radio" name="type" value="医疗">医疗
             <input type="radio" name="type" value="房屋">房屋
@@ -85,6 +83,11 @@
         <div class="form-group">
             <label>生效时间</label>
             <input type="text" name="start">
+        </div>
+
+        <div class="form-group">
+            <label>失效时间</label>
+            <input type="text" name="end">
         </div>
 
         <div class="form-group">
