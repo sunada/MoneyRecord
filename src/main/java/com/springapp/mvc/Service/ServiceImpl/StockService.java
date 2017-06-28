@@ -6,6 +6,7 @@ import com.springapp.mvc.Dao.StockDao;
 import com.springapp.mvc.Model.Strategy;
 import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Model.Currency;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,8 @@ public class StockService {
     private Stock stock;
     @Resource
     private Strategy strategy;
+    @Resource
+    private DealService dealService;
 
     private List<String> etfs = new ArrayList<String>(){{add("510500");add("510300");}};
     private List<String> debts = new ArrayList<String>(){{add("122811");add("124977");}};
@@ -67,6 +70,80 @@ public class StockService {
     }
 
     //costFromfile < 0时，表示不是从文件导入的交易记录
+//    public boolean saveStock(Stock stock, Date date, DealType dealType, BigDecimal costFromfile){
+//        BigDecimal cost;  //单次交易的费用
+//        //表示是从页面保存的交易记录，需自己计算交易费用
+//        if(costFromfile.compareTo(BigDecimal.ZERO) == 0) {
+//            cost = calDealCost(stock.getCode(), stock.getCost(), stock.getShare().abs(), dealType);
+//        }else{
+//            cost = costFromfile;
+//        }
+//        BigDecimal share = stock.getShare();
+//        Stock stockSql = stockDao.getStockByCB(stock.getCode(), stock.getBelongTo());
+//        BigDecimal amount= BigDecimal.ZERO;
+//        BigDecimal costAll;
+//        //买入之前持有这支证券
+//        if(stockSql != null) {
+//            if(dealType != DealType.SINTERESTTAX) {
+//                share = share.add(stockSql.getShare());
+//            }
+//            if(costFromfile.compareTo(BigDecimal.ZERO) <= 0){
+//                amount = BigDecimal.ZERO.subtract(stock.getCost().multiply(stock.getShare()).add(cost));
+//            }else{
+//                amount = stock.getAmount();
+//            }
+//
+//            //当交易类型为红利补缴时，share可能为0，此时不需要新存入historyAsset
+//            if(share.compareTo(BigDecimal.ZERO) == 0 && dealType != DealType.SINTERESTTAX){
+//                costAll = BigDecimal.ZERO;
+//                historyAsset.setCode(stockSql.getCode());
+//                historyAsset.setName(stockSql.getName());
+//                historyAsset.setBelongTo(stockSql.getBelongTo());
+//                historyAsset.setRisk(stockSql.getRisk());
+//                historyAsset.setCost(stockSql.getCost().multiply(stockSql.getShare()).add(cost));
+//                historyAsset.setProfit(amount.subtract(stockSql.getCost().multiply(stockSql.getShare())));
+//                historyAsset.setAssetType(AssetType.STOCK);
+//                historyAsset.setEnd(date);
+//                historyAssetDao.save(historyAsset);
+//                //cost = stockSql.getCost().multiply(stockSql.getShare()).add(cost);
+//                //stockDao.delete(stockSql.getCode());
+//            }else if(share.compareTo(BigDecimal.ZERO) < 0){
+//                return false;
+//            }else{
+//                costAll = stockSql.getCost().multiply(stockSql.getShare()).subtract(amount).divide(share, 3, BigDecimal.ROUND_HALF_EVEN);
+//            }
+//            //if(share.compareTo(BigDecimal.ZERO) != 0){
+//            if(true){
+//                stockSql.setCost(costAll);
+//                stockSql.setShare(share);
+//                stockDao.updateStock(stockSql);
+//                updateStrategy(stock,amount);
+//            }
+//        }else{ //买入时该证券的数量为0
+//            if(dealType == DealType.SBUY){
+//                BigDecimal tmp = stock.getCost();
+//                //计算成本单价时，会引入误差，使利润变大
+//                if(costFromfile.compareTo(BigDecimal.ZERO) == 0) {
+//                    amount = stock.getShare().multiply(stock.getCost()).add(cost);
+//                    stock.setCost(amount.divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
+//                }else{
+//                    stock.setCost(stock.getAmount().abs().divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
+//                }
+//                stockDao.save(stock);
+//                stock.setCost(tmp);
+//            }else if(dealType == DealType.SINTERESTTAX){
+//                stock.setCost(stock.getAmount().abs().divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
+//                stock.setShare(BigDecimal.ZERO);
+//                stockDao.save(stock);
+//            }else if(dealType == DealType.SSELL || dealType == DealType.INTEREST){
+//                return false;
+//            }
+//        }
+//        //return saveStockDeal(stock, date, cost, amount, dealType);
+//        return true;
+//    }
+
+    //保存或更新单支股票的持仓数据
     public boolean saveStock(Stock stock, Date date, DealType dealType, BigDecimal costFromfile){
         BigDecimal cost;  //单次交易的费用
         //表示是从页面保存的交易记录，需自己计算交易费用
@@ -75,49 +152,65 @@ public class StockService {
         }else{
             cost = costFromfile;
         }
-        BigDecimal share = stock.getShare();
+        BigDecimal share = BigDecimal.ZERO;
         Stock stockSql = stockDao.getStockByCB(stock.getCode(), stock.getBelongTo());
         BigDecimal amount= BigDecimal.ZERO;
-        BigDecimal costAll;
-        //买入之前持有这支证券
+        BigDecimal costAll = BigDecimal.ZERO;
+        //之前持有过这支证券
         if(stockSql != null) {
-            share = share.add(stockSql.getShare());
-            if(costFromfile.compareTo(BigDecimal.ZERO) <= 0){
+            if(dealType != DealType.SINTERESTTAX && dealType != DealType.INTEREST) {
+                share = stock.getShare().add(stockSql.getShare());
+            }else{
+                share = stockSql.getShare();
+            }
+            if(share.compareTo(BigDecimal.ZERO) < 0){
+                return false;
+            }
+
+            if(dealType != DealType.SINTERESTTAX && dealType != DealType.INTEREST && costFromfile.compareTo(BigDecimal.ZERO) <= 0){
                 amount = BigDecimal.ZERO.subtract(stock.getCost().multiply(stock.getShare()).add(cost));
             }else{
                 amount = stock.getAmount();
             }
+            BigDecimal sumAmount = dealService.sumDealsAmount(stock.getCode(),
+                    stock.getBelongTo(), stock.getType().getName()).add(amount);
 
+
+            //操作后不持有该股票
             if(share.compareTo(BigDecimal.ZERO) == 0){
-                costAll = BigDecimal.ZERO;
-                historyAsset.setCode(stockSql.getCode());
-                historyAsset.setName(stockSql.getName());
-                historyAsset.setBelongTo(stockSql.getBelongTo());
-                historyAsset.setRisk(stockSql.getRisk());
-                historyAsset.setCost(stockSql.getCost().multiply(stockSql.getShare()).add(cost));
-                historyAsset.setProfit(amount.subtract(stockSql.getCost().multiply(stockSql.getShare())));
-                historyAsset.setAssetType(AssetType.STOCK);
-                historyAsset.setEnd(date);
-                historyAssetDao.save(historyAsset);
-                //cost = stockSql.getCost().multiply(stockSql.getShare()).add(cost);
-                //stockDao.delete(stockSql.getCode());
-            }else if(share.compareTo(BigDecimal.ZERO) < 0){
-                return false;
-            }else{
-                costAll = stockSql.getCost().multiply(stockSql.getShare()).subtract(amount).divide(share, 3, BigDecimal.ROUND_HALF_EVEN);
+                HistoryAsset historySql = historyAssetDao.getHistoryAsset(stockSql.getCode(), stockSql.getBelongTo());
+                if(historySql == null) {
+                    costAll = BigDecimal.ZERO;
+                    historyAsset.setCode(stockSql.getCode());
+                    historyAsset.setName(stockSql.getName());
+                    historyAsset.setBelongTo(stockSql.getBelongTo());
+                    historyAsset.setRisk(stockSql.getRisk());
+//                    historyAsset.setCost(costAll);
+                    historyAsset.setProfit(sumAmount);
+                    historyAsset.setAssetType(stock.getType());
+//                    historyAsset.setEnd(date);
+                    historyAssetDao.save(historyAsset);
+                }else{
+                    historySql.setProfit(sumAmount);
+                    historyAssetDao.updateProfit(historySql);
+                }
+            }else if(dealType != DealType.SINTERESTTAX){
+                costAll = sumAmount.abs().divide(share, 3, BigDecimal.ROUND_HALF_EVEN);
             }
-            //if(share.compareTo(BigDecimal.ZERO) != 0){
+
             if(true){
-                stockSql.setCost(costAll);
+                stockSql.setCost(costAll);  //若清仓证券，则成本清零
                 stockSql.setShare(share);
                 stockDao.updateStock(stockSql);
                 updateStrategy(stock,amount);
             }
 
-        }else{ //买入时该证券的数量为0
-            if(dealType == DealType.SBUY){
+            //if(share.compareTo(BigDecimal.ZERO) != 0){
+
+        }else{ //未持有该证券
+            if(dealType == DealType.SBUY || dealType == DealType.SINTERESTTAX){
                 BigDecimal tmp = stock.getCost();
-                //计算成本单价时，会引入误差，使利润变大
+                //手动输入交易记录。计算成本单价时，会引入误差，使利润变大
                 if(costFromfile.compareTo(BigDecimal.ZERO) == 0) {
                     amount = stock.getShare().multiply(stock.getCost()).add(cost);
                     stock.setCost(amount.divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
@@ -165,17 +258,17 @@ public class StockService {
                 Date dealDate = sdf.parse(sep[0]);
                 String time = sep[1];
                 int len = sep[2].length();
-                if(len >= 6) {
+                if (len >= 6) {
                     deal.setCode(sep[2]);
-                }else{
+                } else {
                     String tmp = "";
                     len = 6 - len;
-                    while(len-- > 0){
+                    while (len-- > 0) {
                         tmp += "0";
                     }
-                    deal.setCode(tmp+sep[2]);
+                    deal.setCode(tmp + sep[2]);
                 }
-                if (hasContract(deal.getBelongTo(),time, dealDate, deal.getCode())) {
+                if (hasContract(deal.getBelongTo(), time, dealDate, deal.getCode())) {
                     continue;
                 }
                 deal.setBelongTo("国金39997769");
@@ -201,7 +294,9 @@ public class StockService {
                     deal.setDealType(DealType.SSELL);
                 } else if (sep[4].equals("股息入帐")) {
                     deal.setDealType(DealType.INTEREST);
-                } else {
+                } else if (sep[4].equals("股息红利税补缴")) {
+                    deal.setDealType(DealType.SINTERESTTAX);
+                } else{
                     deal.setDealType(DealType.OTHERS);
                 }
 
@@ -213,6 +308,8 @@ public class StockService {
                 stock.setShare(deal.getShare());
                 stock.setAmount(deal.getAmount());
                 stock.setCurrency(Currency.CNY);
+                stock.setRisk(Risk.HIGH);
+                stock.setType(AssetType.STOCK);
                 if (saveStock(stock, deal.getDate(), deal.getDealType(), deal.getCost())) {
                     if (!saveDeal(deal)) {
                         return false;
@@ -268,7 +365,9 @@ public class StockService {
                     deal.setDealType(DealType.SSELL);
                 }else if(segments[1].equals("股息入帐")) {
                     deal.setDealType(DealType.INTEREST);
-                }else{
+                }else if (segments[1].equals("股息红利税补缴")) {
+                    deal.setDealType(DealType.SINTERESTTAX);
+                } else{
                     deal.setDealType(DealType.OTHERS);
                 }
 
@@ -280,6 +379,8 @@ public class StockService {
                 stock.setShare(deal.getShare());
                 stock.setAmount(deal.getAmount());
                 stock.setCurrency(Currency.CNY);
+                stock.setType(AssetType.STOCK);
+                stock.setRisk(Risk.HIGH);
                 if(saveStock(stock, deal.getDate(), deal.getDealType(), deal.getCost())){
                     if(!saveDeal(deal)){
                         return false;

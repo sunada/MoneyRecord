@@ -70,6 +70,15 @@
         select sum(amount) - sum(cost) from stock_deals where code=#{code} and deal_type="SSELL";
     </select>
 
+
+    <select id="sumFundDealsAmount" resultType="DECIMAL">
+        select sum(amount) from fund_deals where code=#{code} and belong_to=#{belongTo};
+    </select>
+
+    <select id="sumStockDealsAmount" resultType="DECIMAL">
+        select sum(amount) from stock_deals where code=#{code} and belong_to=#{belongTo};
+    </select>
+
     <select id="getAccountStockNewDealDate" resultMap="getAccountStockNewDealDate">
         select belong_to belong_to, max(date_deal) date_deal from stock_deals group by belong_to;
     </select>

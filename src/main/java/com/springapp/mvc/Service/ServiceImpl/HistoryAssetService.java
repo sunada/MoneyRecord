@@ -48,21 +48,21 @@ public class HistoryAssetService {
 
             if(res.containsKey(risk)){
                 List<BigDecimal> newList = res.get(risk);
-                list.add(newList.get(0).add(asset.getCost()));
-                list.add(newList.get(1).add(asset.getProfit()));
+//                list.add(newList.get(0).add(asset.getCost()));
+                list.add(newList.get(0).add(asset.getProfit()));
             }else{
-                list.add(asset.getCost());
+//                list.add(asset.getCost());
                 list.add(asset.getProfit());
             }
-            costInAll = costInAll.add(asset.getCost());
+//            costInAll = costInAll.add(asset.getCost());
             profitInAll = profitInAll.add(asset.getProfit());
-            list.add(list.get(1).divide(list.get(0), 2, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
+//            list.add(list.get(1).divide(list.get(0), 2, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
             res.put(risk, list);
         }
         list = new ArrayList<BigDecimal>();
-        list.add(costInAll);
+//        list.add(costInAll);
         list.add(profitInAll);
-        list.add(profitInAll.divide(costInAll, 2, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
+//        list.add(profitInAll.divide(costInAll, 2, BigDecimal.ROUND_HALF_EVEN).multiply(BigDecimal.valueOf(100)));
         res.put("总计", list);
         return res;
     }

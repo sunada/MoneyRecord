@@ -44,6 +44,14 @@ public class DealService {
         return deals;
     }
 
+    public BigDecimal sumDealsAmount(String code, String belongTo, String fundOrStock){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("code", code);
+        map.put("belongTo", belongTo);
+        BigDecimal sum = dealDao.sumDealsAmount(map, fundOrStock);
+        return sum;
+    }
+
     public List<Deal> getStrategyDeals(String strategyCode){
         List<Stock> stocks = stockService.getAllStrategyStocks(strategyCode);
 

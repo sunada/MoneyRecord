@@ -7,20 +7,28 @@
         <result column="code" jdbcType="CHAR" property="code"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
-        <result column="cost" jdbcType="DECIMAL" property="cost"/>
+        <!--<result column="cost" jdbcType="DECIMAL" property="cost"/>-->
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
-        <result column="start" jdbcType="DATE" property="start"/>
-        <result column="end" jdbcType="DATE" property="end"/>
+        <!--<result column="start" jdbcType="DATE" property="start"/>-->
+        <!--<result column="end" jdbcType="DATE" property="end"/>-->
         <result column="risk" jdbcType="CHAR" property="risk"/>
         <result column="type" jdbcType="CHAR" property="assetType"/>
     </resultMap>
 
     <insert id="insertHistoryAsset" parameterType="com.springapp.mvc.Model.HistoryAsset" useGeneratedKeys="true" keyProperty="id">
-        insert into history(code, name, belong_to, cost, profit, start, end, risk, type) values (#{code},#{name},#{belongTo}, #{cost}, #{profit}, #{start}, #{end}, #{risk}, #{assetType});
+        insert into rebuildHisotry(code, name, belong_to, profit, risk, type) values (#{code},#{name},#{belongTo},  #{profit}, #{risk}, #{assetType});
     </insert>
 
     <select id="getList" resultMap="HistoryAssetResult">
-        select code, name, belong_to, cost, profit, start, end, risk from history where type=#{type} order by profit;
+        select code, name, belong_to, profit, risk from rebuildHisotry order by profit;
     </select>
+
+    <select id="getHistoryAsset" resultMap="HistoryAssetResult">
+        select code, name, belong_to, profit, risk from rebuildHisotry where code=#{code} and belong_to=#{belong_to};
+    </select>
+
+    <update id="updateProfit" parameterType="com.springapp.mvc.Model.HistoryAsset">
+        update rebuildHisotry set profit=#{profit} where code=#{code} and belong_to=#{belong_to};
+    </update>
 
 </mapper>

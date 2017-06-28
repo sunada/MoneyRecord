@@ -45,13 +45,20 @@ public class HistoryAssetDao {
         return res != -1;
     }
 
-    public boolean update(HistoryAsset historyAsset){
+    public boolean updateProfit(HistoryAsset historyAsset){
         int res = -1;
         try{
-            res = sqlSession.update("HistoryAssets.update", historyAsset);
+            res = sqlSession.update("HistoryAssets.updateProfit", historyAsset);
         }catch (Exception e){
             e.printStackTrace();
         }
         return res != -1;
+    }
+
+    public HistoryAsset getHistoryAsset(String code, String belong_to){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("code", code);
+        map.put("belong_to",belong_to);
+        return sqlSession.selectOne("HistoryAssets.getHistoryAsset", map);
     }
 }

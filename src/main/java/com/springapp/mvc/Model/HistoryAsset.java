@@ -14,10 +14,10 @@ public class HistoryAsset {
     private String code;                 //代号
     private String name;                 //名称
     private String belongTo;            //平台
-    private BigDecimal cost;            //本金
+//    private BigDecimal cost;            //本金
     private BigDecimal profit;          //利润
-    private Date start;                 //开始时间
-    private Date end;
+//    private Date start;                 //开始时间
+//    private Date end;
     private Risk risk;
     private AssetType assetType;
 
@@ -45,13 +45,13 @@ public class HistoryAsset {
         this.name = name;
     }
 
-    public BigDecimal getCost() {
-        return cost;
-    }
+//    public BigDecimal getCost() {
+//        return cost;
+//    }
 
-    public void setCost(BigDecimal cost) {
-        this.cost = cost;
-    }
+//    public void setCost(BigDecimal cost) {
+//        this.cost = cost;
+//    }
 
     public BigDecimal getProfit() {
         return profit;
@@ -65,17 +65,17 @@ public class HistoryAsset {
 
     public void setRisk(Risk risk){this.risk = risk;}
 
-    public Date getStart() {
-        return start;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public Date getEnd(){return end;}
-    
-    public void setEnd(Date end){this.end = end;}
+//    public Date getStart() {
+//        return start;
+//    }
+//
+//    public void setStart(Date start) {
+//        this.start = start;
+//    }
+//
+//    public Date getEnd(){return end;}
+//
+//    public void setEnd(Date end){this.end = end;}
 
     public AssetType getAssetType(){return assetType;}
 

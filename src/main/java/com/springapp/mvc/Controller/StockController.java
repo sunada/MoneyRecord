@@ -226,7 +226,7 @@ public class StockController {
         String code = request.getParameter("code");
         String name = request.getParameter("name");
         BigDecimal rmbCost = new BigDecimal(request.getParameter("rmb_cost"));
-//        BigDecimal usdCost = new BigDecimal(request.getParameter("usd_cost"));
+        BigDecimal usdCost = new BigDecimal(request.getParameter("usd_cost"));
         BigDecimal share = new BigDecimal(request.getParameter("share"));
         BigDecimal current = new BigDecimal(request.getParameter("current"));
         String belongTo = request.getParameter("belongTo");
@@ -234,7 +234,7 @@ public class StockController {
         stock.setCode(code);
         stock.setName(name);
         stock.setRmbCost(rmbCost);
-//        stock.setCost(usdCost);
+        stock.setCost(usdCost);
         stock.setCurrent(current);
         stock.setShare(share);
         stock.setRisk(Risk.valueOf(request.getParameter("risk")));

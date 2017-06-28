@@ -39,6 +39,20 @@ public class DealDao {
         return list;
     }
 
+    public BigDecimal sumDealsAmount(Map<String, String> map, String fundOrStock){
+        BigDecimal sum = BigDecimal.ZERO;
+        try{
+            if(fundOrStock.equals("fund")) {
+                sum = sqlSession.selectOne("Deals.sumFundDealsAmount", map);
+            }else{
+                sum = sqlSession.selectOne("Deals.sumStockDealsAmount", map);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return sum;
+    }
+
     public boolean updateDeal(Deal deal, AssetType assetType){
         int res = -1;
         try{
