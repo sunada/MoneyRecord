@@ -31,10 +31,6 @@
     </div>
 </nav>
 
-    <% Calendar calendar=Calendar.getInstance();
-        int month=calendar.get(Calendar.MONTH)+1;
-    %>
-
 <jsp:useBean id="now" class="java.util.Date" scope="page"/>
 
     <table class="table table-bordered">
