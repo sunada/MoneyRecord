@@ -68,8 +68,8 @@
                     $(this).hide();
                     $(this).siblings().show();
 
-                    var str = "code=" + para[0] + "&name=" + para[1] + "&rmb_cost=" + para[2] + "&usd_cost=" + para[3]
-                            + "&current=" + para[4] + "&share=" + para[5] + "&risk=" + para[9] + "&belongTo=" + para[10];
+                    var str = "code=" + para[0] + "&name=" + para[1] + "&rmb_cost=" + para[2] + "&usd_cost=" + para[4]
+                            + "&current=" + para[5] + "&share=" + para[6] + "&risk=" + para[10] + "&belongTo=" + para[11];
 //                    alert(str)
                     //ajax提交表单
                     $.ajax({
@@ -184,7 +184,7 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="6.8814"></c:set>
+        <c:set var="exchangeRate" value="6.9021"></c:set>
         <table class="table table-striped">
             <caption>美元资产 (汇率：${exchangeRate})</caption>
             <thead>
@@ -193,7 +193,7 @@
                 <th>股票名称</th>
                 <th>人民币成本</th>
                 <th>人民币市值</th>
-                <%--<th>美元成本</th>--%>
+                <th>美元成本</th>
                 <th>现价（美元）</th>
                 <th>份额</th>
                 <th>市值</th>
@@ -211,7 +211,7 @@
                     <td>${stock.name}</td>
                     <td>${stock.rmbCost}</td>
                     <td><fmt:formatNumber type="number" value="${stock.current * stock.share * exchangeRate}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <%--<td>${stock.cost}</td>--%>
+                    <td>1</td>
                     <td>${stock.current}</td>
                     <td>${stock.share}</td>
                     <td><fmt:formatNumber type="number" value="${stock.current * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
@@ -233,7 +233,7 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="0.8867"></c:set>
+        <c:set var="exchangeRate" value="0.8868"></c:set>
         <table class="table table-striped">
             <caption>港币资产 (汇率：${exchangeRate})</caption>
             <thead>
@@ -373,9 +373,9 @@
                     <thead>
                     <tr>
                         <th>风险等级</th>
-                        <th>成本</th>
+                        <%--<th>成本</th>--%>
                         <th>盈亏</th>
-                        <th>收益率(%)</th>
+                        <%--<th>收益率(%)</th>--%>
                     </tr>
                     </thead>
                     <tbody>
@@ -424,8 +424,8 @@
                     <%--<td><fmt:formatDate value="${asset.end}"/></td>--%>
                     <td>${asset.risk}</td>
                     <td>
-                        <a class="btn btn-primary" href="/stock/stockAdd?code=${asset.code}&name=${asset.name}&belongTo=${asset.belongTo}&cost=${asset.cost}&dealType=SBUY" role="button">买入</a>
-                        <a class="btn btn-primary" href="/stock/stockAdd?code=${asset.code}&name=${asset.name}&belongTo=${asset.belongTo}&cost=${asset.cost}&dealType=SSELL" role="button">卖出</a>
+                        <a class="btn btn-primary" href="/stock/stockAdd?code=${asset.code}&name=${asset.name}&belongTo=${asset.belongTo}&dealType=SBUY" role="button">买入</a>
+                        <a class="btn btn-primary" href="/stock/stockAdd?code=${asset.code}&name=${asset.name}&belongTo=${asset.belongTo}&dealType=SSELL" role="button">卖出</a>
                         <a class="btn" href="/deal/stockList?code=${asset.code}&belongTo=${asset.belongTo}&from=${start}&to=${end}" role="button">交易记录</a>
                     </td>
                 </tr>
