@@ -61,7 +61,7 @@
     <select id="getSalaryList" resultMap="SalaryResult">
         select id,date, owner, before_tax, after_tax, house_funds_company, house_funds, medicare_company,
         medicare, pension_insurance_company,pension_insurance,unemploy_insurance,unemploy_insurance_company,tax,
-        insurance_base, fund_base,media_cash,note from salary order by date desc limit 24;
+        insurance_base, fund_base,media_cash,note from salary order by date desc;
     </select>
 
     <select id="getSalaryListByDate" resultMap="SalaryResult">
