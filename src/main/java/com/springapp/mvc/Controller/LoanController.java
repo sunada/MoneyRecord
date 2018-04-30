@@ -50,7 +50,10 @@ public class LoanController {
         Map<String, BigDecimal> sumByBelongTo = loanService.sumByBelongTo();
         view.addObject("sumByBelongTo", sumByBelongTo);
 
-        BigDecimal amountAll = sum.get("waitPIAll");
+        BigDecimal amountAll = BigDecimal.ZERO;
+        if(sum != null){
+            amountAll = sum.get("waitPIAll");
+        }
         view.addObject("amountAll", amountAll);
 
         return view;

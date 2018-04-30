@@ -6,8 +6,12 @@ import com.springapp.mvc.Dao.StockDao;
 import com.springapp.mvc.Model.Strategy;
 import com.springapp.mvc.Model.*;
 import com.springapp.mvc.Model.Currency;
+import com.springapp.mvc.Util.HuGangTongStocks;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.ibatis.session.SqlSession;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +22,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2016/4/24.
@@ -145,15 +152,22 @@ public class StockService {
 
     //保存或更新单支股票的持仓数据
     public boolean saveStock(Stock stock, Date date, DealType dealType, BigDecimal costFromfile){
+        //若非以下五种类型的交易，不影响证券的成功或持有数量
+        if(dealType != DealType.SINTERESTTAX && dealType != DealType.LINTERESTTAX && dealType != DealType.INTEREST
+                && dealType != DealType.SBUY && dealType != DealType.SSELL && dealType != DealType.IPO){
+            return true;
+        }
         BigDecimal cost;  //单次交易的费用
         //表示是从页面保存的交易记录，需自己计算交易费用
-        if(costFromfile.compareTo(BigDecimal.ZERO) == 0) {
+        if(costFromfile.compareTo(BigDecimal.ZERO) == 0 && dealType != dealType.IPO) {
             cost = calDealCost(stock.getCode(), stock.getCost(), stock.getShare().abs(), dealType);
         }else{
             cost = costFromfile;
         }
         BigDecimal share = BigDecimal.ZERO;
-        Stock stockSql = stockDao.getStockByCB(stock.getCode(), stock.getBelongTo());
+        Stock stockSql = stockDao.getStockByCB(stock.getCode(),stock.getBelongTo(),stock.getCurrency());
+//        if(stock.getCode() != "") stockDao.getStockByCB(stock.getCode(),stock.getBelongTo(),stock.getCurrency());
+//        else stockSql = stockDao.getStockByNB(stock.getName(), stock.getCurrency(), stock.getBelongTo());
         BigDecimal amount= BigDecimal.ZERO;
         BigDecimal costAll = BigDecimal.ZERO;
         //之前持有过这支证券
@@ -172,14 +186,16 @@ public class StockService {
             }else{
                 amount = stock.getAmount();
             }
-            BigDecimal sumAmount = dealService.sumDealsAmount(stock.getCode(),
-                    stock.getBelongTo(), stock.getType().getName()).add(amount);
+            BigDecimal sumAmount = dealService.sumDealsAmount(stock.getCode(),stock.getName(),
+                    stock.getBelongTo(), stock.getType().getName(),stock.getCurrency());
 
+            if(sumAmount != null) sumAmount = sumAmount.add(amount);
+            else return false;
 
             //操作后不持有该股票
-            if(share.compareTo(BigDecimal.ZERO) == 0){
+            if(share.compareTo(BigDecimal.ZERO) == 0) {
                 HistoryAsset historySql = historyAssetDao.getHistoryAsset(stockSql.getCode(), stockSql.getBelongTo());
-                if(historySql == null) {
+                if (historySql == null) {
                     costAll = BigDecimal.ZERO;
                     historyAsset.setCode(stockSql.getCode());
                     historyAsset.setName(stockSql.getName());
@@ -190,13 +206,16 @@ public class StockService {
                     historyAsset.setAssetType(stock.getType());
 //                    historyAsset.setEnd(date);
                     historyAssetDao.save(historyAsset);
-                }else{
+                } else {
                     historySql.setProfit(sumAmount);
                     historyAssetDao.updateProfit(historySql);
                 }
-            }else if(dealType != DealType.SINTERESTTAX){
+            }else{
                 costAll = sumAmount.abs().divide(share, 3, BigDecimal.ROUND_HALF_EVEN);
             }
+//            }else if(dealType != DealType.SINTERESTTAX){  //红利税也会影响成本呀，为啥红利税要排除掉？
+//                costAll = sumAmount.abs().divide(share, 3, BigDecimal.ROUND_HALF_EVEN);
+//            }
 
             if(true){
                 stockSql.setCost(costAll);  //若清仓证券，则成本清零
@@ -204,24 +223,31 @@ public class StockService {
                 stockDao.updateStock(stockSql);
                 updateStrategy(stock,amount);
             }
-
             //if(share.compareTo(BigDecimal.ZERO) != 0){
-
         }else{ //未持有该证券
-            if(dealType == DealType.SBUY || dealType == DealType.SINTERESTTAX){
-                BigDecimal tmp = stock.getCost();
-                //手动输入交易记录。计算成本单价时，会引入误差，使利润变大
-                if(costFromfile.compareTo(BigDecimal.ZERO) == 0) {
-                    amount = stock.getShare().multiply(stock.getCost()).add(cost);
-                    stock.setCost(amount.divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
-                }else{
-                    stock.setCost(stock.getAmount().abs().divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
-                }
-                stockDao.save(stock);
-                stock.setCost(tmp);
-            }else if(dealType == DealType.SSELL || dealType == DealType.INTEREST){
-                return false;
+//            if(dealType == DealType.SBUY || dealType == DealType.SINTERESTTAX || dealType == DealType.IPO){
+//                BigDecimal tmp = stock.getCost();
+//                //手动输入交易记录。计算成本单价时，会引入误差，使利润变大
+//                if(costFromfile.compareTo(BigDecimal.ZERO) == 0) {
+//                    amount = stock.getShare().multiply(stock.getCost()).add(cost);
+//                    stock.setCost(amount.divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
+//                }else{
+//                    stock.setCost(stock.getAmount().abs().divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
+//                }
+//                stockDao.save(stock);
+//                stock.setCost(tmp);
+//            }else if(dealType == DealType.SSELL || dealType == DealType.INTEREST){
+//                return false;
+//            }
+            BigDecimal tmp = stock.getCost();
+            if(costFromfile.compareTo(BigDecimal.ZERO) == 0) {
+                amount = stock.getShare().multiply(stock.getCost()).add(cost);
+                stock.setCost(amount.divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
+            }else{
+                stock.setCost(stock.getAmount().abs().divide(stock.getShare(), 3, BigDecimal.ROUND_HALF_EVEN));
             }
+            stockDao.save(stock);
+            stock.setCost(tmp);
         }
         //return saveStockDeal(stock, date, cost, amount, dealType);
         return true;
@@ -268,7 +294,8 @@ public class StockService {
                     }
                     deal.setCode(tmp + sep[2]);
                 }
-                if (hasContract(deal.getBelongTo(), time, dealDate, deal.getCode())) {
+
+                if (hasContract(deal.getBelongTo(), time, dealDate, deal.getCode(),deal.getAmount())) {
                     continue;
                 }
                 deal.setBelongTo("国金39997769");
@@ -331,54 +358,76 @@ public class StockService {
             while ((line = br.readLine()) != null) { //循环读取行
                 String[] segments = line.split("\t"); //按tab分割
 
-                if(segments[11].equals("0156915917") || segments[11].equals("A447655138")||segments[11].equals("156915917") ){
-                    deal.setBelongTo("华010600052829");
-                }else if(segments[11].equals("A473653724") || segments[11].equals("0157570856")){
-                    deal.setBelongTo("华666600196751");
-                }else{
-                    continue;
-                }
-                String contract = segments[3];
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-                Date dealDate = sdf.parse(segments[0]);
-                if(hasContract(deal.getBelongTo(), contract, dealDate, segments[14])){
-                    continue;
-                }
-                deal.setCode(segments[14]);
-                deal.setDate(dealDate);
-                deal.setName(segments[2]);
-                deal.setContract(segments[3]);
-                deal.setShare(new BigDecimal(segments[4]));
-                if(getStockType(deal.getCode()) == SecurityType.SHLOAN){
-                    deal.setShare(deal.getShare().multiply(BigDecimal.TEN));
-                }
-                deal.setNet(new BigDecimal(segments[5]));
-                BigDecimal cost = new BigDecimal(segments[7]);
-                cost = cost.add(new BigDecimal(segments[8]));
-                cost = cost.add(new BigDecimal(segments[9]));
-                deal.setCost(cost);
-                deal.setAmount(new BigDecimal(segments[10]));
+                if(segments.length > 18){
+                    if(segments[19].equals("沪港通") || segments[19].equals("深港通") || segments[20].equals("沪港通")
+                        || segments[20].equals("深港通")){
+                        deal = saveStockByFileHuataiHugangtong(segments);
+                        stock.setCurrency(Currency.HKD);
+                    }
+                }else {
+                    deal.setAmount(new BigDecimal(segments[10]));
+                    deal.setShare(new BigDecimal(segments[4]));
+                    if (deal.getAmount().compareTo(BigDecimal.ZERO) == 0 || deal.getShare().compareTo(BigDecimal.ZERO) == 0)  continue;
+                    stock.setCurrency(Currency.CNY);
+                    deal.setCurrency(Currency.CNY);
 
+                    if (segments[11].equals("0156915917") || segments[11].equals("A447655138") || segments[11].equals("156915917")) {
+                        deal.setBelongTo("华010600052829");
+                    } else if (segments[11].equals("A473653724") || segments[11].equals("0157570856")) {
+                        deal.setBelongTo("华666600196751");
+                    } else {
+                        continue;
+                    }
+                    String contract = segments[3];
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                    Date dealDate = sdf.parse(segments[0]);
+
+                    String code = segments[14];
+                    while(code.length() < 6){
+                        code = "0" + code;
+                    }
+                    if (hasContract(deal.getBelongTo(), contract, dealDate, code, deal.getAmount())) {
+                        continue;
+                    }
+                    deal.setCode(code);
+                    deal.setDate(dealDate);
+                    deal.setName(segments[2]);
+                    deal.setContract(segments[3]);
+
+                    if (getStockType(deal.getCode()) == SecurityType.SHLOAN) {
+                        deal.setShare(deal.getShare().multiply(BigDecimal.TEN));
+                    }
+                    deal.setNet(new BigDecimal(segments[5]));
+                    BigDecimal cost = new BigDecimal(segments[7]);
+                    cost = cost.add(new BigDecimal(segments[8]));
+                    cost = cost.add(new BigDecimal(segments[9]));
+                    deal.setCost(cost);
+                }
+
+                if(deal == null) continue;
                 if(segments[1].equals("证券买入")){
                     deal.setDealType(DealType.SBUY);
+                }else if(segments[1].equals("新股申购确认缴款")){
+                    deal.setDealType(DealType.IPO);
                 }else if(segments[1].equals("证券卖出")) {
                     deal.setDealType(DealType.SSELL);
                 }else if(segments[1].equals("股息入帐")) {
                     deal.setDealType(DealType.INTEREST);
                 }else if (segments[1].equals("股息红利税补缴")) {
                     deal.setDealType(DealType.SINTERESTTAX);
-                } else{
+                }else if(segments[1].equals("港股通组合费收取")) {
+                    continue;
+                }else{
                     deal.setDealType(DealType.OTHERS);
                 }
 
                 stock.setCode(deal.getCode());
                 stock.setName(deal.getName());
-                stock.setCost(deal.getNet());
+                stock.setCost(deal.getCost());
                 stock.setCurrent(deal.getNet());
                 stock.setBelongTo(deal.getBelongTo());
                 stock.setShare(deal.getShare());
                 stock.setAmount(deal.getAmount());
-                stock.setCurrency(Currency.CNY);
                 stock.setType(AssetType.STOCK);
                 stock.setRisk(Risk.HIGH);
                 if(saveStock(stock, deal.getDate(), deal.getDealType(), deal.getCost())){
@@ -388,12 +437,132 @@ public class StockService {
                 }
             }
             br.close();
+            file.exists();
         }catch (Exception e){
             //log.error(e.getMessage());
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    public Deal saveStockByFileHuataiHugangtong(String[] segments){
+        deal.setAmount(new BigDecimal(segments[14]));
+        deal.setShare(new BigDecimal(segments[4]));
+        deal.setCurrency(Currency.HKD);
+        if (deal.getAmount().compareTo(BigDecimal.ZERO) == 0 || deal.getShare().compareTo(BigDecimal.ZERO) == 0)
+            return null;
+        if (segments[17].equals("0156915917") || segments[17].equals("A447655138") || segments[17].equals("156915917")) {
+            deal.setBelongTo("华010600052829");
+        } else if (segments[17].equals("A473653724") || segments[17].equals("0157570856")) {
+            deal.setBelongTo("华666600196751");
+        } else {
+            return null;
+        }
+        String contract = segments[3];
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        try {
+            Date dealDate = sdf.parse(segments[0]);
+
+            if (hasContract(deal.getBelongTo(), contract, dealDate, segments[2], deal.getAmount())) {
+                return null;
+            }
+//            String code = HuGangTongStocks.INSTANCE.getStocks().get(deal.getName());
+            deal.setName(segments[2]);
+            String code = getCodeFromName(deal.getName());
+            if(code == null) return null;
+            deal.setCode(code);
+            deal.setDate(dealDate);
+            deal.setContract(segments[3]);
+            deal.setNet(new BigDecimal(segments[5]));
+            deal.setCurrency(Currency.HKD);
+            BigDecimal cost = new BigDecimal(segments[7]);
+            cost = cost.add(new BigDecimal(segments[8]));
+            cost = cost.add(new BigDecimal(segments[9]));
+            cost = cost.add(new BigDecimal(segments[10]));
+            cost = cost.add(new BigDecimal(segments[11]));
+            cost = cost.add(new BigDecimal(segments[12]));
+            cost = cost.add(new BigDecimal(segments[13]));
+            deal.setCost(cost);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return deal;
+    }
+
+    public String getCodeFromName(String name){
+        String code = dealDao.getCodeFromName(name);
+        if(code == null || code.equals("")){
+//            Map<String, String> stocks = getStocksFromWebHu();
+            Map<String, String> stocks = getStocksFromWebHuShen();
+            return stocks.get(name);
+        }
+        return code;
+    }
+
+    //保存沪港通代码及名称
+    public Map<String, String> getStocksFromWebHu() {
+        Map<String, String> stocks = new HashMap<String, String>();
+        String url = "http://www.sse.com.cn/services/hkexsc/disclo/eligible/";
+        Document doc = null;
+        try {
+            doc = Jsoup.parse(new URL(url).openStream(), "UTF8", url);
+            String tmp = doc.data().split(";")[20];
+            tmp = tmp.substring(33);
+            JSONObject json = JSONObject.fromObject(tmp);
+            String list = json.getString("list");
+            String[] seps = json.getString("list").split("]");
+
+            for (String s : seps) {
+                String code = s.replaceAll("[^(0-9)]*", "");
+                Pattern p = Pattern.compile("([\\u4e00-\\u9fa5]+)");
+                Matcher m = p.matcher(s);
+                if (m.find()) {
+                    String name = m.group(0);
+                    stocks.put(name, code);
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("code", code);
+                    map.put("name", name);
+                    sqlSession.update("Deals.insertHuGangTong", map);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return stocks;
+        }
+    }
+
+    //保存沪港通&深港通代码及名称
+//    http://www.szse.cn/main/szhk/ggtywxx/bdzqmd/
+    public Map<String, String> getStocksFromWebHuShen(){
+        Map<String, String> stocks = new HashMap<String, String>();
+        sqlSession.delete("Deals.deleteHuGangTong");
+        try{
+//            BufferedReader br = new BufferedReader(new FileReader("D:\\港股通标的证券名单.csv"));
+            BufferedReader br = new BufferedReader(new FileReader("D:\\haha5.csv"));
+            String line = "";
+            String[] sep = line.split(",");
+            if(sep.length < 1){
+                return stocks;
+            }
+            Deal deal = null;
+            while ((line = br.readLine()) != null) { //循环读取行
+                String[] segments = line.split(","); //按tab分割
+                if(segments.length < 2) continue;
+                String code = segments[0];
+                String name = segments[1];
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("code", code);
+                map.put("name", name);
+                stocks.put(name, code);
+                sqlSession.update("Deals.insertHuGangTong", map);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return stocks;
+        }
     }
 
     public boolean saveDeal(Deal deal){
@@ -415,12 +584,12 @@ public class StockService {
     }
 
     public boolean updateStrategy(Stock stock, BigDecimal amount){
-        String strategyCode = getStrategyCode(stock.getCode(), stock.getBelongTo());
+        String strategyCode = getStrategyCode(stock.getCode(),stock.getName(),stock.getBelongTo(),stock.getCurrency());
         return updateStrategy(amount, strategyCode);
     }
 
-    public boolean updateStrategy(String stockCode, String belongTo, String strategyCode){
-        stock = stockDao.getStockByCB(stockCode, belongTo);
+    public boolean updateStrategy(String stockCode, String belongTo, String strategyCode,Currency currency){
+        stock = stockDao.getStockByCB(stockCode, belongTo,currency);
         strategyAdd(stockCode, belongTo, strategyCode);
         BigDecimal amount = stock.getCost().multiply(stock.getShare());
         amount = BigDecimal.ZERO.subtract(amount);
@@ -441,8 +610,9 @@ public class StockService {
         return stockDao.getStrategyByCode(code);
     }
 
-    public String getStrategyCode(String code, String belongTo){
-        return stockDao.getStockByCB(code, belongTo).getStragetyCode();
+    public String getStrategyCode(String code, String name, String belongTo, Currency currency){
+//        if(code != "") return stockDao.getStockByCB(code,belongTo).getStragetyCode();
+        return stockDao.getStockByCB(code, belongTo,currency).getStragetyCode();
     }
 
     public List<Stock> getStocksWithoutStrategy(){
@@ -561,8 +731,8 @@ public class StockService {
         return map;
     }
 
-    public Stock readStockByCB(String code, String belongTo){
-        return stockDao.getStockByCB(code, belongTo);
+    public Stock readStockByCB(String code, String belongTo,Currency currency){
+        return stockDao.getStockByCB(code, belongTo,currency);
     }
 
     //计算单位交易成本价
@@ -621,7 +791,7 @@ public class StockService {
         BigDecimal cost = calDealCost(code, price, share, dealType);
         BigDecimal amount = BigDecimal.ZERO;
         BigDecimal costAll = BigDecimal.ZERO;
-        Stock stockSql = stockDao.getStockByCB(code, belongTo);
+        Stock stockSql = stockDao.getStockByCB(code, belongTo,Currency.CNY);
         if (dealType == DealType.SBUY) {
             amount = price.multiply(share).add(cost);
             share = stockSql.getShare().subtract(share);
@@ -657,12 +827,19 @@ public class StockService {
         }
     }
 
-    public boolean hasContract(String belongTo, String contract, Date date, String code){
-        if(dealDao.hasContract(belongTo, contract, date, code) > 0){
+    public boolean hasContract(String belongTo, String contract, Date date, String code, BigDecimal amount){
+        if(dealDao.hasContract(belongTo, contract, date, code, amount) > 0){
             return true;
         }
         return false;
     }
+
+//    public boolean hasContractByName(String belongTo, String contract, Date date, String name, BigDecimal amount){
+//        if(dealDao.hasContractByName(belongTo, contract, date, name, amount) > 0){
+//            return true;
+//        }
+//        return false;
+//    }
 
     public boolean picture(Date date){
         ArrayList<Stock> stocks = read(Currency.CNY, 0);

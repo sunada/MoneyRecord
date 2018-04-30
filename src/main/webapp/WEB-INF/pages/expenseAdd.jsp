@@ -35,7 +35,7 @@
 
         <div>
             <label>日期：</label>
-            <input type="text" name="date" id="date" value="2017-0">
+            <input type="text" name="date" id="date" value="2018-0">
         </div>
 
         <br/>

@@ -17,9 +17,10 @@
         $(document).ready(function() {
             $("#submit").click(function(){
                 var stockBelongTos = $("input[name='stockBelongTos']:checked").serialize();
-                stockBelongTos += "&" + getArgs();
+                var strategyCode = getArgs();
+                stockBelongTos += "&" + strategyCode;
                 $.ajax({
-                    url:"/stock/saveStrategyStocks?strategyCode=3",
+                    url:"/stock/saveStrategyStocks?"+strategyCode,
                     type:"post",
                     data:stockBelongTos,
                     success: function() {

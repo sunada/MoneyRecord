@@ -51,7 +51,7 @@
     </resultMap>
 
     <select id="getStockList" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk, rmb_cost, type from stocks where share > 0 and currency=#{currency} order by belong_to,current*share desc;
+        select code, name, belong_to, cost, current, share, risk, rmb_cost, type, currency from stocks where share > 0 and currency=#{currency} order by belong_to,current*share desc;
     </select>
 
     <select id="getStockListMap" resultMap="StockResult" parameterType="java.util.Map">
@@ -59,16 +59,24 @@
     </select>
 
     <select id="getStockByCB" resultMap="StockResult">
-        select code, name, belong_to, cost, current, share, risk,type,strategy_code from stocks where code=#{code} and belong_to=#{belongTo};
+        select code, name, belong_to, cost, current, share, risk,type,strategy_code,currency from stocks where code=#{code} and belong_to=#{belongTo} and currency=#{currency};
     </select>
+
+    <!--<select id="getStockByNB" resultMap="StockResult">-->
+        <!--select code, name, belong_to, cost, current, share, risk,type,strategy_code,currency from stocks where name=#{name} and belong_to=#{belongTo} and currency=#{currency};-->
+    <!--</select>select-->
 
     <insert id="insertStock" parameterType="com.springapp.mvc.Model.Stock">
         insert into stocks(code, name, belong_to, cost, share, risk, currency, rmb_cost) values (#{code}, #{name}, #{belongTo}, #{cost},#{share}, #{risk}, #{currency}, #{rmbCost});
     </insert>
 
     <insert id="updateStock" parameterType="com.springapp.mvc.Model.Stock">
-        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost},current=#{current},type=#{type} where code=#{code} and belong_to=#{belongTo};
+        update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost},current=#{current},type=#{type} where code=#{code} and belong_to=#{belongTo} and currency=#{currency};
     </insert>
+
+    <!--<insert id="updateStockByName" parameterType="com.springapp.mvc.Model.Stock">-->
+        <!--update stocks set name=#{name}, cost=#{cost}, share=#{share}, risk=#{risk}, rmb_cost=#{rmbCost},current=#{current},type=#{type} where name=#{name} and belong_to=#{belongTo} and currency=#{currency};-->
+    <!--</insert>-->
 
     <insert id="addStrategyCodeToStock" parameterType="java.util.Map">
         update stocks set strategy_code=#{strategyCode} where code=#{code} and belong_to=#{belongTo};

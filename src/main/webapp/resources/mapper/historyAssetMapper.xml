@@ -7,10 +7,7 @@
         <result column="code" jdbcType="CHAR" property="code"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="belong_to" jdbcType="CHAR" property="belongTo"/>
-        <!--<result column="cost" jdbcType="DECIMAL" property="cost"/>-->
         <result column="profit" jdbcType="DECIMAL" property="profit"/>
-        <!--<result column="start" jdbcType="DATE" property="start"/>-->
-        <!--<result column="end" jdbcType="DATE" property="end"/>-->
         <result column="risk" jdbcType="CHAR" property="risk"/>
         <result column="type" jdbcType="CHAR" property="assetType"/>
     </resultMap>
@@ -28,7 +25,7 @@
     </select>
 
     <update id="updateProfit" parameterType="com.springapp.mvc.Model.HistoryAsset">
-        update rebuildHisotry set profit=#{profit} where code=#{code} and belong_to=#{belong_to};
+        update rebuildHisotry set profit=#{profit} where code=#{code} and belong_to=#{belongTo};
     </update>
 
 </mapper>

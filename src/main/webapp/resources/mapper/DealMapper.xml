@@ -30,6 +30,10 @@
         <result column="date_deal" jdbcType="DATE" property="value"/>
     </resultMap>
 
+    <resultMap id="CodeFromNameResult" type="java.util.HashMap">
+        <result column="code" jdbcType="CHAR" property="code"/>
+    </resultMap>
+
     <select id="getFundDeals" resultMap="DealResult">
         select id, code, belong_to, name, date_deal, date_deal_real, net, cost, amount, share, deal_type from fund_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
     </select>
@@ -37,6 +41,18 @@
     <insert id="updateFundDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
         insert into fund_deals(code, name, share, net,cost,belong_to,date_deal,date_deal_real,amount, deal_type) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{date},#{dateReal},#{amount},#{dealType});
     </insert>
+
+    <insert id="insertHuGangTong" parameterType="java.util.Map">
+        insert into stocks_HKD(name, code) values (#{name},#{code});
+    </insert>
+
+    <delete id="deleteHuGangTong">
+        DELETE FROM stocks_HKD;
+    </delete>
+
+    <select id="getCodeFromName" resultMap="CodeFromNameResult">
+        select code from stocks_HKD where name like "%"#{name}"%";
+    </select>
 
     <select id="getNearDealDate" resultMap="nearDealDateResult">
         select date_deal from fund_deals where code=#{code} and belong_to=#{belong_to} and deal_type = "FAIP" and date_deal > #{start_time} and amount=#{amount} order by date_deal desc limit 1;
@@ -46,12 +62,20 @@
         select id, code, belong_to, name, date_deal, contract, net, cost, amount, share, deal_type from stock_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
     </select>
 
+    <!--<select id="getStockDealsByName" resultMap="DealResult">-->
+        <!--select id, code, belong_to, name, date_deal, contract, net, cost, amount, share, deal_type from stock_deals where name=#{name} and belong_to=#{belongTo} and currency = #{currency} order by date_deal desc;-->
+    <!--</select>-->
+
     <select id="hasContract" resultType="INTEGER">
-        select count(*) from stock_deals where belong_to=#{belongTo} and contract=#{contract} and date_deal=#{date} and code=#{code};
+        select count(*) from stock_deals where belong_to=#{belongTo} and contract=#{contract} and date_deal=#{date} and code=#{code} and amount=#{amount};
     </select>
 
+    <!--<select id="hasContractByName" resultType="INTEGER">-->
+        <!--select count(*) from stock_deals where belong_to=#{belongTo} and contract=#{contract} and date_deal=#{date} and name=#{name} and amount=#{amount};-->
+    <!--</select>-->
+
     <insert id="updateStockDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
-        insert into stock_deals(code, name, share, net,cost,belong_to,amount, date_deal,deal_type, contract) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{amount},#{date},#{dealType},#{contract});
+        insert into stock_deals(code, name, share, net,cost,belong_to,amount, date_deal,deal_type, contract,currency) values (#{code},#{name},#{share},#{net},#{cost},#{belongTo},#{amount},#{date},#{dealType},#{contract},#{currency});
     </insert>
 
     <delete id="deleteFundDeal">
@@ -72,11 +96,15 @@
 
 
     <select id="sumFundDealsAmount" resultType="DECIMAL">
-        select sum(amount) from fund_deals where code=#{code} and belong_to=#{belongTo};
+        select sum(amount) from fund_deals where code=#{code} and belong_to=#{belongTo} and currency=#{currency};
     </select>
 
     <select id="sumStockDealsAmount" resultType="DECIMAL">
         select sum(amount) from stock_deals where code=#{code} and belong_to=#{belongTo};
+    </select>
+
+    <select id="sumStockDealsAmountByName" resultType="DECIMAL">
+        select sum(amount) from stock_deals where name=#{name} and belong_to=#{belongTo} and currency=#{currency};
     </select>
 
     <select id="getAccountStockNewDealDate" resultMap="getAccountStockNewDealDate">

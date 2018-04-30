@@ -1,14 +1,12 @@
 package com.springapp.mvc.Service.ServiceImpl;
 
 import com.springapp.mvc.Dao.InAllDao;
-import com.springapp.mvc.Model.AssetType;
-import com.springapp.mvc.Model.Deal;
-import com.springapp.mvc.Model.InAll;
-import com.springapp.mvc.Model.MonthAsset;
+import com.springapp.mvc.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -65,5 +63,56 @@ public class InAllService {
 
     public List<MonthAsset> getMonthAssets(){
         return allDao.getMonthAssets();
+    }
+
+    public List<MonthAssetLeft> calMonthAssetLeft(List<MonthAsset> monthAsset, List<Balance> monthLeft){
+        List<MonthAssetLeft> list = new ArrayList<MonthAssetLeft>();
+        if(monthAsset.size() == 0) return null;
+        BigDecimal amount,usdAmount,hkdAmount,others;
+        int monthAssetIndex = 0;
+        int monthLeftIndex = 0;
+        for(int i = 0; i < monthAsset.size(); i++){
+            MonthAssetLeft mal = new MonthAssetLeft();
+            try{
+                while(true) {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+                    Date assetMonth = formatter.parse(monthAsset.get(monthAssetIndex).getMonth());
+                    Date leftMonth = formatter.parse(monthLeft.get(monthLeftIndex).getDate());
+                    if(assetMonth.after(leftMonth)) monthAssetIndex++;
+                    else if(assetMonth.before(leftMonth)) monthLeftIndex++;
+                    else{
+                        monthAssetIndex++;
+                        monthLeftIndex++;
+                        break;
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            mal.setMonth(monthAsset.get(i).getMonth());
+            mal.setLeft(monthLeft.get(i).getLeft());
+            mal.setMonthAsset(monthAsset.get(i));
+            if(i < monthAsset.size() - 1){
+                MonthAsset tmp = monthAsset.get(i + 1);
+                amount = tmp.getAmount();
+                usdAmount = tmp.getUsd();
+                hkdAmount = tmp.getHkd();
+                others = tmp.getFunds().add(tmp.getStocks()).add(tmp.getP2p()).add(tmp.getSocialInsurance());
+            }else{
+                amount = BigDecimal.ZERO;
+                usdAmount = amount;
+                hkdAmount = amount;
+                others = amount;
+            }
+            MonthAsset tmp = monthAsset.get(i);
+            mal.setAmountIncrease(tmp.getAmount().subtract(amount));
+            mal.setUsdIncrease(tmp.getUsd().subtract(usdAmount));
+            mal.setHkdIncrease(tmp.getHkd().subtract(hkdAmount));
+            mal.setOtherIncrease(tmp.getSocialInsurance().add(tmp.getP2p()).add(tmp.getStocks()).add(tmp.getFunds()).subtract(others));
+            mal.setOtherIncome(mal.getAmountIncrease().subtract(mal.getLeft()));
+
+            list.add(mal);
+        }
+        return list;
     }
 }

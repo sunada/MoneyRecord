@@ -25,12 +25,8 @@
             <li class="active"><a href="balance">收支表</a> </li>
             <li><a href="/fund">基金</a></li>
             <li><a href="/stock">证券</a></li>
-            <%--<li><a href="/fund/aipDisplay">定投</a></li>--%>
             <li><a href="/loan">网贷</a></li>
             <li><a href="/insurance">保险</a></li>
-            <%--<li><a href="/fund/myFundAdd">基金操作</a></li>--%>
-            <%--<li><a href="/loan/loanAdd">买入网贷</a></li>--%>
-            <%--<li><a href="/stock/stockAdd">证券操作</a></li>--%>
         </ul>
     </div>
 </nav>
@@ -53,9 +49,12 @@
                         income = 0
                         for (i in balanceListJson[b]["incomeList"]){
                             income += balanceListJson[b]["incomeList"][i]["incomeAll"];
+//                            alert("b:" + b + " i:" + i + " incomeAll:" + balanceListJson[b]["incomeList"][i]["incomeAll"] +
+//                                    " income:" + income)
                         }
+//                        alert("left:" + left + " income:" + income.toFixed(2) + " " +(left * 100/(income.toFixed(2))).toFixed(2))
                         leftList.push(left);
-                        leftRateList.push((left * 100/income).toFixed(2));
+                        leftRateList.push((left * 100/(income)).toFixed(2));
                         dateList.push(balanceListJson[b]["date"]);
                         if (balanceListJson[b]["expense"] == null){
                             expenseList.push(0);
@@ -234,7 +233,7 @@
                                             },
                                             "position": "insideTop",
                                             formatter : function(p) {
-                                                return p.value > 0 ? (p.value ): '';
+                                                return p.value > 0 ? (p.value.toFixed(2) ): '';
                                             }
                                         }
                                     }

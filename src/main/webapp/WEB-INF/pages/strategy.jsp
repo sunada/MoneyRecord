@@ -36,7 +36,7 @@
 
                     var str = "code=" + para[0] + "&name=" + para[1] + "&amount=" + para[2] +
                             "&currentAmount=" + para[3] + "&usedAmount=" + para[4] + "&profit=" + para[6];
-//                    alert(str);
+                    alert(str);
                     //ajax提交表单
                     $.ajax({
                         type: "post",
@@ -103,15 +103,18 @@
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th>策略代码</th>
-                    <th>策略名称</th>
-                    <th>策略预算</th>
-                    <th>策略现金</th>
-                    <th>策略现值</th>
-                    <th>仓位成本</th>
-                    <th>仓位成本占比(%)</th>
+                    <th>代码</th>
+                    <th>名称</th>
+                    <th>预算</th>
+                    <th>现金</th>
+                    <th>现值</th>
                     <th>策略盈亏</th>
                     <th>策略盈亏比例<br/>(占策略预算)</th>
+                    <th>持仓市值</th>
+                    <th>仓位成本</th>
+                    <th>仓位成本占比(%)</th>
+
+
                     <th>仓位盈亏</th>
                     <th>仓位盈亏比例<br/>(占仓位成本)</th>
                     <th>操作</th>
@@ -124,10 +127,11 @@
                     <td>${ss.key.amount}</td>
                     <td>${ss.key.cash}</td>
                     <td><fmt:formatNumber type="number" value="${ss.key.currentValue}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount / ss.key.currentValue * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${ss.key.currentValue - ss.key.amount}" pattern="0.00" maxFractionDigits="2"/> </td>
                     <td><fmt:formatNumber type="number" value="${(ss.key.currentValue - ss.key.amount) / ss.key.amount * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.currentValue - ss.key.cash}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${ss.key.usedAmount / ss.key.currentValue * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${ss.key.profit}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${ss.key.profit / ss.key.currentValue * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td>

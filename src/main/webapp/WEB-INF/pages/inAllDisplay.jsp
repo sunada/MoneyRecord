@@ -21,12 +21,8 @@
                 <li><a href="/balance">收支表</a> </li>
                 <li><a href="/fund">基金</a></li>
                 <li><a href="/stock">证券</a></li>
-                <%--<li><a href="/fund/aipDisplay">定投</a></li>--%>
                 <li><a href="/loan">网贷</a></li>
                 <li><a href="/insurance">保险</a></li>
-                <%--<li><a href="/fund/myFundAdd">基金操作</a></li>--%>
-                <%--<li><a href="/loan/loanAdd">买入网贷</a></li>--%>
-                <%--<li><a href="/stock/stockAdd">证券操作</a></li>--%>
             </ul>
         </div>
         </nav>
@@ -36,8 +32,11 @@
                 <td>
                     <form class="form-inline" role="form" action="/inAll/picture" method="post" accept-charset="utf-8">
                         <div class="form-group">
-                            <input type="text" class="form-control" name="date" placeholder="日期（yyyy-MM）"/>
-                            <input type="text" class="form-control" name="cnyAsset" placeholder="人民币总资产金额（元）"/>
+                            <input type="text" class="form-control" name="date" placeholder="2017-0"/>
+                            <%--<input type="text" class="form-control" name="cnyAsset" placeholder="人民币总资产金额（元）"/>--%>
+                            <input type="text" class="form-control" name="stocks" placeholder="证券（元）"/>
+                            <input type="text" class="form-control" name="funds" placeholder="开放基金（元）"/>
+                            <input type="text" class="form-control" name="p2p" placeholder="P2P（元）"/><br/>
                             <input type="text" class="form-control" name="usdAsset" placeholder="美元总资产金额（元）"/>
                             <input type="text" class="form-control" name="hkdAsset" placeholder="港币总资产金额（元）"/>
                             社保账户总金额：<input type="text" class="form-control" name="socialFundsAmount" value=${socialFundsAmount}>
@@ -149,7 +148,7 @@
                                         ],
                                         bottom:40,
                                         "start": 0,
-                                        "end": 80
+                                        "end": 100
                                     },
                                     {
                                         "type": "inside",
@@ -323,7 +322,47 @@
             </tr>
         </table>
 
-        低：中：高 = 20% : 40% : 40%
+        <table class="table table-bordered">
+            <caption>历史资产情况(w￥)</caption>
+            <thead>
+            <tr>
+                <th>时间</th>
+                <th>总资产</th>
+                <th>总资产增加</th>
+                <th>当月结余</th>
+                <%--<th>其他收入</th>--%>
+                <th>美元资产变动</th>
+                <th>港元资产变动</th>
+                <th>人民币资产变动</th>
+                <th>美元(￥)</th>
+                <th>港元(￥)</th>
+                <th>证券</th>
+                <th>基金</th>
+                <th>P2P</th>
+                <th>社保</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${monthAssetLefts}" var="asset" varStatus="status">
+            <tr>
+                <td>${asset.month}</td>
+                <td><fmt:formatNumber type="number" value="${asset.monthAsset.amount/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.amountIncrease/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.left/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.usdIncrease/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.hkdIncrease/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.otherIncrease/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.monthAsset.usd/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.monthAsset.hkd/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.monthAsset.stocks/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.monthAsset.funds/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.monthAsset.p2p/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+                <td><fmt:formatNumber type="number" value="${asset.monthAsset.socialInsurance/10000}" pattern="0.00" maxFractionDigits="2"/></td>
+            </tr>
+            </c:forEach>
+        </table>
+
+        本月人民币资产（低：中：高 = 20% : 40% : 40%）
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -349,34 +388,9 @@
             </tbody>
         </table>
 
-        <%--<table class="table table-bordered">--%>
-            <%--<caption>投资收益率计算：</caption>--%>
-            <%--<form class="form-inline" role="form" action="/inAll/calProfitRate" method="post" accept-charset="utf-8">--%>
-                <%--<tr>--%>
-                    <%--<td><input type="text" placeholder="开始日期" name="start"></td>--%>
-                    <%--<td><input type="text" placeholder="结束日期" name="end"></td>--%>
-                    <%--<td>--%>
-                        <%--<div> 资产类型：--%>
-                        <%--<input type="checkbox" value="fund" name="type">基金--%>
-                        <%--<input type="checkbox" value="stock" name="type">证券--%>
-                        <%--</div>--%>
-                    <%--</td>--%>
-                    <%--<td>--%>
-                        <%--<div> 风险类型：--%>
-                        <%--<input type="checkbox" value="HIGH" name="risk">高--%>
-                        <%--<input type="checkbox" value="MID" name="risk">中--%>
-                        <%--<input type="checkbox" value="LOW" name="risk">低--%>
-                        <%--</div>--%>
-                    <%--</td>--%>
-                    <%--<td><input type="submit" value="提取文件"/></td>--%>
-                    <%--</td>--%>
-                <%--</tr>--%>
-            <%--</form>--%>
-        <%--</table>--%>
-
-    <c:set var="exchangeRate" value="6.8768"></c:set>
+    <c:set var="exchangeRate" value="6.3325"></c:set>
     <table class="table table-bordered">
-        <caption>美元资产（汇率：${exchangeRate})</caption>
+        <caption>本月美元资产（汇率：${exchangeRate})</caption>
         <thead>
         <tr>
             <th>风险</th>
@@ -385,7 +399,7 @@
         </tr>
         </thead>
         <tbody>
-            <c:forEach items="${sumUSA}" var="u">
+            <c:forEach items="${sumUSD}" var="u">
             <tr>
                 <td>${u.key}</td>
                 <td><fmt:formatNumber type="number" value="${u.value}" pattern="0.00" maxFractionDigits="2"/></td>
@@ -394,9 +408,9 @@
             </c:forEach>
     </table>
 
-        <c:set var="exchangeRate" value="0.8949"></c:set>
+        <c:set var="exchangeRate" value="0.8069"></c:set>
         <table class="table table-bordered">
-            <caption>港币资产（汇率：${exchangeRate})</caption>
+            <caption>本月港币资产（汇率：${exchangeRate})</caption>
             <thead>
             <tr>
                 <th>风险</th>
@@ -413,6 +427,7 @@
             </tr>
             </c:forEach>
         </table>
+
 
     </body>
 </html>

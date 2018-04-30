@@ -125,7 +125,7 @@ public class BalanceController {
         balanceService.updateBalance(date, salary);
 
         socialFunds = balanceService.getSocialFunds();
-        if(owner == "wife"){
+        if(owner.equals("老婆")){
             if(socialFunds != null){
 //                socialFunds.setwMediFund(socialFunds.getwMediFund().add(mediaCash));
                 socialFunds.setwHouseFund(socialFunds.getwHouseFund().add(houseFunds).add(houseFundsCompany));

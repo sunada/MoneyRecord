@@ -3,6 +3,7 @@ package com.springapp.mvc.Service.ServiceImpl;
 import com.springapp.mvc.Dao.DealDao;
 import com.springapp.mvc.Dao.MyFundDao;
 import com.springapp.mvc.Model.*;
+import com.springapp.mvc.Model.Currency;
 import com.springapp.mvc.Util.GetNet;
 import com.springapp.mvc.Util.NetDay;
 import org.slf4j.Logger;
@@ -36,18 +37,23 @@ public class DealService {
     @Autowired
     public void setMyFundService(MyFundService myFundService) { this.myFundService =  myFundService; }
 
-    public ArrayList<Deal> readDeals(String code, String belongTo, String fundOrStock){
+    public ArrayList<Deal> readDeals(String code, String name, String belongTo, String currency, String fundOrStock){
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("code", code);
+        map.put("name", name);
         map.put("belongTo", belongTo);
+        map.put("currency", currency);
         ArrayList<Deal> deals = (ArrayList)dealDao.getDeals(map, fundOrStock);
         return deals;
     }
 
-    public BigDecimal sumDealsAmount(String code, String belongTo, String fundOrStock){
+    public BigDecimal sumDealsAmount(String code, String name, String belongTo, String fundOrStock, Currency currency){
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("code", code);
         map.put("belongTo", belongTo);
+//        map.put("name", name);
+        if(currency == null) map.put("currency","");
+        else map.put("currency", currency.toString());
         BigDecimal sum = dealDao.sumDealsAmount(map, fundOrStock);
         return sum;
     }
@@ -57,7 +63,7 @@ public class DealService {
 
         List<Deal> deals = new ArrayList<Deal>();
         for(Stock stock : stocks){
-            deals.addAll(readDeals(stock.getCode(), stock.getBelongTo(), stock.getType().getName()));
+            deals.addAll(readDeals(stock.getCode(),stock.getName(), stock.getBelongTo(), stock.getCurrency().toString(),stock.getType().getName()));
         }
         return deals;
     }
@@ -145,33 +151,17 @@ public class DealService {
                 e.printStackTrace();
             }
 
-
-            Date date = new Date();
-            Calendar cal = Calendar.getInstance();
-            int todayYear = cal.get(Calendar.YEAR);
-            cal.setTime(date);
-            long todayDay = cal.get(Calendar.DAY_OF_YEAR);
-            long nextDealDay;
-            Date nextDealDate;
-            Date realNextDealDate;
-
+            Calendar cal = Calendar.getInstance().getInstance();
             cal.setTime(nearDealDate);
-            cal.add(inter, mul);
-            nextDealDay = cal.get(Calendar.DAY_OF_YEAR);
-            int nextDealYear = cal.get(Calendar.YEAR);
-
-            if(todayYear != nextDealYear){
-                continue;
-            }
-            nextDealDate = cal.getTime();
-
-            while(todayDay - nextDealDay >= 0){
-                realNextDealDate = myFundService.calRealAipDate(nextDealDate);
-                updateOneAipDeal(fund, nextDealDate,realNextDealDate);
-                cal.setTime(nextDealDate);
+            cal.add(inter,mul);
+            Date nextAipDate = cal.getTime();
+            Date today = new Date();
+            while(today.after(nextAipDate)){
+                Date realNextAipDate = myFundService.calRealAipDate(nextAipDate);
+                updateOneAipDeal(fund, nextAipDate,realNextAipDate);
+                cal.setTime(nextAipDate);
                 cal.add(inter, mul);
-                nextDealDay = cal.get(Calendar.DAY_OF_YEAR);
-                nextDealDate = cal.getTime();
+                nextAipDate = cal.getTime();
             }
         }
         return true;

@@ -15,6 +15,13 @@
     <resultMap id="monthAssets" type="com.springapp.mvc.Model.MonthAsset">
         <id column="year_and_month" jdbcType="CHAR" property="month"/>
         <id column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="stock" jdbcType="DECIMAL" property="stocks"/>
+        <result column="fund" jdbcType="DECIMAL" property="funds"/>
+        <result column="p2p" jdbcType="DECIMAL" property="p2p"/>
+        <result column="usd" jdbcType="DECIMAL" property="usd"/>
+        <result column="khd" jdbcType="DECIMAL" property="hkd"/>
+        <result column="socialInsurance" jdbcType="DECIMAL" property="socialInsurance"/>
     </resultMap>
 
     <select id="getAllList" resultMap="AllResult">
@@ -25,12 +32,20 @@
         select sum(amount) as amount from alls;
     </select>
 
+    <!--<insert id="savePicture" parameterType="com.springapp.mvc.Model.MonthAsset">-->
+        <!--insert assets(year_and_month, amount) values(#{month}, #{amount});-->
+    <!--</insert>-->
+
+    <!--<update id="updatePicture" parameterType="com.springapp.mvc.Model.MonthAsset">-->
+        <!--update assets set amount = #{amount} where year_and_month = #{month};-->
+    <!--</update>-->
+
     <insert id="savePicture" parameterType="com.springapp.mvc.Model.MonthAsset">
-        insert assets(year_and_month, amount) values(#{month}, #{amount});
+        insert assets(year_and_month, amount,stock,fund,p2p,usd,hkd,socialInsurance) values(#{month}, #{amount},#{stocks},#{funds},#{p2p},#{usd},#{hkd},#{socialInsurance});
     </insert>
 
     <update id="updatePicture" parameterType="com.springapp.mvc.Model.MonthAsset">
-        update assets set amount = #{amount} where year_and_month = #{month};
+        update assets set amount = #{amount},stock=#{stocks},fund=#{funds},p2p=#{p2p},usd=#{usd},hkd=#{hkd},socialInsurance=#{socialInsurance} where year_and_month = #{month};
     </update>
 
     <select id="getPictureByMonth" resultType="INT">
@@ -38,7 +53,7 @@
     </select>
 
     <select id="monthAssets" resultMap="monthAssets">
-        select year_and_month, amount from assets order by year_and_month;
+        select year_and_month, amount,stock,fund,p2p,usd,hkd,socialInsurance from assets order by year_and_month;
     </select>
 
 </mapper>

@@ -51,7 +51,7 @@ public class DealController {
 
         String code = request.getParameter("code");
         String belongTo = request.getParameter("belongTo");
-        List<Deal> list = dealService.readDeals(code, belongTo, "fund");
+        List<Deal> list = dealService.readDeals(code, "", belongTo,"", "fund");
 
         view.addObject("deals", list);
         return view;
@@ -63,8 +63,9 @@ public class DealController {
 
         String code = request.getParameter("code");
         String belongTo = request.getParameter("belongTo");
-        List<Deal> list = dealService.readDeals(code, belongTo, "stock");
-
+        String name = request.getParameter("name");
+        String currency = request.getParameter("currency");
+        List<Deal> list = dealService.readDeals(code, name, belongTo,currency, "stock");
         view.addObject("deals", list);
         return view;
     }
@@ -89,6 +90,7 @@ public class DealController {
         BigDecimal amount = new BigDecimal(request.getParameter("amount"));
         BigDecimal cost = new BigDecimal(request.getParameter("cost"));
         DealType dealType = DealType.valueOf(request.getParameter("dealType"));
+
 
         //删除基金交易数据
         myFund = myFundService.readMyFundByCB(code, belongTo);
@@ -117,8 +119,9 @@ public class DealController {
             return "redirect:/fund";
         }
 
+        Currency currency = Currency.valueOf(request.getParameter("currency"));
         //删除证券交易
-        stock = stockService.readStockByCB(code, belongTo);
+        stock = stockService.readStockByCB(code, belongTo, currency);
         BigDecimal costAll;
         if(stock != null){
             BigDecimal dealAmount = new BigDecimal(request.getParameter("amount"));

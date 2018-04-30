@@ -35,18 +35,18 @@
     <script>
         $(document).ready(function() {
             $("#husband").focus(function () {
-                $("#beforeTax").attr("value", 25480);
-                $("#insuranceBase").attr("value", 21258);
-                $("#fundBase").attr("value", 21258);
-                $("#date").attr("value", "2017-0");
+                $("#beforeTax").attr("value", 34000);
+                $("#insuranceBase").attr("value", 3400);
+                $("#fundBase").attr("value", 23116);
+                $("#date").attr("value", "2018-0");
                 $("#afterTax").attr("value", 0)
             });
 
             $("#wife").focus(function () {
-                $("#date").attr("value", "2017-0");
-                $("#beforeTax").attr("value", 18500);
-                $("#insuranceBase").attr("value", 20237);
-                $("#fundBase").attr("value", 20237);
+                $("#date").attr("value", "2018-0");
+                $("#beforeTax").attr("value", 27000);
+                $("#insuranceBase").attr("value", 23120);
+                $("#fundBase").attr("value", 23120);
 
                 $("#afterTax").attr("value", 0)
 

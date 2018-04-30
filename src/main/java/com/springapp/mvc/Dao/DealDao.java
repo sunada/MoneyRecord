@@ -24,6 +24,11 @@ public class DealDao {
     @Resource
     private SqlSession sqlSession;
 
+    public String getCodeFromName(String name){
+        Map<String,String> code = sqlSession.selectOne("Deals.getCodeFromName", name);
+        if(code == null || code.isEmpty()) return null;
+        return code.get("code");
+    }
 
     public List<Deal> getDeals(Map<String, String> map, String fundOrStock){
         List<Deal> list = new ArrayList<Deal>();
@@ -32,6 +37,8 @@ public class DealDao {
                 list = sqlSession.selectList("Deals.getFundDeals", map);
             }else{
                 list = sqlSession.selectList("Deals.getStockDeals", map);
+//                if(map.get("code") != "") list = sqlSession.selectList("Deals.getStockDeals", map);
+//                else list = sqlSession.selectList("Deals.getStockDealsByName", map);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -45,7 +52,8 @@ public class DealDao {
             if(fundOrStock.equals("fund")) {
                 sum = sqlSession.selectOne("Deals.sumFundDealsAmount", map);
             }else{
-                sum = sqlSession.selectOne("Deals.sumStockDealsAmount", map);
+                if(map.get("code") != "") sum = sqlSession.selectOne("Deals.sumStockDealsAmount", map);
+                else sum = sqlSession.selectOne("Deals.sumStockDealsAmountByName", map);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -144,12 +152,23 @@ public class DealDao {
         return map;
     }
 
-    public int hasContract(String belongTo, String contract, Date date, String code){
+    public int hasContract(String belongTo, String contract, Date date, String code, BigDecimal amount){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("belongTo", belongTo);
         map.put("contract", contract);
         map.put("date", date);
         map.put("code", code);
+        map.put("amount", amount);
         return sqlSession.selectOne("Deals.hasContract", map);
     }
+
+//    public int hasContractByName(String belongTo, String contract, Date date, String name, BigDecimal amount){
+//        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("belongTo", belongTo);
+//        map.put("contract", contract);
+//        map.put("date", date);
+//        map.put("name", name);
+//        map.put("amount", amount);
+//        return sqlSession.selectOne("Deals.hasContractByName", map);
+//    }
 }

@@ -34,6 +34,7 @@ public class InAllController {
     private LoanService loanService;
     private StockService stockService;
     private MonthAsset monthAsset;
+
     @Resource
     private BalanceService balanceService;
 
@@ -66,6 +67,11 @@ public class InAllController {
         List<Balance> monthLeft = balanceService.getBalanceList(monthAssets.size());
         String monthLeftJson = JSONArray.fromObject(monthLeft).toString();
         view.addObject("monthLeft", monthLeftJson);
+
+        Collections.reverse(monthAssets);
+        List<MonthAssetLeft> monthAssetLefts = allService.calMonthAssetLeft(monthAssets, monthLeft);
+        view.addObject("assets", monthAssets);
+        view.addObject("monthAssetLefts", monthAssetLefts);
 
         SocialFunds socialFunds = balanceService.getSocialFunds();
         BigDecimal socialFundsAmount = socialFunds.gethHouseFund().add(socialFunds.gethMediFund());
@@ -145,13 +151,15 @@ public class InAllController {
         }
         view.addObject("riskValues", riskValues);
 
-        Map<String, BigDecimal> sumUSA = stockService.sumByRisk(Currency.USD);
-        sumUSA.put("总计",stockService.sum(Currency.USD));
-        view.addObject("sumUSA", sumUSA);
+        Map<String, BigDecimal> sumUSD = stockService.sumByRisk(Currency.USD);
+        sumUSD.put("总计",stockService.sum(Currency.USD));
+        view.addObject("sumUSD", sumUSD);
 
         Map<String, BigDecimal> sumHKD = stockService.sumByRisk(Currency.HKD);
         sumHKD.put("总计",stockService.sum(Currency.HKD));
         view.addObject("sumHKD", sumHKD);
+
+
         return view;
     }
 
@@ -177,12 +185,22 @@ public class InAllController {
     @RequestMapping(value="picture", method = RequestMethod.POST)
     public String picture(HttpServletRequest request){
         String month = request.getParameter("date");
-        BigDecimal cnyAsset = new BigDecimal(request.getParameter("cnyAsset"));
+//        BigDecimal cnyAsset = new BigDecimal(request.getParameter("cnyAsset"));
+        BigDecimal stocks = new BigDecimal(request.getParameter("stocks"));
+        BigDecimal funds = new BigDecimal(request.getParameter("funds"));
+        BigDecimal p2p = new BigDecimal(request.getParameter("p2p"));
         BigDecimal usdAsset = new BigDecimal(request.getParameter("usdAsset"));
         BigDecimal hkdAsset = new BigDecimal(request.getParameter("hkdAsset"));
         BigDecimal socialFundsAmount = new BigDecimal(request.getParameter("socialFundsAmount"));
-        monthAsset.setAmount(cnyAsset.add(usdAsset).add(hkdAsset).add(socialFundsAmount));
+//        monthAsset.setAmount(cnyAsset.add(usdAsset).add(hkdAsset).add(socialFundsAmount));
+        monthAsset.setAmount(stocks.add(funds).add(p2p).add(usdAsset).add(hkdAsset).add(socialFundsAmount));
         monthAsset.setMonth(month);
+        monthAsset.setFunds(funds);
+        monthAsset.setStocks(stocks);
+        monthAsset.setP2p(p2p);
+        monthAsset.setUsd(usdAsset);
+        monthAsset.setHkd(hkdAsset);
+        monthAsset.setSocialInsurance(socialFundsAmount);
         allService.picture(monthAsset);
         return "redirect:/inAll";
     }

@@ -5,10 +5,10 @@ package com.springapp.mvc.Model;
  */
 public enum DealType implements IntEnum<DealType>{
 //    fbuy: 买入基金；faip: 基金定投；fredemp: 基金赎回；sbuy: 证券买入；ssell: 证券卖出；fcash：基金现金分红 freinve: 基金红利再投资
-//    sinterestTax 股票红利税 linterestTax 债券利息税
+//    sinterestTax 股票红利税 linterestTax 债券利息税 Interest 债券利息
     FBUY(0, "fbuy"), FAIP(1, "faip"), FREDEMP(2, "fredemp"), SBUY(3, "sbuy"), SSELL(4, "ssell"),
     FCASH(5, "fcash"), FREINVE(6, "freinve"),OTHERS(7, "others"), INTEREST(8, "interest"),
-    SINTERESTTAX(9, "sinterestTax"),LINTERESTTAX(10, "linterestTax");
+    SINTERESTTAX(9, "sinterestTax"),LINTERESTTAX(10, "linterestTax"),IPO(11, "IPO");
     private int index;
     private String name;
 

@@ -201,6 +201,8 @@ public class StockController {
         BigDecimal share = new BigDecimal(request.getParameter("share"));
         BigDecimal amount = new BigDecimal(request.getParameter("amount"));
         BigDecimal current = new BigDecimal(request.getParameter("current"));
+        Currency currency = Currency.valueOf(request.getParameter("currency"));
+
         String type = request.getParameter("type");
 
         stock.setCode(code);
@@ -212,6 +214,7 @@ public class StockController {
         stock.setAmount(amount);
         stock.setRisk(Risk.valueOf(request.getParameter("risk")));
         stock.setType(AssetType.valueOf(type));
+        stock.setCurrency(currency);
 
         log.debug("In LoansController.save, {}", stock.toString());
         if (stockService.update(stock)) {
@@ -223,15 +226,17 @@ public class StockController {
 
     @RequestMapping(value = "updateUSD", method = RequestMethod.POST)
     public String updateUSD(HttpServletRequest request){
-        String code = request.getParameter("code");
+//        String code = request.getParameter("code");
         String name = request.getParameter("name");
         BigDecimal rmbCost = new BigDecimal(request.getParameter("rmb_cost"));
         BigDecimal usdCost = new BigDecimal(request.getParameter("usd_cost"));
         BigDecimal share = new BigDecimal(request.getParameter("share"));
         BigDecimal current = new BigDecimal(request.getParameter("current"));
+        Currency currency = Currency.valueOf(request.getParameter("currency"));
         String belongTo = request.getParameter("belongTo");
+        String code = request.getParameter("code");
 
-        stock.setCode(code);
+        stock.setCurrency(currency);
         stock.setName(name);
         stock.setRmbCost(rmbCost);
         stock.setCost(usdCost);
@@ -239,6 +244,7 @@ public class StockController {
         stock.setShare(share);
         stock.setRisk(Risk.valueOf(request.getParameter("risk")));
         stock.setBelongTo(belongTo);
+        stock.setCode(code);
 
         log.debug("In LoansController.save, {}", stock.toString());
         if (stockService.update(stock)) {
@@ -330,7 +336,7 @@ public class StockController {
         String strategyCode = request.getParameter("strategyCode");
         for(String s : stockBelongTos){
             String[] tmp = s.split("&");
-            stockService.updateStrategy(tmp[0], tmp[1], strategyCode);
+            stockService.updateStrategy(tmp[0], tmp[1], strategyCode,Currency.CNY);
         }
         return "redirect:/stock/strategy";
     }

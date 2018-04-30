@@ -37,7 +37,8 @@
                     $(this).siblings().show();
 
                     var str = "code=" + para[0] + "&name=" + para[1] + "&belongTo=" + para[2] + "&cost=" + para[4]
-                            + "&current=" + para[5] + "&share=" + para[6] + "&amount=" + para[7] + "&risk=" + para[9] + "&type=" + para[10];
+                            + "&current=" + para[5] + "&share=" + para[6] + "&amount=" + para[7]
+                            + "&risk=" + para[9] + "&type=" + para[10] + "&currency=" + para[11];
 
 //                    alert(str);
                     //ajax提交表单
@@ -69,7 +70,8 @@
                     $(this).siblings().show();
 
                     var str = "code=" + para[0] + "&name=" + para[1] + "&rmb_cost=" + para[2] + "&usd_cost=" + para[4]
-                            + "&current=" + para[5] + "&share=" + para[6] + "&risk=" + para[10] + "&belongTo=" + para[11];
+                            + "&current=" + para[5] + "&share=" + para[6] + "&risk=" + para[10]
+                            + "&belongTo=" + para[11] + "&currency=" + para[12];
 //                    alert(str)
                     //ajax提交表单
                     $.ajax({
@@ -154,6 +156,7 @@
                     <th>盈亏率(%)</th>
                     <th>风险</th>
                     <th>类型</th>
+                    <th>币种</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -171,6 +174,7 @@
                         <td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>
                         <td>${stock.risk}</td>
                         <td>${stock.type}</td>
+                        <td>${stock.currency}</td>
                         <td>
                             <a class="btn btn-primary edit">编辑</button>
                             <a class="btn btn-primary update">更新</button>
@@ -184,23 +188,24 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="6.9021"></c:set>
+        <c:set var="exchangeRate" value="6.3325"></c:set>
         <table class="table table-striped">
             <caption>美元资产 (汇率：${exchangeRate})</caption>
             <thead>
             <tr>
-                <th>股票代码</th>
-                <th>股票名称</th>
+                <th>代码</th>
+                <th>名称</th>
                 <th>人民币成本</th>
                 <th>人民币市值</th>
                 <th>美元成本</th>
                 <th>现价（美元）</th>
                 <th>份额</th>
-                <th>市值</th>
+                <th>美元市值</th>
                 <th>盈亏(RMB)</th>
                 <th>盈亏率(%)</th>
                 <th>风险</th>
                 <th>帐户</th>
+                <th>币种</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -220,6 +225,7 @@
                     <td><fmt:formatNumber type="number" value="${(stock.current * stock.share * exchangeRate - stock.rmbCost) / stock.rmbCost * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td>${stock.risk}</td>
                     <td>${stock.belongTo}</td>
+                    <td>${stock.currency}</td>
                     <td>
                         <a class="btn btn-primary edit">编辑</button>
                             <a class="btn btn-primary updateUSD">更新</button>
@@ -233,23 +239,24 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="0.8868"></c:set>
+        <c:set var="exchangeRate" value="0.8069"></c:set>
         <table class="table table-striped">
             <caption>港币资产 (汇率：${exchangeRate})</caption>
             <thead>
             <tr>
-                <th>股票代码</th>
+                <th>代码</th>
                 <th>股票名称</th>
-                <th>人民币成本</th>
+                <th>持仓成本(￥)</th>
                 <th>人民币市值</th>
-                <th>港币成本</th>
+                <th>人民币成本/股</th>
                 <th>现价(港币）</th>
                 <th>份额</th>
-                <th>市值</th>
+                <th>港元市值</th>
                 <th>盈亏(RMB)</th>
                 <th>盈亏率(%)</th>
                 <th>风险</th>
                 <th>帐户</th>
+                <th>币种</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -258,23 +265,24 @@
                 <tr>
                     <td>${stock.code}</td>
                     <td>${stock.name}</td>
-                    <td>${stock.rmbCost}</td>
+                    <td><fmt:formatNumber type="number" value="${stock.share * stock.cost}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td><fmt:formatNumber type="number" value="${stock.current * stock.share * exchangeRate}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td>${stock.cost}</td>
                     <td>${stock.current}</td>
                     <td>${stock.share}</td>
                     <td><fmt:formatNumber type="number" value="${stock.current * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
-                    <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) * stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${(stock.current * exchangeRate - stock.cost)*stock.share}" pattern="0.00" maxFractionDigits="2"/></td>
                         <%--<td><fmt:formatNumber type="number" value="${(stock.current * 10 - stock.cost * 10) / stock.cost * 10}" pattern="0.00" maxFractionDigits="2"/></td>--%>
-                    <td><fmt:formatNumber type="number" value="${(stock.current - stock.cost) / stock.cost * 100}" pattern="0.00" maxFractionDigits="2"/></td>
+                    <td><fmt:formatNumber type="number" value="${(stock.current * exchangeRate - stock.cost) / stock.cost * 100}" pattern="0.00" maxFractionDigits="2"/></td>
                     <td>${stock.risk}</td>
                     <td>${stock.belongTo}</td>
+                    <td>${stock.currency}</td>
                     <td>
                         <a class="btn btn-primary edit">编辑</button>
                             <a class="btn btn-primary updateUSD">更新</button>
                                 <a class="btn btn-primary" href="/stock/stockAdd?code=${stock.code}&name=${stock.name}&belongTo=${stock.belongTo}&cost=${stock.cost}&share=${stock.share}&amount=${stock.amount}&dealType=SBUY" role="button">买入</a>
                                 <a class="btn btn-primary" href="/stock/stockAdd?code=${stock.code}&name=${stock.name}&belongTo=${stock.belongTo}&cost=${stock.cost}&share=${stock.share}&amount=${stock.amount}&dealType=SSELL" role="button">卖出</a>
-                                <a class="btn" href="/deal/stockList?code=${stock.code}&belongTo=${stock.belongTo}" role="button">交易记录</a>
+                                <a class="btn" href="/deal/stockList?code=${stock.code}&belongTo=${stock.belongTo}&name=${stock.name}&currency=${stock.currency}" role="button">交易记录</a>
                     </td>
                 </tr>
             </c:forEach>

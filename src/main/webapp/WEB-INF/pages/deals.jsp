@@ -72,7 +72,7 @@
                         </td>
                         <td>${deal.dealType}</td>
                         <td>
-                            <a class="btn" href="/deal/delete?id=${deal.id}&code=${deal.code}&belongTo=${deal.belongTo}&share=${deal.share}&amount=${deal.amount}&net=${deal.net}&dealType=${deal.dealType}&cost=${deal.cost}" role="button">删除</a>
+                            <a class="btn" href="/deal/delete?id=${deal.id}&code=${deal.code}&belongTo=${deal.belongTo}&share=${deal.share}&amount=${deal.amount}&net=${deal.net}&dealType=${deal.dealType}&cost=${deal.cost}&currency=${deal.currency}" role="button">删除</a>
                         </td>
                     </tr>
                 </c:forEach>

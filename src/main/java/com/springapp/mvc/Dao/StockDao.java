@@ -41,12 +41,21 @@ public class StockDao {
         return stockList;
     }
 
-    public Stock getStockByCB(String code, String belongTo){
+    public Stock getStockByCB(String code, String belongTo,Currency currency){
         Map<String, String> map = new HashMap<String, String>();
         map.put("code", code);
         map.put("belongTo", belongTo);
+        map.put("currency", currency.toString());
         return sqlSession.selectOne("Stocks.getStockByCB", map);
     }
+
+//    public Stock getStockByNB(String name, Currency currency, String belongTo){
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put("name", name);
+//        map.put("currency", currency.toString());
+//        map.put("belongTo", belongTo);
+//        return sqlSession.selectOne("Stocks.getStockByNB", map);
+//    }
 
     public boolean save(Stock stock){
         int res = -1;
@@ -62,6 +71,8 @@ public class StockDao {
         int res = -1;
         try{
             res = sqlSession.update("Stocks.updateStock", stock);
+//            if(!stock.getCode().equals("")) res = sqlSession.update("Stocks.updateStock", stock);
+//            else res = sqlSession.update("Stocks.updateStockByName", stock);
         }catch (Exception e){
             e.printStackTrace();
         }

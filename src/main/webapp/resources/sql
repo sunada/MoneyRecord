@@ -124,19 +124,16 @@ drop table if exists 'accounts';
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
 
-历史持有的基金或证券
-| history | CREATE TABLE `history` (
-  `id` int(4) NOT NULL AUTO_INCREMENT,
-  `code` char(6) DEFAULT NULL,
+历史持有的证券
+CREATE TABLE `rebuildhisotry` (
+  `code` char(6) NOT NULL,
   `name` varchar(30) DEFAULT NULL,
-  `cost` decimal(9,3) DEFAULT '0.000',
-  `profit` decimal(9,3) DEFAULT '0.000',
-  `belong_to` varchar(10) DEFAULT NULL,
+  `belong_to` char(20) DEFAULT NULL,
+  `profit` decimal(31,3) DEFAULT NULL,
+  `share` decimal(31,2) DEFAULT NULL,
   `risk` char(10) DEFAULT NULL,
-  `start` date DEFAULT NULL,
-  `end` date DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
+  `type` char(6) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 保险
 |insurance| CREATE TABLE `insurance` (
