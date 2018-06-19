@@ -367,7 +367,9 @@ public class StockService {
                 }else {
                     deal.setAmount(new BigDecimal(segments[10]));
                     deal.setShare(new BigDecimal(segments[4]));
-                    if (deal.getAmount().compareTo(BigDecimal.ZERO) == 0 || deal.getShare().compareTo(BigDecimal.ZERO) == 0)  continue;
+                    if (deal.getAmount().compareTo(BigDecimal.ZERO) == 0 || deal.getShare().compareTo(BigDecimal.ZERO) == 0){
+                        if(segments[1].equals("申购配号") || segments[1].equals("基金资金拨出"))   continue;
+                    }
                     stock.setCurrency(Currency.CNY);
                     deal.setCurrency(Currency.CNY);
 

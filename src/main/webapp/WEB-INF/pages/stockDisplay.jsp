@@ -188,7 +188,7 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="6.3325"></c:set>
+        <c:set var="exchangeRate" value="6.4666"></c:set>
         <table class="table table-striped">
             <caption>美元资产 (汇率：${exchangeRate})</caption>
             <thead>
@@ -239,7 +239,7 @@
         </table>
 
         <%--暂时先这么处理好了--%>
-        <c:set var="exchangeRate" value="0.8069"></c:set>
+        <c:set var="exchangeRate" value="0.8238"></c:set>
         <table class="table table-striped">
             <caption>港币资产 (汇率：${exchangeRate})</caption>
             <thead>

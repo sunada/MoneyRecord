@@ -119,7 +119,7 @@ public class DealController {
             return "redirect:/fund";
         }
 
-        Currency currency = Currency.valueOf(request.getParameter("currency"));
+        Currency currency = Currency.valueOf(request.getParameter("currency").toUpperCase());
         //删除证券交易
         stock = stockService.readStockByCB(code, belongTo, currency);
         BigDecimal costAll;

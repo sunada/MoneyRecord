@@ -15,6 +15,7 @@
         <result column="amount" jdbcType="DECIMAL" property="amount"/>
         <result column="share" jdbcType="DECIMAL" property="share"/>
         <result column="deal_type" jdbcType="CHAR" property="dealType"/>
+        <result column="currency" jdbcType="CHAR" property="currency"/>
     </resultMap>
 
     <resultMap id="nearDealDateResult" type="java.util.HashMap">
@@ -35,7 +36,7 @@
     </resultMap>
 
     <select id="getFundDeals" resultMap="DealResult">
-        select id, code, belong_to, name, date_deal, date_deal_real, net, cost, amount, share, deal_type from fund_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
+        select id, code, belong_to, name, date_deal, date_deal_real, net, cost, amount, share, deal_type, currency from fund_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
     </select>
 
     <insert id="updateFundDeal" parameterType="com.springapp.mvc.Model.Deal" useGeneratedKeys="true" keyProperty="id">
@@ -59,7 +60,7 @@
     </select>
 
     <select id="getStockDeals" resultMap="DealResult">
-        select id, code, belong_to, name, date_deal, contract, net, cost, amount, share, deal_type from stock_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
+        select id, code, belong_to, name, date_deal, contract, net, cost, amount, share, deal_type,currency from stock_deals where code=#{code} and belong_to=#{belongTo} order by date_deal desc;
     </select>
 
     <!--<select id="getStockDealsByName" resultMap="DealResult">-->

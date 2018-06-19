@@ -193,8 +193,9 @@ public class MyFundService {
                 myFundDao.updateNet(map);
             }
         }else if (myFund.getCode().length() == 6) {
+            int tmp = 15;
             net = getNet.getFundNet(myFund.getCode(), date);
-            while(net.equals(BigDecimal.valueOf(0))){
+            while(tmp-- > 0 && net.equals(BigDecimal.valueOf(0))){
                 cal.add(Calendar.DATE, -1);
                 date = cal.getTime();
                 date = netDay.getNetDay(date);
@@ -206,7 +207,7 @@ public class MyFundService {
                 day = (date.getTime() - myFund.getDate().getTime()) / (24 * 60 * 60 * 1000);
             }
 
-            if(day >= 1){
+            if(day >= 1 && net.compareTo(BigDecimal.ZERO) > 0){
                 myFund.setNet(net);
                 map.put("code", myFund.getCode());
                 map.put("net", net);

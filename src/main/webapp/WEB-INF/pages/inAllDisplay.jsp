@@ -388,7 +388,7 @@
             </tbody>
         </table>
 
-    <c:set var="exchangeRate" value="6.3325"></c:set>
+    <c:set var="exchangeRate" value="6.4666"></c:set>
     <table class="table table-bordered">
         <caption>本月美元资产（汇率：${exchangeRate})</caption>
         <thead>
@@ -408,7 +408,7 @@
             </c:forEach>
     </table>
 
-        <c:set var="exchangeRate" value="0.8069"></c:set>
+        <c:set var="exchangeRate" value="0.8238"></c:set>
         <table class="table table-bordered">
             <caption>本月港币资产（汇率：${exchangeRate})</caption>
             <thead>

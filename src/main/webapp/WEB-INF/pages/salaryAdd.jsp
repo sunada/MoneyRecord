@@ -35,8 +35,8 @@
     <script>
         $(document).ready(function() {
             $("#husband").focus(function () {
-                $("#beforeTax").attr("value", 34000);
-                $("#insuranceBase").attr("value", 3400);
+                $("#beforeTax").attr("value", 38500);
+                $("#insuranceBase").attr("value", 23000);
                 $("#fundBase").attr("value", 23116);
                 $("#date").attr("value", "2018-0");
                 $("#afterTax").attr("value", 0)
@@ -44,7 +44,7 @@
 
             $("#wife").focus(function () {
                 $("#date").attr("value", "2018-0");
-                $("#beforeTax").attr("value", 27000);
+                $("#beforeTax").attr("value", 29700);
                 $("#insuranceBase").attr("value", 23120);
                 $("#fundBase").attr("value", 23120);
 
@@ -56,8 +56,10 @@
                 var insuranceBase = $("#insuranceBase").val();
                 var fundBase = $("#fundBase").val();
                 var beforeTax = $("#beforeTax").val();
-                $("#houseFunds").attr("value", (fundBase * 0.12).toFixed(0));
-                $("#houseFundsCompany").attr("value", (fundBase * 0.12).toFixed(0));
+                var tmp1 = fundBase * 0.12;
+                if(tmp1 > 2774) tmp1 = 2774;
+                $("#houseFunds").attr("value", tmp1.toFixed(0));
+                $("#houseFundsCompany").attr("value", tmp1.toFixed(0));
                 $("#medicareCompany").attr("value", insuranceBase * 0.1);
                 $("#medicare").attr("value", (insuranceBase * 0.020148).toFixed(2));
                 $("#pensionInsuranceCompany").attr("value", insuranceBase * 0.19);
